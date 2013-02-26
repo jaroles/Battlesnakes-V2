@@ -154,8 +154,8 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 				to = seg.to;
 			//console.log(from, c1 , c2, to);
 			this.body.cubicCurveTo(c1, c2, to);
-		}
-		var segments = this.body.segments;*/
+		}*/
+		var segments = this.body.segments;
 		var dx = this.x - segments[0].point.x;
 		var dy = this.y - segments[0].point.y;
 		var m = paper.Matrix.getTranslateInstance(dx,dy);
@@ -228,11 +228,11 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 			
 			var d = new paper.Point(dx, dy);
 			
-			/*var segments = this.body.segments;
+			var segments = this.body.segments;
 			//find length;
 			var length = (this.body.segments[0].point).subtract(this.body.segments[1].point).length;
 
-			this.body.segments[0].point = this.body.segments[0].point.add(d);
+			/*this.body.segments[0].point = this.body.segments[0].point.add(d);
 			//apply velocity
 			for (var i = 0; i < this.body.segments.length - 1; i++) {
 				var nextSegment = this.body.segments[i + 1];
