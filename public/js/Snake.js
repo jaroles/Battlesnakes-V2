@@ -113,7 +113,7 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 	{
 		
 		//console.log(this.bSegments.length,this.bSegments);
-		var relative = (new Point(this.x,this.y)).subtract(new Point(worldPos));
+		//var relative = (new Point(this.x,this.y)).subtract(new Point(worldPos));
 
 		this.mySpline = new CubicBezierSpline(this.bSegments).relocate(this.x,this.y);
 		(function(snake) {
@@ -145,20 +145,70 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 		if (l) {
 			this.body.moveTo(this.mySpline.bezierSegments[0].from);
 		}
+		
 		for (var i = 0; i < l; ++i) {
 			var seg = this.mySpline.bezierSegments[i];
-			var from = seg.from,
-				c1 = seg.control1,
+			//var from = seg.from;
+			var c1 = seg.control1,
 				c2 = seg.control2,
 				to = seg.to;
 			//console.log(from, c1 , c2, to);
 			this.body.cubicCurveTo(c1, c2, to);
 		}
-		var segments = this.body.segments;
+		
+		/*var segments = this.body.segments;
 		var dx = this.x - segments[0].point.x;
 		var dy = this.y - segments[0].point.y;
 		var m = paper.Matrix.getTranslateInstance(dx,dy);
-		this.body.transform(m);
+		this.body.transform(m);*/
+		
+		//
+		// Custom code
+		//
+		
+		/*this.mySpline = new CubicBezierSpline(this.bSegments).relocate(this.x,this.y);
+		
+		(function(snake) {
+			snake.mySpline.vel = function() {
+				return new Vector(Math.cos(snake.angle)*snake.velocity,Math.sin(snake.angle)*snake.velocity); 
+			}
+		})(this);
+
+		var seg = this.mySpline.bezierSegments[0];
+		var from = seg.from,
+			c1 = seg.control1,
+			c2 = seg.control2,
+			to = seg.to;
+		c1.subtract(from).multiply(this.scaleSize).add(from);
+		c2.subtract(from).multiply(this.scaleSize).add(from);
+		to.subtract(from).multiply(this.scaleSize).add(from);
+		
+		if (lastSeg)
+		{
+			lastSeg.relocate(to);
+		}
+		lastSeg = seg;
+		
+		this.mySpline.rejoin();
+		
+		if (l) 
+		{
+			this.body.moveTo(this.mySpline.bezierSegments[0].from);
+		}
+		
+		var seg = this.mySpline.bezierSegments[0];
+		//var from = seg.from,
+		var c1 = seg.control1;
+		var c2 = seg.control2;
+		var to = seg.to;
+		//console.log(from, c1 , c2, to);
+		this.body.cubicCurveTo(c1, c2, to);
+
+		var segments = this.body.segments;
+		var dx = this.x - segments[0].point.x;
+		var dy = this.y - segments[0].point.y;
+		var m = paper.Matrix.getTranslateInstance(dx, dy);
+		this.body.transform(m);*/
 	};
 	
 	/**
@@ -205,7 +255,6 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 	*/
 	this.update = function(dx,dy)
 	{
-	
 		dx *= this.targetvelocity;
 		dy *= this.targetvelocity;
 
@@ -225,7 +274,7 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 			this.eye2.transform(trans);
 		}	
 			
-			var d = new paper.Point(dx, dy);
+			/*var d = new paper.Point(dx, dy);
 			
 			var segments = this.body.segments;
 			//find length;
@@ -252,7 +301,7 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 			var dx = this.x - this.body.segments[0].point.x;
 			var dy = this.y - this.body.segments[0].point.y;
 			var m = paper.Matrix.getTranslateInstance(dx,dy);
-			this.body.transform(m);
+			this.body.transform(m);*/
 	}
 	this.init();
 }
