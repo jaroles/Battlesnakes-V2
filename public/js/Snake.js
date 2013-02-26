@@ -155,11 +155,11 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 			//console.log(from, c1 , c2, to);
 			this.body.cubicCurveTo(c1, c2, to);
 		}
-		var segments = this.body.segments;
+		var segments = this.body.segments;*/
 		var dx = this.x - segments[0].point.x;
 		var dy = this.y - segments[0].point.y;
 		var m = paper.Matrix.getTranslateInstance(dx,dy);
-		this.body.transform(m);*/
+		this.body.transform(m);
 	};
 	
 	/**
@@ -248,12 +248,12 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 				this.body.segments[i].handleOut = zero.clone();
 			}
 			
-			this.body.smooth();
+			this.body.smooth();*/
 			//move to drawPostion
 			var dx = this.x - this.body.segments[0].point.x;
 			var dy = this.y - this.body.segments[0].point.y;
 			var m = paper.Matrix.getTranslateInstance(dx,dy);
-			this.body.transform(m);*/
+			this.body.transform(m);
 	}
 	this.init();
 }
