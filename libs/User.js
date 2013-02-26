@@ -35,10 +35,12 @@ function User(socket, playerevent, snakeID)
 
         // Kick the kids who send too much data.
         this.packetsThisSecond = 0;
-        this.packetKickingInterval = setInterval(function() {
+        this.packetTime = new Date().getTime();
+        this.curTime = new Date().getTime();
+        /*this.packetKickingInterval = setInterval(function() {
             //Reset the packetsThisSecond every second
             user.packetsThisSecond = 0;
-        }, 1000);
+        }, 1000); TODO Figure out how to correctly get this setInterval thing working*/
 
 
 		// Snake functions that must be aware of the User object
@@ -288,6 +290,13 @@ function User(socket, playerevent, snakeID)
             // Kick this kid.
             socket.disconnect();
         }
+        this.curTime = new Date().getTime();
+        if(this.curTime - this.packetTime > 1000)
+        {
+        	this.packetsThisSecond = 0;
+        	this.packetTime = this.curTime;
+        }
+        
 		if (!e || !e.type) {
 			return;
 		}
