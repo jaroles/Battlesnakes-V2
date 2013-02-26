@@ -48,10 +48,10 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 	this.targetvelocity = 20;	
 	this.maxSegments = 20;
 	
-	this.body = new paper.Path();
+	/*this.body = new paper.Path();
 	//window.snakebody = this.body;
 	this.body.strokeColor = this.color;
-	this.body.strokeWidth = 2*this.scaleSize;
+	this.body.strokeWidth = 2*this.scaleSize;*/
 	
 	this.head = new paper.Path();
 	this.head.fillColor = this.color;
@@ -143,7 +143,7 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 		}
 		this.mySpline.rejoin();
 
-		if (l) {
+		/*if (l) {
 			this.body.moveTo(this.mySpline.bezierSegments[0].from);
 		}
 		for (var i = 0; i < l; ++i) {
@@ -159,7 +159,7 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 		var dx = this.x - segments[0].point.x;
 		var dy = this.y - segments[0].point.y;
 		var m = paper.Matrix.getTranslateInstance(dx,dy);
-		this.body.transform(m);
+		this.body.transform(m);*/
 	};
 	
 	/**
@@ -228,7 +228,7 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 			
 			var d = new paper.Point(dx, dy);
 			
-			var segments = this.body.segments;
+			/*var segments = this.body.segments;
 			//find length;
 			var length = (this.body.segments[0].point).subtract(this.body.segments[1].point).length;
 
@@ -253,9 +253,7 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 			var dx = this.x - this.body.segments[0].point.x;
 			var dy = this.y - this.body.segments[0].point.y;
 			var m = paper.Matrix.getTranslateInstance(dx,dy);
-			this.body.transform(m);
-			
-
+			this.body.transform(m);*/
 	}
 	this.init();
 }
