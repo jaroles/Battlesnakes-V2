@@ -42,7 +42,7 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 	this.numSegments = numSegments;
 	this.id = id;
 	this.powerUp = currentPowerUp;
-//
+
 	this.bSegments = segments;
 	this.wiggleHeight = 10;	
 	this.targetvelocity = 20;	
@@ -52,8 +52,6 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 	//window.snakebody = this.body;
 	this.body.strokeColor = this.color;
 	this.body.strokeWidth = 2*this.scaleSize;
-	
-	
 	
 	this.head = new paper.Path();
 	this.head.fillColor = this.color;
@@ -72,9 +70,8 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 	
 	this.eye1 = new paper.Path();
 	this.eye1.fillColor = "pink";
-	this.eye1.strokeColor = "pink"
+	this.eye1.strokeColor = "pink";
 	this.eye1.mitterLimit = "10";
-	63.945
 	this.eye1.add(new paper.Point(79.79+this.x, this.y - 247.8));
 	this.eye1.lineTo(new paper.Point(63.945+this.x, this.y-214.93));
 	this.eye1.lineTo(new paper.Point(48.1+this.x, this.y - 247.8));
@@ -84,7 +81,7 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 	
 	this.eye2 = new paper.Path();
 	this.eye2.fillColor = "pink";
-	this.eye2.strokeColor = "pink"
+	this.eye2.strokeColor = "pink";
 	this.eye2.mitterLimit = "10";
 	this.eye2.add(new paper.Point(-79.79+this.x, this.y - 247.8));
 	this.eye2.lineTo(new paper.Point(-63.945+this.x, this.y-214.93));
