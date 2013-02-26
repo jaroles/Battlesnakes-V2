@@ -1,6 +1,21 @@
+/**
+* @author: Ryan Howard
+* @author: Andrew Wagenheim
+* Software Development II
+* Battle Snakes
+*/
+
+
+
+/**
+* Creates the chat and all its functionalities.
+*/
 // Settings controls
 (function($){
 	
+	/**
+	* Initializes chat
+	*/
 	$.fn.initChat = function() {
 		var input = $(this);
 		var chatText = $("#chatText");
@@ -8,6 +23,10 @@
 		var messageHistory = [];
 		var messagePointer = -1;
 
+		
+	/**
+	* Closes chat
+	*/
 		var closechat = function() {
 			hidden = true;
 			input.css("opacity","0");
@@ -16,6 +35,9 @@
 			chatText.text('')
 		}
 
+	/**
+	* Updates chat dimensions
+	*/
 		var updateDimensions = function(){
 			chatText.text(input.val());
 			var width = chatText.width() + 30;
@@ -25,9 +47,16 @@
 			});
 		};
 
+	/**
+	* Blurs chat as it fades out after being entered
+	*/
 		input.blur(function(e) {
 			setTimeout(function(){input.focus()}, 0.1);
 		});
+		
+	/**
+	* Reads the key pressed and inputs it into the chat accordingly
+	*/
 		input.keydown(function(e){
 			if(input.val().length > 0) {
 				//set timeout because event occurs before text is entered
@@ -65,6 +94,10 @@
 				}
 			}
 		});
+		
+	/**
+	* Ends key input when key is released
+	*/
 		input.keyup(function(e) {
 
 			var k = e.keyCode;

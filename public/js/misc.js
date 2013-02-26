@@ -1,3 +1,14 @@
+/**
+* @author: Ryan Howard
+* @author: Andrew Wagenheim
+* Software Development II
+* Battle Snakes
+*/
+
+/**
+* Math Library
+*/
+
 var DONTENUMERATE = function(Obj, property, val) {
 	Object.defineProperty(Obj, property, {
 		value: val,

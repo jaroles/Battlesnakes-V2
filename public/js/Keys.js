@@ -1,3 +1,14 @@
+/**
+* @author: Ryan Howard
+* @author: Andrew Wagenheim
+* Software Development II
+* Battle Snakes
+*/
+
+/**
+* Potentially gives the arrow keys movement functionality, should we wish to reimplement it.
+*/
+
 var keys = {
 	esc: 27,
         enter: 13,

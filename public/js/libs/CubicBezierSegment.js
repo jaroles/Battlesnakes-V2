@@ -32,6 +32,12 @@ CubicBezierSegment.prototype.extend({
 
 		return previousPts;
 	},
+	relocate: function(point) {
+		var from = this.from,
+			d = (new Point(point)).subtract(from);
+		this.add(d);
+		return this;
+	},
 	rotate: function(theta /*degrees*/) {
 		this.from.rotate(theta),
 		this.control1.rotate(theta),
@@ -207,7 +213,7 @@ CubicBezierSegment.prototype.extend({
 		};
 	},
 	set: function(from, control1, control2, to) {
-		if (from instanceof CubicBezierSegment) {
+		if (from instanceof Object && 'from' in from) {
 			this.set(from.from, from.control1, from.control2, from.to);
 		} else if (Array.isArray(from)) {
 			this.set(from[0], from[1], from[2], from[3]);
@@ -224,5 +230,10 @@ CubicBezierSegment.prototype.extend({
 	},
 	toJSON: function() {
 		return this.get();
+	},
+	makeRel: function() {
+		this.control1.subtract(this.from);
+		this.control2.subtract(this.to);
+		return this;
 	}
 });

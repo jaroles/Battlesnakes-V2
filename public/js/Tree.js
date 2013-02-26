@@ -1,3 +1,17 @@
+/**
+* @author: Ryan Howard
+* @author: Andrew Wagenheim
+* Software Development II
+* Battle Snakes
+*/
+
+/**
+* Creates a tree object to be placed in the game environment
+* @param x X coordinate of the tree
+* @param y Y coordinate of the tree
+* @param id ID of the newly created tree
+*/
+
 Tree.prototype = new GameObject();
 function Tree(x,y,id)
 {

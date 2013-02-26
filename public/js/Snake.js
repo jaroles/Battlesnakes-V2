@@ -1,32 +1,67 @@
+/**
+* @author: Ryan Howard
+* @author: Andrew Wagenheim
+* Software Development II
+* Battle Snakes
+*/
+
 Snake.prototype = new GameObject();
-function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segments,id,worldPos,scaleSize,pos,center)
+
+/**
+* Creates a snake object for the game
+* @param name The name of the snake
+* @param team Which team the snake is on
+* @param color The snake's color (dependant on team)
+* @param velocity The snake's current velocity
+* @param angle The angle at which the snake is moving
+* @param currentPowerUp The snake's current powerup
+* @param numSegments Number of segments a snake has
+* @param segments The snake's segments
+* @param id The ID number of a snake
+* @param worldPos The position of the snake
+* @param scaleSize The scale of the snake relative to the world
+* @param drawPosition Drawing the sneak dependant on where it is
+* @param isUserName Username associated to the snake
+*/		
+function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segments,id,worldPos,scaleSize,drawPosition,isUserSnake)
 {	
-	this.pos = pos;
-	
+	var zero = new paper.Point(0,0);
 	this.worldPos = worldPos;
 	this.scaleSize = scaleSize;
 	this.name = name;
 	this.team = team;
 	this.velocity = velocity;
 	this.angle = angle;
-	this.x = center.x;
-	this.y = center.y;
+	this.sprintTime;
+	this.isUserSnake = isUserSnake;
+	
+	this.x = drawPosition.x;
+	this.y = drawPosition.y;
+	
 	this.color ="#"+ color;
 	this.numSegments = numSegments;
 	this.id = id;
 	this.powerUp = currentPowerUp;
-
-	
+//
+	this.bSegments = segments;
 	this.wiggleHeight = 10;	
 	this.targetvelocity = 20;	
 	this.maxSegments = 20;
+	
+	this.body = new paper.Path();
+	//window.snakebody = this.body;
+	this.body.strokeColor = this.color;
+	this.body.strokeWidth = 2*this.scaleSize;
+	
+	
 	
 	this.head = new paper.Path();
 	this.head.fillColor = this.color;
 	this.head.strokeWidth = "1";
 	this.head.strokeColor = this.color;
 	this.head.mitterLimit = "10";		
-	this.head.add(new paper.Point(79.8+this.x, this.y));
+	this.head.add(new paper.Point(this.x,this.y));
+	this.head.lineTo(new paper.Point(79.8+this.x, this.y));
 	this.head.lineTo(new paper.Point(119.19+this.x,this.y - 84.85));
 	this.head.lineTo(new paper.Point(48.3+this.x, this.y-356.68));
 	this.head.lineTo(new paper.Point(-48.3+this.x, this.y-356.68));
@@ -36,8 +71,8 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 	this.head.smooth();
 	
 	this.eye1 = new paper.Path();
-	this.eye1.fillColor = "white";
-	this.eye1.strokeColor = "white"
+	this.eye1.fillColor = "pink";
+	this.eye1.strokeColor = "pink"
 	this.eye1.mitterLimit = "10";
 	63.945
 	this.eye1.add(new paper.Point(79.79+this.x, this.y - 247.8));
@@ -48,55 +83,184 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 	this.eye1.smooth();
 	
 	this.eye2 = new paper.Path();
-	this.eye2.fillColor = "white";
-	this.eye2.strokeColor = "white"
+	this.eye2.fillColor = "pink";
+	this.eye2.strokeColor = "pink"
 	this.eye2.mitterLimit = "10";
 	this.eye2.add(new paper.Point(-79.79+this.x, this.y - 247.8));
 	this.eye2.lineTo(new paper.Point(-63.945+this.x, this.y-214.93));
 	this.eye2.lineTo(new paper.Point(-48.1+this.x, this.y - 247.8));
 	this.eye2.lineTo(new paper.Point(-63.945+this.x, this.y-289.5));
 	this.eye2.closePath();
-	this.eye2.smooth();//
+	this.eye2.smooth();
 	
 	var matrix = paper.Matrix.getRotateInstance((57.295*(Math.PI/2)),this.x,this.y);
 	this.head.transform(matrix);
 	this.eye1.transform(matrix);
 	this.eye2.transform(matrix);
 	
-	var scaleSize = 0.05;
+	var scaleSize = this.scaleSize/100;
 	matrix = paper.Matrix.getScaleInstance(scaleSize,scaleSize);
 	this.head.transform(matrix);
 	this.eye1.transform(matrix);
 	this.eye2.transform(matrix);
 	
-	matrix = paper.Matrix.getTranslateInstance(this.x-(this.x*scaleSize),this.y-(this.y*scaleSize));
+	matrix = paper.Matrix.getTranslateInstance(this.x-(this.x*scaleSize)-4,this.y-(this.y*scaleSize));
 	this.head.transform(matrix);
 	this.eye1.transform(matrix);
 	this.eye2.transform(matrix);
 	
-	this.mySpline = new CubicBezierSpline(segments);
-	
-	
-	this.body.strokeColor = this.color;
-	this.body.strokeWidth = 2*this.scaleSize;
+	/**
+	* Initiates the snake
+	*/
+	this.init = function()
+	{
+		
+		//console.log(this.bSegments.length,this.bSegments);
+		var relative = (new Point(this.x,this.y)).subtract(new Point(worldPos));
 
+		this.mySpline = new CubicBezierSpline(this.bSegments).relocate(this.x,this.y);
+		(function(snake) {
+			snake.mySpline.vel = function() {
+				return new Vector(Math.cos(snake.angle)*snake.velocity,Math.sin(snake.angle)*snake.velocity); 
+			}
+		})(this);
+		
+		
+		var l = this.mySpline.bezierSegments.length;
+		this.mySpline.breakUp();
+		var lastSeg = undefined;
+		for (var i = l - 1; i >= 0; --i) {
+			var seg = this.mySpline.bezierSegments[i];
+			var from = seg.from,
+				c1 = seg.control1,
+				c2 = seg.control2,
+				to = seg.to;
+			c1.subtract(from).multiply(this.scaleSize).add(from);
+			c2.subtract(from).multiply(this.scaleSize).add(from);
+			to.subtract(from).multiply(this.scaleSize).add(from);
+
+			if (lastSeg) {
+				lastSeg.relocate(to);
+			}
+			lastSeg = seg;
+		}
+		this.mySpline.rejoin();
+
+		if (l) {
+			this.body.moveTo(this.mySpline.bezierSegments[0].from);
+		}
+		for (var i = 0; i < l; ++i) {
+			var seg = this.mySpline.bezierSegments[i];
+			var from = seg.from,
+				c1 = seg.control1,
+				c2 = seg.control2,
+				to = seg.to;
+			//console.log(from, c1 , c2, to);
+			this.body.cubicCurveTo(c1, c2, to);
+		}
+		var segments = this.body.segments;
+		var dx = this.x - segments[0].point.x;
+		var dy = this.y - segments[0].point.y;
+		var m = paper.Matrix.getTranslateInstance(dx,dy);
+		this.body.transform(m);
+	};
 	
-		this.rotate = function(da)
+	/**
+	* Rotates the snake head to where the play designates
+	* @param da Angle of rotation
+	*/
+	this.rotate = function(da)
 	{
 		var rotationMatrix = paper.Matrix.getRotateInstance(da,this.x,this.y);
 		this.head.transform(rotationMatrix);
 		this.eye1.transform(rotationMatrix);
 		this.eye2.transform(rotationMatrix);
+		var dx = this.x - this.head.segments[0].point.x;
+		var dy = this.y - this.head.segments[0].point.y;
+		var trans = paper.Matrix.getTranslateInstance(dx,dy);
+		//console.log(dx,dy);
+		this.head.transform(trans);
+		this.eye1.transform(trans);
+		this.eye2.transform(trans);
+		//var translation 
 	};
 	
+	/**
+	* Collision detection for the snake
+	* @param GameObject The object the snake collides with
+	*/   
 	this.collision = function(GameObject)
 	{
 	};
 	
+	/**
+	* Changes the snake's team
+	* @param team The snake's new team
+	*/
 	this.changeTeam = function(team)
 	{
 		this.team = team;
 	};
+	
+	/**
+	* Updates the snake's position relative to the server
+	* @param dx Change in the snake's X position
+	* @param dy Change in the snake's Y position
+	*/
+	this.update = function(dx,dy)
+	{
+	
+		dx *= this.targetvelocity;
+		dy *= this.targetvelocity;
+
+		this.worldPos.x += dx;
+		this.worldPos.y += dy;
+		
+		dx *= this.scaleSize;
+		dy *= this.scaleSize;
+			
+		if(!this.isUserSnake)
+		{
+			this.x+=dx;
+			this.y+=dy;
+			var trans = paper.Matrix.getTranslateInstance(dx,dy);
+			this.head.transform(trans);
+			this.eye1.transform(trans);
+			this.eye2.transform(trans);
+		}	
+			
+			var d = new paper.Point(dx, dy);
+			
+			var segments = this.body.segments;
+			//find length;
+			var length = (this.body.segments[0].point).subtract(this.body.segments[1].point).length;
+
+			this.body.segments[0].point = this.body.segments[0].point.add(d);
+			//apply velocity
+			for (var i = 0; i < this.body.segments.length - 1; i++) {
+				var nextSegment = this.body.segments[i + 1];
+				var position = this.body.segments[i].point;
+				var angle = (position.subtract(nextSegment.point)).angle;
+				var vector = new paper.Point({ angle: angle, length: 12*this.scaleSize});
+				nextSegment.point = position.subtract(vector);
+			}
+			//remove old control points
+			for (var i = 0;i<this.body.segments.length;++i)
+			{
+				this.body.segments[i].handleIn = zero.clone();
+				this.body.segments[i].handleOut = zero.clone();
+			}
+			
+			this.body.smooth();
+			//move to drawPostion
+			var dx = this.x - this.body.segments[0].point.x;
+			var dy = this.y - this.body.segments[0].point.y;
+			var m = paper.Matrix.getTranslateInstance(dx,dy);
+			this.body.transform(m);
+			
+
+	}
+	this.init();
 }
 
 

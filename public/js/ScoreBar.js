@@ -1,3 +1,14 @@
+/**
+* @author: Ryan Howard
+* @author: Andrew Wagenheim
+* Software Development II
+* Battle Snakes
+*/
+
+/**
+* Creates the scorebar for display
+*/
+
 function ScoreBar()
 {
 	var canvas = document.getElementById('canvas');

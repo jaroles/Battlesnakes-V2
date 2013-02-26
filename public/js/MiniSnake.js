@@ -1,5 +1,13 @@
-//Work in Progress
+/**
+* @author: Ryan Howard
+* @author: Andrew Wagenheim
+* Software Development II
+* Battle Snakes
+*/
 
+/**
+* Draws a Minisnake in the world
+*/
 MiniSnake.prototype = new GameObject()
 function MiniSnake(team,color,state,pos,velocity)
 {
@@ -85,6 +93,10 @@ function MiniSnake(team,color,state,pos,velocity)
 		this.tail[t].smooth();
 	}*///
 	
+	
+	/**
+	* Updates the velocity of the Minisnakes according to a value sent by the server
+	*/
 	this.updateVelocity = function()
 	{
 	
@@ -98,6 +110,11 @@ function MiniSnake(team,color,state,pos,velocity)
 		}
 	};
 	
+	/**
+	* Moves the snake relative to their current velocity and angle of trejectory
+	* @param dx Change in X position of the minisnake
+	* @param dy Change in Y position of the minisnake
+	*/
 	this.move = function(dx,dy)
 	{
 		var last = (this.lasttime) ? this.lasttime : (new Date()).getTime();
@@ -111,6 +128,10 @@ function MiniSnake(team,color,state,pos,velocity)
 		this.updatePath(dx * dt, dy * dt);
 	};
 	
+	/**
+	* Rotates the head of the Minisnake based on its movement
+	* @param da Angle of rotation
+	*/
 	this.rotate = function(da)
 	{
 		var rotationMatrix = paper.Matrix.getRotateInstance(da,this.x,this.y);
@@ -119,15 +140,26 @@ function MiniSnake(team,color,state,pos,velocity)
 		this.eye2.transform(rotationMatrix);
 	};
 	
+	/**
+	* Potential method for giving the Minisnakes collision detection
+	*/
 	this.collision = function(GameObject)
 	{
 	};
 	
+	/**
+	* Changes the team of the Minisnake
+	*/
 	this.changeTeam = function(team)
 	{
 		team = team;
 	};
 	
+	/**
+	* Changes the path 
+	* @param dx Change in X position of the minisnake
+	* @param dy Change in Y position of the minisnake
+	*/
 	this.updatePath = function(dx, dy)
 	{	
 			var xStep = Math.cos(this.angle)*18;

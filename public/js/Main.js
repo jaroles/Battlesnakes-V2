@@ -1,3 +1,10 @@
+/**
+* @author: Ryan Howard
+* @author: Andrew Wagenheim
+* Software Development II
+* Battle Snakes
+*/
+
 var settings = new Settings();
 var debug = true;
 var isStatsOn = false;
@@ -8,6 +15,9 @@ var runLoop = function() {
 	game.draw();
 };
 
+/**
+* Initializes the game
+*/
 var initApp = function() 
 {
 	if (game!=null) { return; }
@@ -28,6 +38,9 @@ var initApp = function()
 	setInterval(runLoop,30);
 };
 
+/**
+* Forces the game to run with imcompatible browser
+*/
 var forceInit = function() 
 {
 	initApp();
@@ -45,6 +58,9 @@ else
 	document.getElementById('force-init-button').addEventListener('click', forceInit, false);
 }
 
+/**
+* Adds game statistics, such as FPS
+*/
 var addStats = function() 
 {
 	if (isStatsOn) { return; }

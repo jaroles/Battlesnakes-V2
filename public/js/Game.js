@@ -1,4 +1,16 @@
+/**
+* @author: Ryan Howard 
+* @author: Andrew Wagenheim
+* Software Development II
+* Battle Snakes
+*/
 
+/**
+* Creates a Game object, which is the basis for the snakes, environment objects, and display.
+* @param aSettings The settings for the game
+* @param aCanvas The canvas on which the objects (snake, bush, ect.) are drawn
+*
+*/
 var Game = function(aSettings, aCanvas) {
 	var game = this;
 	var canvas,
@@ -6,9 +18,10 @@ var Game = function(aSettings, aCanvas) {
 		webSocket,
 		webSocketService,
 		mouse = {x: 0, y: 0,set:0},
-		keyNav = {x:0,y:0}
+		keyNav = {x:0,y:0},
+		message,
+		ticksForMessage = 0
 	;
-	
 	
 	this.userSnake;
 	this.snakes = new Array();
@@ -17,100 +30,192 @@ var Game = function(aSettings, aCanvas) {
 	this.score;
 	this.time;
 	this.started = false;
-	this.makeBigger = 0;
+	this.sprint = 0;
 	this.slowingRatio = 0.9;
 	this.minRatio = 0.1;
 	this.time = 0;
 	this.stepsTillStrait = 3;
-	this.scaleWindow = window.innerWidth/300;
+	this.scaleWindow = window.innerWidth/250;
 
 	this.gametime;
 	this.lasttime = new Date().getTime();
-	
+	this.wasSprinting = false;
+	/**
+	* Updates the game based on changes sent by the server
+	*/
 	game.update = function() 
 	{
 		if (this.started)
 		{
-			
 			var last = (this.lasttime) ? this.lasttime : (new Date()).getTime();
 			var currentTime = (new Date()).getTime();
 			var dt = (currentTime - last) / 1000;
+			this.lasttime = currentTime;
 			
 			var oldVelocity = this.userSnake.velocity;
 			var oldAngle = this.userSnake.angle;
 			var dx = 0;
 			var dy = 0;
 			var ang;
-			var point = new paper.Point([0,0]);
+			var point = new Point(0,0);
 			var magnitude = 0;
-			if (mouse.set ==1)
+			if (mouse.set)
 			{
 				dy = (mouse.y - this.userSnake.y);
 				dx = mouse.x - this.userSnake.x;
-				point = new paper.Point([dx, dy]);
-				magnitude = point.length;
-				dx /= magnitude*dt;
-				dy /= magnitude*dt;
-				ang = point.angle;			
-				if (ang < 0) 
+				point = new Vector(dx, dy);
+				magnitude = point.magnitude();
+				dx /= magnitude;
+				dy /= magnitude;
+				dx *= dt;
+				dy *= dt;
+				ang = point.angleRadians();	
+				if (this.userSnake.sprintTime>0 && keyNav.y)
 				{
-					ang = 360 + ang;
+					this.wasSprinting = true;
+					var message = {
+						type:"sprint",
+						sprint:"start"};
+					webSocketService.sendMessage(message);
 				}
-				ang *= Math.PI / 180;							
+				else if (this.wasSprinting)
+				{
+					var message = {
+						type:"sprint",
+						sprint:"stop"};
+					webSocketService.sendMessage(message);
+					this.wasSprinting = false;
+				}
+				
+				//console.log(this.userSnake.targetvelocity);
+				this.userSnake.angle = ang;
+				this.userSnake.velocity = this.userSnake.targetvelocity;
+				if (oldVelocity == 0 || (parseInt(oldAngle*(180/Math.PI))!= parseInt(ang*(180/Math.PI))))
+				{
+					webSocketService.sendUpdate(this.userSnake);
+				}
+				
+				if(oldAngle != ang)
+				{
+					this.userSnake.rotate((180/Math.PI)*(ang-oldAngle));
+				}				
+				
+				this.userSnake.update(dx,dy);
+				this.updateOtherSnakes(dx,dy);
+				
 			}
-			
-			this.lasttime = new Date().getTime();
-		};
-	
-	game.draw = function() 
-	{		
-		if (this.started);
-		{
-			paper.view.draw();
-			for (var e = 0;e<this.environment.length;e++)
+			else 
 			{
-				var img = this.environment[e].img;
-				var scale = this.environment[e].scale;
+				if (oldVelocity != 0)
+				{
+					this.userSnake.velocity = 0;					
+					webSocketService.sendUpdate(this.userSnake);
+				}
+			}
+			if (this.snakes.length > 0)
+			{
+				//console.log("updateing other snakes" , this.snakes.length);
+				for (var i = 0;i<this.snakes.length;i++)
+				{
+					var s = this.snakes[i];
+					if (s.velocity >0)
+					{
+						//console.log(Math.cos(s.angle)*s.velocity/s.targetvelocity,Math.sin(s.angle)*s.velocity/s.targetvelocity);
+						var dx = ((Math.cos(s.angle)*s.velocity)/s.targetvelocity) * dt;
+						var dy = ((Math.sin(s.angle)*s.velocity)/s.targetvelocity) * dt;
+						s.update(dx,dy);
+					}
+				}
 			}
 		}
 	};
+	game.updateOtherSnakes = function(dx,dy)
+	{
+		if (this.userSnake.velocity)
+		{
+			var m = paper.Matrix.getTranslateInstance(-dx*this.userSnake.targetvelocity*this.scaleWindow,-dy*this.userSnake.targetvelocity*this.scaleWindow);
+			for (var i = 0;i<this.snakes.length;i++)
+			{
+				this.snakes[i].body.transform(m);
+				this.snakes[i].head.transform(m);
+				this.snakes[i].eye1.transform(m);
+				this.snakes[i].eye2.transform(m);
+			}
+		}
+	}
+	/**
+	* Draws the game based on the passed in canvas size, snakes, and environment objects
+	*/
+	game.draw = function() 
+	{		
+		if (this.started)
+		{
+			paper.view.draw();
+			var img,scale,dx,dy,enviro;
+			var x = this.userSnake.worldPos.x;
+			var y = this.userSnake.worldPos.y;
+			var scx = canvas.width/2;
+			var scy = canvas.height/2;
+			
+			for (var e = 0;e<this.environment.length;e++)
+			{
+				enviro = this.environment[e];
+				img = enviro.img;
+				scale = enviro.scale;
+
+				dx = enviro.x - x;
+				dy = enviro.y - y;
+
+				dx -= (scale/2);
+				dy -= (scale/2);
+				
+				dx *= this.scaleWindow;
+				dy *= this.scaleWindow;
+				
+				dx += this.userSnake.x;
+				dy += this.userSnake.y;
+				
+				scale *= this.scaleWindow;
+				context.drawImage(img,dx,dy,scale,scale);
+			}
+			//console.log(ticksForMessage);
+			if(ticksForMessage)
+			{
+				ticksForMessage-=1;
+				context.fillText(message,canvas.width/2,canvas.height/2);
+			}
+		}
+	};
+	this.addMessage = function(text)
+	{
+		message = text;
+		ticksForMessage = 200;
+	}
+	/**
+	* Updates objects drawn in the game based on info sent out by the server
+	*/
 	game.updateGameObjects = function(dx,dy)
 	{
-		var translationMatrix = paper.Matrix.getTranslateInstance(-dx,-dy);
 		for (var e = 0;e<this.environment.length;e++)
 		{
 			this.environment[e].x -= dx;
 			this.environment[e].y -= dy;
 		}
-		for (var s = 0;s<this.snakes.length;s++)
-		{	
-			this.snakes[s].body = this.adjust(this.snakes[s].body,dx,dy);
-			this.snakes[s].head.transform(translationMatrix);
-			this.snakes[s].eye1.transform(translationMatrix);
-			this.snakes[s].eye2.transform(translationMatrix);
-		}
-		
-		for (var m = 0;m<this.miniSnakes.length;m++)
-		{
-			this.miniSnakes[m].x -= dx;
-			this.miniSnakes[m].y -= dy;
-		}
-	}//
+	}
+	
+	/**
+	* Starts the game
+	*/
 	this.start = function(snake)
 	{
 		this.userSnake = snake;
 		this.started = true;
 	};
-	this.adjust = function(path,dx,dy)
-	{
-		for (var i = 0;i<path.segments.length;i++)
-		{
-			path.segments[i].point.x -=dx;
-			path.segments[i].point.y -=dy;
-		}
-		return path;
-	};
 	
+	
+	/**
+	* Socket functions, used for server communication
+	*/
 	game.onSocketOpen = function(e) 
 	{
 		console.log('Socket opened!', e);
@@ -131,7 +236,9 @@ var Game = function(aSettings, aCanvas) {
 	    webSocketService.sendMessage(msg);
 	};
 	
-	
+	/**
+	* Mouse functions, to determine if and where the mouse is clicked
+	*/
 	game.mousedown = function(e) 
 	{
 		mouse.set = 1;
@@ -150,6 +257,9 @@ var Game = function(aSettings, aCanvas) {
 		mouse.y = e.clientY;
 	};
 
+	/**
+	* Keyboard functions, to determine if a key is pressed, and which one
+	*/
 	game.keydown = function(e) 
 	{
 		if(e.keyCode == keys.up) 
@@ -159,6 +269,7 @@ var Game = function(aSettings, aCanvas) {
 		}
 		else if(e.keyCode == keys.down) 
 		{
+			this.sprint = 1;
 			keyNav.y = 1;
 			e.preventDefault();
 		}
@@ -174,7 +285,7 @@ var Game = function(aSettings, aCanvas) {
 		}
 		else if(e.keyCode == keys.space)
 		{
-			this.makeBigger = 1;
+			
 		}
 	};
 	game.keyup = function(e) 
@@ -182,31 +293,26 @@ var Game = function(aSettings, aCanvas) {
 		if(e.keyCode == keys.up || e.keyCode == keys.down)
 		{
 			keyNav.y = 0;
-			if(keyNav.x == 0 && keyNav.y == 0) 
-			{
-				
-			}
 			e.preventDefault();
 		}
 		else if(e.keyCode == keys.left || e.keyCode == keys.right) 
 		{
 			keyNav.x = 0;
-			if(keyNav.x == 0 && keyNav.y == 0) 
-			{
-				
-			}
 			e.preventDefault();
 		}
 		else if(e.keyCode == keys.space)
 		{
-			this.makeBigger = 0;
+			this.sprint = 0;
 		}
 	};
 	
+	/**
+	* Touchpad functions, to give the game touchscreen capabilities
+	*/
 	game.touchstart = function(e) 
 	{
 	  e.preventDefault();
-	  mouse.clicking = true;		
+	  mouse.set =1 ;		
 	  var touch = e.changedTouches.item(0);
 	  if (touch)
 	  {
@@ -217,7 +323,7 @@ var Game = function(aSettings, aCanvas) {
 	
 	game.touchend = function(e) 
 	{
-
+		mouse.set = 0;
 	};
 	
 	game.touchmove = function(e) 
@@ -231,7 +337,9 @@ var Game = function(aSettings, aCanvas) {
 		}			
 	};
 	
-	
+	/**
+	* Calls the resizeCanvas method
+	*/
 	game.resize = function(e) 
 	{
 		resizeCanvas();
@@ -242,13 +350,20 @@ var Game = function(aSettings, aCanvas) {
 
 	};
 	
+	/**
+	* Resizes the canvas according to new dimensions being passed in
+	*/
 	var resizeCanvas = function() 
 	{
 		canvas.width = window.innerWidth;
 		canvas.height = window.innerHeight;
 	};
 	
-	
+	/**
+	* Updates MiniSnakes according to server values
+	* @param id ID of the minisnake being updated
+	* @param mini A Minisnake object being passed in
+	*/
 	this.updateMiniSnake = function(id,mini)
 	{
 		var i = 0;
@@ -258,16 +373,26 @@ var Game = function(aSettings, aCanvas) {
 		this.view.draw(this)
 	};
 	
+	/**
+	* Updates the current score
+	* @param score The new score
+	*/
 	this.updateScore = function(score)
 	{
 		this.score = score;
 	};
 	
+	/**
+	* Updates the server time for the game to move
+	* @param time The time being passed in
+	*/
 	this.updateTime = function(time)
 	{
 		this.time = time;
 	};
-	// Constructor
+	/**
+	* Constructor
+	*/
 	(function()
 	{
 		canvas = aCanvas;

@@ -20,10 +20,8 @@ Point.prototype.extend({
 	},
 	rotate: function(theta /*degrees*/) {
 		var m = this.rotationMatrix(theta);
-		this.set(
-			(m[0][0] * this.x + m[0][1] * this.y),
-			(m[1][0] * this.x + m[1][1] * this.y)
-		);
+		this.x = (m[0][0] * this.x + m[0][1] * this.y),
+		this.y = (m[1][0] * this.x + m[1][1] * this.y)
 		return this;
 	},
 	set: function(x /* Float or {x: x, y: y} */, y /* Float */) {
@@ -32,8 +30,10 @@ Point.prototype.extend({
 		} else if (x instanceof Object) {
 			this.set(x.x, x.y);
 		} else {
-			this.x = (typeof x == 'number') ? x : 0;
-			this.y = (typeof y == 'number') ? y : 0;
+			x = (typeof x == 'number') ? x : 0;
+			y = (typeof y == 'number') ? y : 0;
+			this.x = x;
+			this.y = y;
 		}
 		return this;
 	},
@@ -62,15 +62,11 @@ Point.prototype.extend({
 	},
 	multiply: function(scalar) {
 		if (typeof scalar == 'number') {
-			this.set(
-				this.x * scalar,
-				this.y * scalar
-			);
+			this.x *= scalar,
+			this.y *= scalar
 		} else if (scalar instanceof Object) {
-			this.set(
-				this.x * scalar.x,
-				this.y * scalar.y
-			);
+			this.x *= scalar.x,
+			this.y *= scalar.y
 		}
 		return this;
 	},
@@ -87,15 +83,11 @@ Point.prototype.extend({
 	},
 	add: function(offset) {
 		if (typeof offset == 'number') {
-			this.set(
-				this.x + offset,
-				this.y + offset
-			);
+			this.x += offset,
+			this.y += offset
 		} else if (offset instanceof Object) {
-			this.set(
-				this.x + offset.x,
-				this.y + offset.y
-			);
+			this.x += offset.x,
+			this.y += offset.y
 		}
 		return this;
 	},
@@ -113,21 +105,24 @@ Point.prototype.extend({
 	equals: function(other) {
 		return ((this.x === other.x) && (this.y === other.y));
 	},
-	
-	reference(paperPoint) {
-		var point = paperPoint;
-		this.__defineGetter__('x', function() {
-			return point.x;
-		});
-		this.__defineSetter__('x', function(newX) {
-			point.x = newX;
-		});
-		this.__defineGetter__('y', function() {
-			return point.y;
-		});
-		this.__defineSetter__('y', function(newY) {
-			point.y = newY;
-		});
+	reference: function(paperPoint) {
+		(function(me, point) {
+			me.__defineGetter__('x', function() {
+				return point.x;
+			});
+			me.__defineSetter__('x', function(newX) {
+				point.x = newX;
+			});
+			me.__defineGetter__('y', function() {
+				return point.y;
+			});
+			me.__defineSetter__('y', function(newY) {
+				point.y = newY;
+			});
+			me.__defineGetter__('paperPoint', function() {
+				return point;
+			});
+		})(this, paperPoint);
 	}
 });
 

@@ -90,7 +90,7 @@ CubicBezierSpline.prototype.extend({
 					d.normalize().multiply(length);
 					to.set(from.subtract(d.to));
 				}
-				this.smooth();
+				//this.smooth();
 			}
 		}
 		return this;
@@ -240,19 +240,14 @@ CubicBezierSpline.prototype.extend({
 
 		for (var i = 0; i < size; ++i) {
 			var segment = segments[i];
-			if (i < size) {
-				segment.control1 = new Point (controlPoints.x[i], controlPoints.y[i]);
-				if (i < size - 1) {
-					segment.control2 = new Point(
-						2 * knots[i + 1].x - controlPoints.x[i + 1],
-						2 * knots[i + 1].y - controlPoints.y[i + 1]
-					);
-				} else {
-					segment.control2 = new Point(
-						(knots[size].x - controlPoints.x[size - 1]) / 2,
-						(knots[size].y - controlPoints.y[size - 1]) / 2
-					);
-				}
+			segment.control1.x = controlPoints.x[i];
+			segment.control1.y = controlPoints.y[i];
+			if (i < (size - 1)) {
+				segment.control2.x = 2 * knots[i + 1].x - controlPoints.x[i + 1];
+				segment.control2.y = 2 * knots[i + 1].y - controlPoints.y[i + 1];
+			} else {
+				segment.control2.x = (knots[size].x - controlPoints.x[size - 1]) / 2;
+				segment.control2.y = (knots[size].y - controlPoints.y[size - 1]) / 2;
 			}
 		}
 	},
@@ -268,6 +263,12 @@ CubicBezierSpline.prototype.extend({
 		} else if (bezierSegments) {
 			var c = new CubicBezierSegment(bezierSegments);
 			this.push(c);
+		}
+		return this;
+	},
+	makeRel: function() {
+		for (var i = 0, l = this.bezierSegments.length; i < l; ++i) {
+			this.bezierSegments[i].makeRel();
 		}
 		return this;
 	}

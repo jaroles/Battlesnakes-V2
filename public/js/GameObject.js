@@ -1,3 +1,13 @@
+/**
+* @author: Ryan Howard
+* @author: Andrew Wagenheim
+* Software Development II
+* Battle Snakes
+*/
+
+/**
+* Initializes a game object
+*/
 var GameObject = function()
 {
 	var id,

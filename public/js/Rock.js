@@ -1,3 +1,16 @@
+/**
+* @author: Ryan Howard
+* @author: Andrew Wagenheim
+* Software Development II
+* Battle Snakes
+*/
+
+/**
+* Creates a rock object to be placed in the game environment
+* @param x X coordinate of the rock
+* @param y Y coordinate of the rock
+* @param id ID of the newly created rock
+*/
 Rock.prototype = new GameObject();
 function Rock(x,y,id)
 {
