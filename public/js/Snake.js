@@ -115,13 +115,12 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 		//console.log(this.bSegments.length,this.bSegments);
 		var relative = (new Point(this.x,this.y)).subtract(new Point(worldPos));
 
-		this.mySpline = new CubicBezierSpline(this.bSegments).relocate(this.x,this.y);
+		/*this.mySpline = new CubicBezierSpline(this.bSegments).relocate(this.x,this.y);
 		(function(snake) {
 			snake.mySpline.vel = function() {
 				return new Vector(Math.cos(snake.angle)*snake.velocity,Math.sin(snake.angle)*snake.velocity); 
 			}
-		})(this);
-		
+		})(this);		
 		
 		var l = this.mySpline.bezierSegments.length;
 		this.mySpline.breakUp();
@@ -143,7 +142,7 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 		}
 		this.mySpline.rejoin();
 
-		/*if (l) {
+		if (l) {
 			this.body.moveTo(this.mySpline.bezierSegments[0].from);
 		}
 		for (var i = 0; i < l; ++i) {
@@ -232,7 +231,7 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 			//find length;
 			var length = (this.body.segments[0].point).subtract(this.body.segments[1].point).length;
 
-			/*this.body.segments[0].point = this.body.segments[0].point.add(d);
+			this.body.segments[0].point = this.body.segments[0].point.add(d);
 			//apply velocity
 			for (var i = 0; i < this.body.segments.length - 1; i++) {
 				var nextSegment = this.body.segments[i + 1];
@@ -248,7 +247,7 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 				this.body.segments[i].handleOut = zero.clone();
 			}
 			
-			this.body.smooth();*/
+			this.body.smooth();
 			//move to drawPostion
 			var dx = this.x - this.body.segments[0].point.x;
 			var dy = this.y - this.body.segments[0].point.y;
