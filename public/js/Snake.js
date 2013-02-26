@@ -48,10 +48,10 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 	this.targetvelocity = 20;	
 	this.maxSegments = 20;
 	
-	/*this.body = new paper.Path();
+	this.body = new paper.Path();
 	//window.snakebody = this.body;
 	this.body.strokeColor = this.color;
-	this.body.strokeWidth = 2*this.scaleSize;*/
+	this.body.strokeWidth = 2*this.scaleSize;
 	
 	this.head = new paper.Path();
 	this.head.fillColor = this.color;
@@ -115,7 +115,7 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 		//console.log(this.bSegments.length,this.bSegments);
 		var relative = (new Point(this.x,this.y)).subtract(new Point(worldPos));
 
-		/*this.mySpline = new CubicBezierSpline(this.bSegments).relocate(this.x,this.y);
+		this.mySpline = new CubicBezierSpline(this.bSegments).relocate(this.x,this.y);
 		(function(snake) {
 			snake.mySpline.vel = function() {
 				return new Vector(Math.cos(snake.angle)*snake.velocity,Math.sin(snake.angle)*snake.velocity); 
@@ -153,7 +153,7 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 				to = seg.to;
 			//console.log(from, c1 , c2, to);
 			this.body.cubicCurveTo(c1, c2, to);
-		}*/
+		}
 		var segments = this.body.segments;
 		var dx = this.x - segments[0].point.x;
 		var dy = this.y - segments[0].point.y;
