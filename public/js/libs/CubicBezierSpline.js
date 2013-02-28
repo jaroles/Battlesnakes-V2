@@ -2,20 +2,24 @@
 /* CubicBezierSpline class
  * Handles an array of CubicBezierSegments
  */
-function CubicBezierSpline(bezierSegments /*Array[CubicBezierSegments]*/) {
+function CubicBezierSpline(bezierSegments /*Array[CubicBezierSegments]*/)
+{
 	this.bezierSegments = [];
 	this.set(bezierSegments);
 	this.vel = function() {return new Vector()};
 }
 
 CubicBezierSpline.prototype.extend({
-	isStraight: function() {
+	isStraight: function() 
+	{
 		var lastVector = this.vel();
 		var straight = true;
-		for (var i = 0, l = this.bezierSegments.length; i < l; ++i) {
+		for (var i = 0, l = this.bezierSegments.length; i < l; ++i)
+		{
 			var segment = this.bezierSegments[i],
 				v = (new Vector(segment.from)).subtract(segment.to);
-			if (!lastVector.angleEquals(v)) {
+			if (!lastVector.angleEquals(v))
+			{
 				straight = false;
 				break;
 			}
@@ -23,18 +27,22 @@ CubicBezierSpline.prototype.extend({
 		}
 		return straight;
 	},
-	shouldWiggle: function() {
+	shouldWiggle: function()
+	{
 		return (this.bezierSegments.length && this.vel().magnitude() && this.isStraight());
 	},
-	wiggle: function() {
-		if (this.shouldWiggle()) {
+	wiggle: function()
+	{
+		if (this.shouldWiggle())
+		{
 			var now = Date.now() / 1000;
 			var cp = 0,
 				height = 5,
 				vector = this.vel(),
 				angle = vector.angle(),
 				spline = (new CubicBezierSpline(this)).rotate(angle * -1);
-			for (var i = 0, l = spline.bezierSegments.length; i < l; ++i) {
+			for (var i = 0, l = spline.bezierSegments.length; i < l; ++i)
+			{
 				//http://paperjs.org/tutorials/animation/creating-animations/
 				var seg = spline.bezierSegments[i],
 					sinus = Math.sin(now * 3.2 + cp);
@@ -49,7 +57,8 @@ CubicBezierSpline.prototype.extend({
 		}
 		return this;
 	},
-	approximate: function(segments /*= 100 */) {
+	approximate: function(segments /*= 100 */)
+	{
 		segments = (typeof segments == 'number') ? Math.round(segments) : 100;
 		var points = [],
 			l = this.bezierSegments.length;
@@ -65,24 +74,31 @@ CubicBezierSpline.prototype.extend({
 
 		return points;
 	},
-	rotate: function(theta /*degrees*/) {
+	rotate: function(theta /*degrees*/)
+	{
 		this.breakUp();
-		for (var i = 0, l = this.bezierSegments.length; i < l; ++i) {
+		for (var i = 0, l = this.bezierSegments.length; i < l; ++i)
+		{
 			this.bezierSegments[i].rotate(theta);
 		}
 		this.rejoin();
 		return this;
 	},
-	move: function(offset) {
-		if (this.isStraight()) {
+	move: function(offset)
+	{
+		if (this.isStraight())
+		{
 			this.add(offset);
-		} else {
+		}
+		else
+		{
 			var l = this.bezierSegments.length;
 			if (l) {
 				var bS = this.bezierSegments[0],
 					length = (new Vector(bS.from)).subtract(bS.to).magnitude();
 				bS.from.add(offset);
-				for (var i = 0; i < l; ++i) {
+				for (var i = 0; i < l; ++i)
+				{
 					var bezierSegment = this.bezierSegments[i],
 						from = new Point(bezierSegment.from),
 						to = bezierSegment.to;
@@ -95,114 +111,144 @@ CubicBezierSpline.prototype.extend({
 		}
 		return this;
 	},
-	relocate: function(point) {
-		if (this.bezierSegments.length) {
+	relocate: function(point)
+	{
+		if (this.bezierSegments.length)
+		{
 			var from = this.bezierSegments[0].from,
 				d = (new Point(point)).subtract(from);
 			this.add(d);
 		}
 		return this;
 	},
-	add: function(offset) {
+	add: function(offset)
+	{
 		this.breakUp();
-		for (var i = 0, l = this.bezierSegments.length; i < l; ++i) {
+		for (var i = 0, l = this.bezierSegments.length; i < l; ++i)
+		{
 			this.bezierSegments[i].add(offset);
 		}
 		this.rejoin();
 		return this;
 	},
-	subtract: function(offset) {
+	subtract: function(offset)
+	{
 		this.breakUp();
-		for (var i = 0, l = this.bezierSegments.length; i < l; ++i) {
+		for (var i = 0, l = this.bezierSegments.length; i < l; ++i)
+		{
 			this.bezierSegments[i].subtract(offset);
 		}
 		this.rejoin();
 		return this;
 	},
-	breakUp: function() {
-		for (var i = 1, l = this.bezierSegments.length; i < l; ++i) {
+	breakUp: function()
+	{
+		for (var i = 1, l = this.bezierSegments.length; i < l; ++i)
+		{
 			var bezierSegment = this.bezierSegments[i];
 			bezierSegment.from = new Point(bezierSegment.from);
 		}
 		return this;
 	},
-	rejoin: function() {
-		for (var i = 1, l = this.bezierSegments.length; i < l; ++i) {
+	rejoin: function()
+	{
+		for (var i = 1, l = this.bezierSegments.length; i < l; ++i)
+		{
 			var bezierSegment = this.bezierSegments[i],
 				prevSegment = this.bezierSegments[i - 1];
 			bezierSegment.from = prevSegment.to;
 		}
 		return this;
 	},
-	x: function(t) {
+	x: function(t)
+	{
 		return this.coordinate('x', t);
 	},
-	y: function(t) {
+	y: function(t)
+	{
 		return this.coordinate('y', t);
 	},
-	xPrime: function(t) {
+	xPrime: function(t)
+	{
 		return this.coordinatePrime('x', t);
 	},
-	yPrime: function(t) {
+	yPrime: function(t)
+	{
 		return this.coordinatePrime('y', t);
 	},
-	coordinate: function(xOrY /*string, 'x' or 'y'*/, t) {
+	coordinate: function(xOrY /*string, 'x' or 'y'*/, t)
+	{
 		var index = Math.floor(t),
 			segment = this.bezierSegments[index];
 		return segment ? segment.coordinate(xOrY, t) : undefined;
 	},
-	coordinatePrime: function(xOrY /*string, 'x' or 'y'*/, t) {
+	coordinatePrime: function(xOrY /*string, 'x' or 'y'*/, t)
+	{
 		var index = Math.floor(t),
 			segment = this.bezierSegments[index];
 		return segment ? segment.coordinatePrime(xOrY, t) : undefined;
 	},
-	clone: function() {
+	clone: function()
+	{
 		return new CubicBezierSpline(this);
 	},
-	toJSON: function() {
+	toJSON: function()
+	{
 		var spline = [];
 		for (var i = 0, l = this.bezierSegments.length; i < l; ++i) {
 			spline[i] = this.bezierSegments[i].toJSON();
 		}
 		return spline;
 	},
-	push: function(segment) {
+	push: function(segment)
+	{
 		segment = (segment instanceof CubicBezierSegment) ? segment : new CubicBezierSegment(segment);
 		var l = this.bezierSegments.length;
-		if (l) {
+		if (l)
+		{
 			segment.from = this.bezierSegments[l - 1].to;
 		}
 		this.bezierSegments[l] = segment;
 		return this;
 	},
-	pop: function() {
+	pop: function() 
+	{
 		return this.bezierSegments.pop();
 	},
-	last: function() {
+	last: function()
+	{
 		return this.bezierSegments[this.bezierSegments.length - 1];
 	},
-	splice: function(index, howMany) {
-		if (howMany) {
+	splice: function(index, howMany)
+	{
+		if (howMany)
+		{
 			return this.bezierSegments.splice(index, howMany);
-		} else {
+		}
+		else
+		{
 			return this.bezierSegments.splice(index);
 		}
 	},
-	smooth: function() {
-		function getFirstControlPoints(rhs) {
+	smooth: function()
+	{
+		function getFirstControlPoints(rhs)
+		{
 			var n = rhs.length,
 				x = [], // Solution vector.
 				tmp = [], // Temporary workspace.
 				b = 2;
 			x[0] = rhs[0] / b;
 			// Decomposition and forward substitution.
-			for (var i = 1; i < n; i++) {
+			for (var i = 1; i < n; i++)
+			{
 				tmp[i] = 1 / b;
 				b = (i < n - 1 ? 4 : 2) - tmp[i];
 				x[i] = (rhs[i] - x[i - 1]) / b;
 			}
 			// Back-substitution.
-			for (var i = 1; i < n; i++) {
+			for (var i = 1; i < n; i++)
+			{
 				x[n - i - 1] -= tmp[n - i] * x[n - i];
 			}
 			return x;
@@ -213,23 +259,28 @@ CubicBezierSpline.prototype.extend({
 
 		// If there's only one segment,
 		// it's already smooth-ed.
-		if (size == 1) {
+		if (size == 1)
+		{
 			return;
 		}
 
 		var knots = [];
-		for (var i = 0; i < size; ++i) {
+		for (var i = 0; i < size; ++i)
+		{
 			knots.push(segments[i].from)
 		}
 		knots.push(segments[size - 1].to);
 
-		var controlPoints = {
+		var controlPoints =
+		{
 			x: [],
 			y: []
 		};
-		for (var coord in controlPoints) {
+		for (var coord in controlPoints)
+		{
 			var rhs = [];
-			for (var i = 1; i < size - 1; ++i) {
+			for (var i = 1; i < size - 1; ++i)
+			{
 				rhs[i] = 4 * knots[i][coord] + 2 * knots[i + 1][coord];
 			}
 			rhs[0] = knots[0][coord] + 2*knots[1][coord];
@@ -238,36 +289,48 @@ CubicBezierSpline.prototype.extend({
 			controlPoints[coord] = getFirstControlPoints(rhs);
 		}
 
-		for (var i = 0; i < size; ++i) {
+		for (var i = 0; i < size; ++i)
+		{
 			var segment = segments[i];
 			segment.control1.x = controlPoints.x[i];
 			segment.control1.y = controlPoints.y[i];
-			if (i < (size - 1)) {
+			if (i < (size - 1))
+			{
 				segment.control2.x = 2 * knots[i + 1].x - controlPoints.x[i + 1];
 				segment.control2.y = 2 * knots[i + 1].y - controlPoints.y[i + 1];
-			} else {
+			}
+			else
+			{
 				segment.control2.x = (knots[size].x - controlPoints.x[size - 1]) / 2;
 				segment.control2.y = (knots[size].y - controlPoints.y[size - 1]) / 2;
 			}
 		}
 	},
-	set: function(bezierSegments) {
-		if (bezierSegments instanceof CubicBezierSpline) {
+	set: function(bezierSegments)
+	{
+		if (bezierSegments instanceof CubicBezierSpline)
+		{
 			bezierSegments = bezierSegments.bezierSegments;
 		}
-		if (Array.isArray(bezierSegments)) {
-			for (var i = 0, l = bezierSegments.length; i < l; ++i) {
+		if (Array.isArray(bezierSegments))
+		{
+			for (var i = 0, l = bezierSegments.length; i < l; ++i)
+			{
 				var c = new CubicBezierSegment(bezierSegments[i]);
 				this.push(c);
 			}
-		} else if (bezierSegments) {
+		}
+		else if (bezierSegments)
+		{
 			var c = new CubicBezierSegment(bezierSegments);
 			this.push(c);
 		}
 		return this;
 	},
-	makeRel: function() {
-		for (var i = 0, l = this.bezierSegments.length; i < l; ++i) {
+	makeRel: function()
+	{
+		for (var i = 0, l = this.bezierSegments.length; i < l; ++i)
+		{
 			this.bezierSegments[i].makeRel();
 		}
 		return this;
