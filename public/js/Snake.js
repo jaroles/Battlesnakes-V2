@@ -53,9 +53,11 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 	this.body.strokeColor = this.color;
 	this.body.strokeWidth = 2*this.scaleSize;
 	
-	this.head = new paper.Path();
+	var point = new paper.Point(this.x - 200, this.y - 200);
+	var size = new paper.Size(400, 400);
+	this.head = new paper.Path.Rectangle(point, size);
 	this.head.fillColor = this.color;
-	this.head.strokeWidth = "1";
+	/*this.head.strokeWidth = "1";
 	this.head.strokeColor = this.color;
 	this.head.mitterLimit = "10";		
 	this.head.add(new paper.Point(this.x,this.y));
@@ -66,9 +68,9 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 	this.head.lineTo(new paper.Point(-119.19+this.x, this.y - 84.85));
 	this.head.lineTo(new paper.Point(-79.8+this.x, this.y)); //433.68));
 	this.head.closePath();
-	this.head.smooth();
+	this.head.smooth();*/
 	
-	this.eye1 = new paper.Path();
+	/*this.eye1 = new paper.Path();
 	this.eye1.fillColor = "pink";
 	this.eye1.strokeColor = "pink";
 	this.eye1.mitterLimit = "10";
@@ -88,23 +90,23 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 	this.eye2.lineTo(new paper.Point(-48.1+this.x, this.y - 247.8));
 	this.eye2.lineTo(new paper.Point(-63.945+this.x, this.y-289.5));
 	this.eye2.closePath();
-	this.eye2.smooth();
+	this.eye2.smooth();*/
 	
 	var matrix = paper.Matrix.getRotateInstance((57.295*(Math.PI/2)),this.x,this.y);
 	this.head.transform(matrix);
-	this.eye1.transform(matrix);
-	this.eye2.transform(matrix);
+	//this.eye1.transform(matrix);
+	//this.eye2.transform(matrix);
 	
 	var scaleSize = this.scaleSize/100;
 	matrix = paper.Matrix.getScaleInstance(scaleSize,scaleSize);
 	this.head.transform(matrix);
-	this.eye1.transform(matrix);
-	this.eye2.transform(matrix);
+	//this.eye1.transform(matrix);
+	//this.eye2.transform(matrix);
 	
 	matrix = paper.Matrix.getTranslateInstance(this.x-(this.x*scaleSize)-4,this.y-(this.y*scaleSize));
 	this.head.transform(matrix);
-	this.eye1.transform(matrix);
-	this.eye2.transform(matrix);
+	//this.eye1.transform(matrix);
+	//this.eye2.transform(matrix);
 	
 	/**
 	* Initiates the snake
@@ -217,7 +219,7 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 	*/
 	this.rotate = function(da)
 	{
-		var rotationMatrix = paper.Matrix.getRotateInstance(da,this.x,this.y);
+		/*var rotationMatrix = paper.Matrix.getRotateInstance(da,this.x,this.y);
 		this.head.transform(rotationMatrix);
 		this.eye1.transform(rotationMatrix);
 		this.eye2.transform(rotationMatrix);
@@ -228,7 +230,7 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 		this.head.transform(trans);
 		this.eye1.transform(trans);
 		this.eye2.transform(trans);
-		//var translation 
+		//var translation*/
 	};
 	
 	/**
@@ -270,8 +272,8 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 			this.y+=dy;
 			var trans = paper.Matrix.getTranslateInstance(dx,dy);
 			this.head.transform(trans);
-			this.eye1.transform(trans);
-			this.eye2.transform(trans);
+			//this.eye1.transform(trans);
+			//this.eye2.transform(trans);
 		}	
 			
 			/*var d = new paper.Point(dx, dy);

@@ -15,7 +15,7 @@ var Game = function(aSettings, aCanvas) {
 	var game = this;
 	var canvas,
 		context,
-		webSocket,
+		//webSocket,
 		webSocketService,
 		mouse = {x: 0, y: 0,set:0},
 		keyNav = {x:0,y:0},
@@ -40,6 +40,7 @@ var Game = function(aSettings, aCanvas) {
 	this.gametime;
 	this.lasttime = new Date().getTime();
 	this.wasSprinting = false;
+
 	/**
 	* Updates the game based on changes sent by the server
 	*/
@@ -59,18 +60,24 @@ var Game = function(aSettings, aCanvas) {
 			var ang;
 			var point = new Point(0,0);
 			var magnitude = 0;
+			
 			if (mouse.set)
 			{
 				dy = (mouse.y - this.userSnake.y);
 				dx = mouse.x - this.userSnake.x;
+				
 				point = new Vector(dx, dy);
 				magnitude = point.magnitude();
+				
 				dx /= magnitude;
 				dy /= magnitude;
+				
 				dx *= dt;
 				dy *= dt;
+				
 				ang = point.angleRadians();	
-				if (this.userSnake.sprintTime>0 && keyNav.y)
+				
+				if (this.userSnake.sprintTime > 0 && keyNav.y)
 				{
 					this.wasSprinting = true;
 					var message = {
@@ -90,7 +97,7 @@ var Game = function(aSettings, aCanvas) {
 				//console.log(this.userSnake.targetvelocity);
 				this.userSnake.angle = ang;
 				this.userSnake.velocity = this.userSnake.targetvelocity;
-				if (oldVelocity == 0 || (parseInt(oldAngle*(180/Math.PI))!= parseInt(ang*(180/Math.PI))))
+				if (oldVelocity == 0 || (parseInt(oldAngle*(180/Math.PI)) != parseInt(ang*(180/Math.PI))))
 				{
 					webSocketService.sendUpdate(this.userSnake);
 				}
@@ -98,11 +105,10 @@ var Game = function(aSettings, aCanvas) {
 				if(oldAngle != ang)
 				{
 					this.userSnake.rotate((180/Math.PI)*(ang-oldAngle));
-				}				
+				}
 				
 				this.userSnake.update(dx,dy);
-				this.updateOtherSnakes(dx,dy);
-				
+				this.updateOtherSnakes(dx,dy);	
 			}
 			else 
 			{
@@ -112,9 +118,10 @@ var Game = function(aSettings, aCanvas) {
 					webSocketService.sendUpdate(this.userSnake);
 				}
 			}
+			
 			if (this.snakes.length > 0)
 			{
-				//console.log("updateing other snakes" , this.snakes.length);
+				//console.log("updating other snakes" , this.snakes.length);
 				for (var i = 0;i<this.snakes.length;i++)
 				{
 					var s = this.snakes[i];
@@ -129,6 +136,7 @@ var Game = function(aSettings, aCanvas) {
 			}
 		}
 	};
+	
 	game.updateOtherSnakes = function(dx,dy)
 	{
 		if (this.userSnake.velocity)
@@ -138,11 +146,12 @@ var Game = function(aSettings, aCanvas) {
 			{
 				this.snakes[i].body.transform(m);
 				this.snakes[i].head.transform(m);
-				this.snakes[i].eye1.transform(m);
-				this.snakes[i].eye2.transform(m);
+				//this.snakes[i].eye1.transform(m);
+				//this.snakes[i].eye2.transform(m);
 			}
 		}
-	}
+	};
+	
 	/**
 	* Draws the game based on the passed in canvas size, snakes, and environment objects
 	*/
@@ -151,20 +160,24 @@ var Game = function(aSettings, aCanvas) {
 		if (this.started)
 		{
 			paper.view.draw();
-			var img,scale,dx,dy,enviro;
+			var img,
+			    scale,
+			    dx,
+			    dy,
+			    envObj;
 			var x = this.userSnake.worldPos.x;
 			var y = this.userSnake.worldPos.y;
-			var scx = canvas.width/2;
-			var scy = canvas.height/2;
+			//var scx = canvas.width/2;
+			//var scy = canvas.height/2;
 			
-			for (var e = 0;e<this.environment.length;e++)
+			for (var e = 0; e < this.environment.length; e++)
 			{
-				enviro = this.environment[e];
-				img = enviro.img;
-				scale = enviro.scale;
+				envObj = this.environment[e];
+				img = envObj.img;
+				scale = envObj.scale;
 
-				dx = enviro.x - x;
-				dy = enviro.y - y;
+				dx = envObj.x - x;
+				dy = envObj.y - y;
 
 				dx -= (scale/2);
 				dy -= (scale/2);
@@ -186,11 +199,13 @@ var Game = function(aSettings, aCanvas) {
 			}
 		}
 	};
+	
 	this.addMessage = function(text)
 	{
 		message = text;
 		ticksForMessage = 200;
-	}
+	};
+	
 	/**
 	* Updates objects drawn in the game based on info sent out by the server
 	*/
@@ -201,7 +216,7 @@ var Game = function(aSettings, aCanvas) {
 			this.environment[e].x -= dx;
 			this.environment[e].y -= dy;
 		}
-	}
+	};
 	
 	/**
 	* Starts the game
@@ -370,7 +385,7 @@ var Game = function(aSettings, aCanvas) {
 		while (this.miniSnakes[i].id != id)
 			{i++;}
 		this.miniSnakes[i] = mini;
-		this.view.draw(this)
+		this.view.draw(this);
 	};
 	
 	/**
@@ -409,7 +424,7 @@ var Game = function(aSettings, aCanvas) {
 		webSocketService = new WebSocketService(socket);
 
 	})();
-}
+};
 
 //////////old draw////////////////
 
