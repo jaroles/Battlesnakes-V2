@@ -19,7 +19,7 @@ function Rock(x,y,id)
 	this.y = y;
 	this.isCollidable = true;
 	this.img = new Image();
-	this.img.src = "img/rock.png";
+	this.img.src = "img/rock_2.png";
 	this.id = id;
 	this.scale = 24;
 }
