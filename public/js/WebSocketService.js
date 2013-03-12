@@ -365,7 +365,7 @@ var WebSocketService = function(webSocket,game)
 	*/
 	this.processMessage = function(data) 
 	{
-		console.log(data.type);
+		console.log("Process Message: ", data.type);
 		
 		/*function stringer(obj, num) {
 			var string = '';

@@ -243,6 +243,7 @@ var Game = function(aSettings, aCanvas) {
 	
 	game.onSocketMessage = function(e) 
 	{
+		console.log("Socket Message: ", e);
 		webSocketService.processMessage(e);
 	};
 	
@@ -415,7 +416,8 @@ var Game = function(aSettings, aCanvas) {
 		paper.setup(canvas); // setup paper canvas
 		resizeCanvas();
 		
-		this.ScoreBar = new ScoreBar();		
+		this.ScoreBar = new ScoreBar();	
+		
 		var socket = io.connect(aSettings.socketServer);
 		socket.on('connect', game.onSocketOpen);
 		socket.on('message', game.onSocketMessage);

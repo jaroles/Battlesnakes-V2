@@ -61,6 +61,7 @@ console.log('Server running at http://'+Settings.HOST+':'+Settings.PORT+'/');
 dbm = new DBManager(Settings.MONGO);
 
 io.set('log level', Settings.DEBUGLEVEl);
+
 io.sockets.on('connection', function (socket) {
 	++num_users;
 	var user = new User(socket, Server.PlayerEvent, user_ids++);
@@ -91,6 +92,8 @@ Server.UpdateTimer = function()
 
 Server.PlayerEvent = function(event)
 {
+	//console.log("Player Event: ", event.type);
+	
 	var user = event.user,
 		snake = user.getSnake();
 	switch(event.type) {
@@ -110,16 +113,22 @@ Server.PlayerEvent = function(event)
 		case 'intro':
 			user.sendIntroPacket(world.AddUser(user));
 			user.sendAddEnvironmentPacket(world.surroundingEnvironment(snake));
+			
 			//Send other snakes to the user
 			var otherSnakes = world.surroundingSnakes(snake);
 			user.sendAddSnakePacket(otherSnakes);
 			// user.sendPlayerUpdate(otherSnakes);
+			
 			//Send user to the  other snakes
 			user.broadcastAddSnake();
 			// user.broadcastPlayerUpdate();
 			break;
 		case 'disconnect':
 			d.log(1,'User '+event.user+' has disconnected!');
+			
+			// Remove the disconnected user
+			user.broadcastRemoveSnake();
+			
             event.user.remove();
             switch (snake.team) {
                 case 0:
