@@ -304,7 +304,8 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 			var dy = this.y - this.body.segments[0].point.y;
 			var m = paper.Matrix.getTranslateInstance(dx,dy);
 			this.body.transform(m);*/
-	}
+	};
+	
 	this.init();
 }
 

@@ -98,19 +98,21 @@ var WebSocketService = function(webSocket,game)
 	* @param data The eggs to be drawn in the environment
 	*/
 	this.eggHandler = function(data) 
-	{
-		
-		
+	{	
 		if (data.eggs[0].length)
 		{
-			console.log("adding");
+			// User collision with Egg
+			console.log("EggHandler: adding ", data.eggs[0].length);
 			this.game.userSnake.numSegments = 2+data.eggs.length;
 		}
 		else
 		{
-			this.game.userSnake.body.removeSegments();
+			// User collision with Hatchery
+			console.log("EggHandler: Else");
+			
+			/*this.game.userSnake.body.removeSegments();
 			this.game.userSnake.body.add(new paper.Point(this.game.userSnake.x,this.game.userSnake.y));
-			this.game.userSnake.numSegments = 2;
+			this.game.userSnake.numSegments = 2;*/
 		}
 		
 		this.game.userSnake.init(); 
@@ -364,6 +366,7 @@ var WebSocketService = function(webSocket,game)
 	this.processMessage = function(data) 
 	{
 		console.log(data.type);
+		
 		/*function stringer(obj, num) {
 			var string = '';
 			string += obj + "\n";
@@ -381,6 +384,7 @@ var WebSocketService = function(webSocket,game)
 		}
 		var string = stringer(data, 0);
 		console.log(string);*/
+		
 		var fn = this[data.type + 'Handler'];
 		if (fn) 
 		{			

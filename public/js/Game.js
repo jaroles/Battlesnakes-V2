@@ -47,7 +47,7 @@ var Game = function(aSettings, aCanvas) {
 	game.update = function() 
 	{
 		if (this.started)
-		{
+		{		
 			var last = (this.lasttime) ? this.lasttime : (new Date()).getTime();
 			var currentTime = (new Date()).getTime();
 			var dt = (currentTime - last) / 1000;
