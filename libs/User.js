@@ -15,6 +15,7 @@ function User(socket, playerevent, snakeID)
 	var score = {};
 	this.socketID;
 	this.userID = snakeID;
+	this.request = false;
     this.reset = function () {};
 
 	socket.on('message', function (msg){handleMessage(socket,msg);});
@@ -319,6 +320,7 @@ function User(socket, playerevent, snakeID)
 	function handleUpdate(data) {
 		var position = snake.position.clone(),
 			dVelocity = data.velocity;
+		this.request = true;
 
 		if ('angle' in dVelocity && 'magnitude' in dVelocity) {
 			var angle = dVelocity.angle *= Math.PI / 180;
