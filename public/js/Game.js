@@ -46,6 +46,7 @@ var Game = function(aSettings, aCanvas) {
 	*/
 	game.update = function() 
 	{
+
 		if (this.started)
 		{		
 			var last = (this.lasttime) ? this.lasttime : (new Date()).getTime();
@@ -93,7 +94,6 @@ var Game = function(aSettings, aCanvas) {
 					webSocketService.sendMessage(message);
 					this.wasSprinting = false;
 				}
-				
 				//console.log(this.userSnake.targetvelocity);
 				this.userSnake.angle = ang;
 				this.userSnake.velocity = this.userSnake.targetvelocity;
@@ -107,7 +107,7 @@ var Game = function(aSettings, aCanvas) {
 					this.userSnake.rotate((180/Math.PI)*(ang-oldAngle));
 				}
 				
-				this.userSnake.update(dx,dy);
+				//this.userSnake.update(dx,dy);
 				this.updateOtherSnakes(dx,dy);	
 			}
 			else 

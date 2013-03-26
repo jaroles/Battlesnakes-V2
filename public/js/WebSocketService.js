@@ -1,4 +1,4 @@
-/**
+*
 * @author: Ryan Howard
 * @author: Andrew Wagenheim
 * Software Development II
@@ -67,21 +67,28 @@ var WebSocketService = function(webSocket,game)
 		/*
 			we may have to redo this
 		*/
-		console.log(data);
-		var dx = data.position.x-this.game.userSnake.worldPos.x; 
-		var dy = data.position.y-this.game.userSnake.worldPos.y;
+
+		if(data.collision == true)
+		{
+			alert("we wont move");
+		}
+		else
+		{
+			
+			var dx = data.position.x-this.game.userSnake.worldPos.x; 
+			var dy = data.position.y-this.game.userSnake.worldPos.y;
 		
-		this.game.userSnake.worldPos.x = data.position.x;
-		this.game.userSnake.worldPos.y = data.position.y;
-		//this.game.userSnake.update(dx, dy);
+			// this.game.userSnake.worldPos.x = data.position.x;
+			// this.game.userSnake.worldPos.y = data.position.y;
+			// //this.game.userSnake.update(dx, dy);
 		
-		var angle = data.velocity.angle*(Math.PI/180);	
-		var oldAngle = this.game.userSnake.angle;
-		this.game.userSnake.angle = angle;
-		this.game.userSnake.rotate((180/Math.PI)*(angle-oldAngle));
-		this.game.userSnake.velocity = data.velocity.magnitude;
-	
-		
+			// var angle = data.velocity.angle*(Math.PI/180);	
+			// var oldAngle = this.game.userSnake.angle;
+			// this.game.userSnake.angle = angle;
+			// this.game.userSnake.rotate((180/Math.PI)*(angle-oldAngle));
+			// this.game.userSnake.velocity = data.velocity.magnitude;
+			this.game.userSnake.update(dx, dy);
+		}
 	};
 	
 	/**
@@ -475,4 +482,4 @@ var WebSocketService = function(webSocket,game)
 		{
 			point = new paper.Point(this.centerX-this.game.scaleSpeed*(worldPos.x-data.segments[i].to.x),centerY);
 			segments[i+1] = new paper.Segment(point);
-		}*/
+		}
