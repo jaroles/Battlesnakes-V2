@@ -64,12 +64,15 @@ var WebSocketService = function(webSocket,game)
 	*/
 	this.updateHandler = function(data) 
 	{
-		/*
-			we may have to redo this
-		*/
 		console.log(data);
+		
+		var x0 = this.game.userSnake.worldPos.x;
+		var y0 = this.game.userSnake.worldPos.y;
+		
 		var dx = data.position.x-this.game.userSnake.worldPos.x; 
 		var dy = data.position.y-this.game.userSnake.worldPos.y;
+		
+		console.log("Update (dx, dy)", [dx, dy]);
 		
 		this.game.userSnake.worldPos.x = data.position.x;
 		this.game.userSnake.worldPos.y = data.position.y;
@@ -80,8 +83,47 @@ var WebSocketService = function(webSocket,game)
 		this.game.userSnake.angle = angle;
 		this.game.userSnake.rotate((180/Math.PI)*(angle-oldAngle));
 		this.game.userSnake.velocity = data.velocity.magnitude;
-	
 		
+		// Update other player snakes
+		var snakes = this.game.snakes;
+		
+		for (var i = 0; i < snakes.length; i++)
+		{	
+			console.log("Snake ", 
+					this.game.snakes[i].id, 
+					this.game.snakes[i].worldPos);
+			console.log("User Snake ", 
+					this.game.userSnake.id, 
+					this.game.userSnake.worldPos);
+			
+			var dX0 = x0 - snakes[i].worldPos.x;
+			var dY0 = y0 - snakes[i].worldPos.y;
+			
+			console.log("Original Distance: ", [dX0, dY0]);
+			
+			var dX1 = data.position.x - snakes[i].worldPos.x;
+			var dY1 = data.position.y - snakes[i].worldPos.y;
+			
+			console.log("Updated Distance: ", [dX1, dY1]);
+			
+			/*var ddX = dX1 - dX0;
+			var ddY = dY1 - dY0;
+			
+			//console.log("Distance change: ", [ddX, ddY]);*/
+			
+			var m = paper.Matrix.getTranslateInstance(
+					-(this.game.scaleWindow)*(ddX),
+					-(this.game.scaleWindow)*(ddY));
+			
+			//snakes[i].head.transform(m);
+			//snakes[i].body.transform(m);
+			
+			//snakes[i].update(-dx, -dy);
+			//this.snakes[i].body.transform(m);
+			//this.snakes[i].head.transform(m);
+			//this.snakes[i].eye1.transform(m);
+			//this.snakes[i].eye2.transform(m);
+		}
 	};
 	
 	/**
@@ -159,8 +201,8 @@ var WebSocketService = function(webSocket,game)
 				environment[i] = new Hatchery(x,y,items[i].id);
 			}			
 		}
-		this.game.environment = this.game.environment.concat(environment);
 		
+		this.game.environment = this.game.environment.concat(environment);
 	};
 	
 	/**
@@ -214,14 +256,16 @@ var WebSocketService = function(webSocket,game)
 	*/
 	this.playerUpdateHandler = function(data)
 	{
-		//console.log(data);
+		//console.log("Player Update Handler: ", data);
+	    //console.log(data.snakes);
+		
 		var snakes = data.snakes;
-	//	console.log(data.snakes);	
 		var US = this.game.userSnake;
 		var currentPowerUp = 0;
 		var scaleSize = this.game.scaleWindow;
 		var id,team,color,angle,velocity,segments,worldPos,drawpos,s;
 		var tmpS;
+		
 		for (var i = 0;i<snakes.length;i++)
 		{
 			tmpS = data.snakes[i];
@@ -229,9 +273,15 @@ var WebSocketService = function(webSocket,game)
 			if (this.game.userSnake.id != id)
 			{
 				s = 0;
-				while (s<this.game.snakes.length && this.game.snakes[s].id != id) {s++;}
+				console.log("Game Snakes: ", this.game.snakes.length);
+				while (s < this.game.snakes.length 
+						&& this.game.snakes[s].id != id)
+				{ 
+					//console.log("Game Snakes: ", this.game.snakes.length);
+					s++; 
+				}
 				
-				if (s <this.game.snakes.length)
+				if (s < this.game.snakes.length)
 				{
 					//console.log(s);
 					team = tmpS.team;
@@ -298,6 +348,7 @@ var WebSocketService = function(webSocket,game)
 		}
 		
 	};
+
 	/**
 	* Removes a disconnected snake from the game
 	* @param data The information of the removed snake
@@ -315,8 +366,8 @@ var WebSocketService = function(webSocket,game)
 			{
 				this.game.snakes[i].body.remove();
 				this.game.snakes[i].head.remove();	
-				this.game.snakes[i].eye1.remove();
-				this.game.snakes[i].eye2.remove();
+				//this.game.snakes[i].eye1.remove();
+				//this.game.snakes[i].eye2.remove();
 				this.game.snakes.splice(i,1);
 			}
 		}

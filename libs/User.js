@@ -267,6 +267,13 @@ function User(socket, playerevent, snakeID)
 	this.broadcastPlayerUpdate = function(grids) {
         var to = (grids) ? grids : this.surroundingGridRooms();
 		console.log('broadcastPlayerUpdate', user.userID);
+		/*var message = {
+				type: 'playerUpdate',
+				snakes: [snake.get()]
+		};
+		socket.emit('message', message);
+		this.broadcast(to, message);*/
+		
 		this.broadcast(to, {
 			type: 'playerUpdate',
 			snakes: [snake.get()]
@@ -317,6 +324,9 @@ function User(socket, playerevent, snakeID)
 	};
 
 	function handleUpdate(data) {
+		
+		console.log('handleUpdate ', snake.id, ' at ', snake.position);
+		
 		var position = snake.position.clone(),
 			dVelocity = data.velocity;
 

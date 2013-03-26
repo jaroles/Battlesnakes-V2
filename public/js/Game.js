@@ -138,18 +138,18 @@ var Game = function(aSettings, aCanvas) {
 	};
 	
 	game.updateOtherSnakes = function(dx,dy)
-	{
-		if (this.userSnake.velocity)
+	{		
+		/*if (this.userSnake.velocity)
 		{
 			var m = paper.Matrix.getTranslateInstance(-dx*this.userSnake.targetvelocity*this.scaleWindow,-dy*this.userSnake.targetvelocity*this.scaleWindow);
-			for (var i = 0;i<this.snakes.length;i++)
+			for (var i = 0; i<this.snakes.length; i++)
 			{
 				this.snakes[i].body.transform(m);
 				this.snakes[i].head.transform(m);
 				//this.snakes[i].eye1.transform(m);
 				//this.snakes[i].eye2.transform(m);
 			}
-		}
+		}*/
 	};
 	
 	/**

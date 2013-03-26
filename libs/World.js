@@ -244,6 +244,8 @@ function World()
 				newY = oldY + (velocity.y * elapsedTime),
 				collision = false,
 				OoB = false;
+			
+			console.log("game update: ", snake.id, elapsedTime, velocity);
 
 			snake.move(newX, newY);
 			snake.wiggle();
