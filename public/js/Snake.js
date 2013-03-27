@@ -35,6 +35,8 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 	this.sprintTime;
 	this.isUserSnake = isUserSnake;
 	
+	this.requestvelocity;
+	
 	this.x = drawPosition.x;
 	this.y = drawPosition.y;
 	
