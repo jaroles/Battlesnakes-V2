@@ -99,8 +99,8 @@ var Game = function(aSettings, aCanvas) {
 				this.userSnake.angle = ang;
 				console.log("Angle:" + this.userSnake.angle);
 				this.userSnake.velocity = this.userSnake.targetvelocity;
-				this.userSnake.requestVelocity = this.userSnake.targetvelocity;
-				console.log("requestVelo:" + this.userSnake.requestVelocity);
+				this.userSnake.requestvelocity = this.userSnake.targetvelocity;
+				console.log("requestVelo:" + this.userSnake.requestvelocity);
 				if (oldVelocity == 0 || (parseInt(oldAngle*(180/Math.PI)) != parseInt(ang*(180/Math.PI))))
 				{
 					webSocketService.sendUpdate(this.userSnake);
@@ -118,7 +118,8 @@ var Game = function(aSettings, aCanvas) {
 			{
 				if (oldVelocity != 0)
 				{
-					this.userSnake.velocity = 0;					
+					this.userSnake.velocity = 0;	
+					this.userSnake.requestvelocity = 0;	
 					webSocketService.sendUpdate(this.userSnake);
 				}
 			}
