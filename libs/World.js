@@ -247,6 +247,7 @@ function World()
 			
 			if(user.request)
 			{
+				console.log("OMG USERREQUEST WAS TRUE");
 				snake.move(newX, newY);
 				snake.wiggle();
 				snake.sprint(elapsedTime);
@@ -291,7 +292,7 @@ function World()
 					user.broadcastPlayerUpdate();
 				}
 				
-				if(!collision && user.request)
+				if(!collision)
 				{
 					user.request = false;
 					user.sendUpdatePacket();
