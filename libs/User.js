@@ -322,23 +322,24 @@ function User(socket, playerevent, snakeID)
 	function handleUpdate(data) {
 		var position = snake.position.clone(),
 			dVelocity = data.velocity;
+		
 		user.request = true;
 
 		console.log('Handle Update: ', snake.id, snake.position);
 		//console.log('   ', data.velocity);
 		//console.log('   ', snake.velocity);
 
-		request = true;
-
 		var angle = data.velocity.angle * Math.PI / 180;
 		var x = Math.cos(angle) * data.velocity.magnitude;
-		var y = Math.cos(angle) * data.velocity.magnitude;
+		var y = Math.sin(angle) * data.velocity.magnitude;
 
 		//console.log('   x: ', x, ' y: ', y);
 
-		snake.velocity._angle = angle;
-		snake.velocity._to.x = x;
-		snake.velocity._to.y = x;
+		snake.velocity.set(x, y);
+		
+		//snake.velocity._angle = angle;
+		//snake.velocity._to.x = x;
+		//snake.velocity._to.y = x;
 		//snake.velocity._to.x = Math.cos(angle) * data.magnitude;
 		//snake.velocity._to.y = Math.sin(angle) * data.magnitude;
 		

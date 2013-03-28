@@ -240,10 +240,12 @@ function World()
 				velocity = snake.velocity.to,
 				oldX = snake.position.x,
 				oldY = snake.position.y,
-				newX = oldX + (velocity.x * elapsedTime),
-				newY = oldY + (velocity.y * elapsedTime),
+				newX = oldX + (velocity.x * elapsedTime) * 50,
+				newY = oldY + (velocity.y * elapsedTime) * 50,
 				collision = false,
 				OoB = false;
+			
+			//console.log(user.request);
 			
 			if(user.request)
 			{
