@@ -46,7 +46,6 @@ var Game = function(aSettings, aCanvas) {
 	*/
 	game.update = function() 
 	{
-
 		if (this.started)
 		{		
 			var last = (this.lasttime) ? this.lasttime : (new Date()).getTime();
@@ -94,9 +93,14 @@ var Game = function(aSettings, aCanvas) {
 					webSocketService.sendMessage(message);
 					this.wasSprinting = false;
 				}
-				//console.log(this.userSnake.targetvelocity);
+				
+				//console.log("targetVelo:" + this.userSnake.targetvelocity);
+				//console.log("Velocity:" + this.userSnake.velocity);
 				this.userSnake.angle = ang;
-				this.userSnake.velocity = this.userSnake.targetvelocity;
+				//console.log("Angle:" + this.userSnake.angle);
+				//this.userSnake.velocity = this.userSnake.targetvelocity;
+				this.userSnake.requestvelocity = this.userSnake.targetvelocity;
+				//console.log("requestVelo:" + this.userSnake.requestvelocity);
 				if (oldVelocity == 0 || (parseInt(oldAngle*(180/Math.PI)) != parseInt(ang*(180/Math.PI))))
 				{
 					webSocketService.sendUpdate(this.userSnake);
@@ -107,14 +111,15 @@ var Game = function(aSettings, aCanvas) {
 					this.userSnake.rotate((180/Math.PI)*(ang-oldAngle));
 				}
 				
-				//this.userSnake.update(dx,dy);
+				// this.userSnake.update(dx,dy);
 				this.updateOtherSnakes(dx,dy);	
 			}
 			else 
 			{
 				if (oldVelocity != 0)
 				{
-					this.userSnake.velocity = 0;					
+					this.userSnake.velocity = 0;	
+					this.userSnake.requestvelocity = 0;	
 					webSocketService.sendUpdate(this.userSnake);
 				}
 			}

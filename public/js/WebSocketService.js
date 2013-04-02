@@ -418,8 +418,10 @@ var WebSocketService = function(webSocket,game)
 				type:'update',
 				id:snake.id,
 				position:{x:parseInt(snake.worldPos.x),y:parseInt(snake.worldPos.y)},
-				velocity:{angle:parseInt(snake.angle*(180/Math.PI)),magnitude: snake.velocity}
+				//velocity:{angle:parseInt(snake.angle*(180/Math.PI)),magnitude: snake.velocity}
+				velocity:{angle:parseInt(snake.angle*(180/Math.PI)),magnitude: snake.requestvelocity}
 				};
+		console.log("magSent:" + snake.requestvelocity);
 		this.sendMessage(message);
 	};
 	

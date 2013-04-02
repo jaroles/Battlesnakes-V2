@@ -240,13 +240,16 @@ function World()
 				velocity = snake.velocity.to,
 				oldX = snake.position.x,
 				oldY = snake.position.y,
-				newX = oldX + (velocity.x * elapsedTime),
-				newY = oldY + (velocity.y * elapsedTime),
+				newX = oldX + (velocity.x * elapsedTime) * 50,
+				newY = oldY + (velocity.y * elapsedTime) * 50,
 				collision = false,
 				OoB = false;
 			
+			//console.log(user.request);
+			
 			if(user.request)
 			{
+				console.log("OMG USERREQUEST WAS TRUE");
 				snake.move(newX, newY);
 				snake.wiggle();
 				snake.sprint(elapsedTime);
@@ -291,7 +294,7 @@ function World()
 					user.broadcastPlayerUpdate();
 				}
 				
-				if(!collision && user.request)
+				if(!collision)
 				{
 					user.request = false;
 					user.sendUpdatePacket();

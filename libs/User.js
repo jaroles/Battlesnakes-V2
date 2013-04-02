@@ -15,7 +15,7 @@ function User(socket, playerevent, snakeID)
 	var score = {};
 	this.socketID;
 	this.userID = snakeID;
-	this.request = false;
+	this.request;
     this.reset = function () {};
 
 	socket.on('message', function (msg){handleMessage(socket,msg);});
@@ -266,6 +266,8 @@ function User(socket, playerevent, snakeID)
 	}
 
 	this.broadcastPlayerUpdate = function(grids) {
+		console.log('Broadcast Update: ', snake.id, snake.position);
+		
         var to = (grids) ? grids : this.surroundingGridRooms();
 		console.log('broadcastPlayerUpdate', user.userID);
 		this.broadcast(to, {
@@ -320,8 +322,34 @@ function User(socket, playerevent, snakeID)
 	function handleUpdate(data) {
 		var position = snake.position.clone(),
 			dVelocity = data.velocity;
-		this.request = true;
+		
+		user.request = true;
 
+		console.log('Handle Update: ', snake.id, snake.position);
+		//console.log('   ', data.velocity);
+		//console.log('   ', snake.velocity);
+
+		var angle = data.velocity.angle * Math.PI / 180;
+		var x = Math.cos(angle) * data.velocity.magnitude;
+		var y = Math.sin(angle) * data.velocity.magnitude;
+
+		//console.log('   x: ', x, ' y: ', y);
+
+		snake.velocity.set(x, y);
+		
+		//snake.velocity._angle = angle;
+		//snake.velocity._to.x = x;
+		//snake.velocity._to.y = x;
+		//snake.velocity._to.x = Math.cos(angle) * data.magnitude;
+		//snake.velocity._to.y = Math.sin(angle) * data.magnitude;
+		
+		//console.log('   ', snake.velocity);
+
+		//this.snake.velocity = data.velocity;
+		
+		/*var position = snake.position.clone(),
+		dVelocity = data.velocity;
+		
 		if ('angle' in dVelocity && 'magnitude' in dVelocity) {
 			var angle = dVelocity.angle *= Math.PI / 180;
 			snake.velocity._angle = angle;
@@ -343,8 +371,7 @@ function User(socket, playerevent, snakeID)
 			user.sendUpdatePacket();
 		}
 
-		console.log('user update');
-		user.broadcastPlayerUpdate();
+		user.broadcastPlayerUpdate();*/
 	}
 
 	function handleChat(data) {
