@@ -150,8 +150,12 @@ function User(socket, playerevent, snakeID)
 		return message;
 	};
 	this.sendUpdatePacket = function() {
+		console.log('sendUpdatePacket: ', snake.id, ' ', snake.position);
+		console.log('   ', snake.position.toJSON());
+		
 		var message = snake.toJSON();
 		message.type = 'update';
+		
 		socket.emit('message', message);
 		return message;
 	};
@@ -223,7 +227,7 @@ function User(socket, playerevent, snakeID)
 	}
 
 	this.sendPlayerUpdate = function(env) {
-		console.log('sendPlayerUpdate', user.userID);
+		console.log('sendPlayerUpdate', user.userID, snake.position);
 		var message = {
 			type: 'playerUpdate',
 			snakes: env
@@ -267,7 +271,7 @@ function User(socket, playerevent, snakeID)
 
 	this.broadcastPlayerUpdate = function(grids) {
         var to = (grids) ? grids : this.surroundingGridRooms();
-		console.log('broadcastPlayerUpdate', user.userID);
+		//console.log('broadcastPlayerUpdate', user.userID);
 		this.broadcast(to, {
 			type: 'playerUpdate',
 			snakes: [snake.get()]
@@ -343,7 +347,7 @@ function User(socket, playerevent, snakeID)
 			user.sendUpdatePacket();
 		}
 
-		console.log('user update');
+		//console.log(snake.id, ' ', snake.position);
 		user.broadcastPlayerUpdate();
 	}
 

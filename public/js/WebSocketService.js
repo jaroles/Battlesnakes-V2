@@ -33,6 +33,8 @@ var WebSocketService = function(webSocket,game)
 	{
 		//console.log(data);
 		
+		console.log(data);
+		
 		var canvas = document.getElementById('canvas');
 		var width = canvas.width;
 		var height = canvas.height;
@@ -40,11 +42,40 @@ var WebSocketService = function(webSocket,game)
 		this.centerY = height/2;
 		webSocketService.hasConnection = true;
 		$('#chat').initChat();
-		var worldPos = data.position;
+		var worldPos = 
+			{ 
+				x: data.position.x / 1000,
+			    y: data.position.y / 1000
+			};
+		//var worldPos = data.position;
 		var point = new paper.Point(this.centerX,this.centerY); 
 		
 	
-		var segments = data.segments;
+		var segments = 
+			{
+				from: 
+				{
+					x: data.segments[0].from.x / 1000,
+					y: data.segments[0].from.y / 1000,
+				},
+				control1: 
+				{
+					x: data.segments[0].control1.x / 1000,
+					y: data.segments[0].control1.y / 1000,
+				},
+				control2: 
+				{
+					x: data.segments[0].control2.x / 1000,
+					y: data.segments[0].control2.y / 1000,
+				},
+				to: 
+				{
+					x: data.segments[0].to.x / 1000,
+					y: data.segments[0].to.y / 1000,
+				}
+			}
+		//console.log(data.segments[0].from);
+		//console.log(segments);
 		
 		var velocity = data.velocity.magnitude;
 
@@ -54,6 +85,7 @@ var WebSocketService = function(webSocket,game)
 		
 		//console.log(data.name,data.team,color,velocity,angle,-1,segments.length,segments,data.id,worldPos,this.game.scaleWindow,{x:this.centerX,y:this.centerY},true);
 		var snake = new Snake(data.name,data.team,color,velocity,angle,-1,segments.length,segments,data.id,worldPos,this.game.scaleWindow,{x:this.centerX,y:this.centerY},true);
+		console.log(snake);
 		
 		this.game.start(snake);	
 	};
@@ -68,11 +100,19 @@ var WebSocketService = function(webSocket,game)
 			we may have to redo this
 		*/
 		//console.log(data);
-		var dx = data.position.x-this.game.userSnake.worldPos.x; 
-		var dy = data.position.y-this.game.userSnake.worldPos.y;
 		
-		this.game.userSnake.worldPos.x = data.position.x;
-		this.game.userSnake.worldPos.y = data.position.y;
+		// convert the packet integers to floats
+		var x = data.position.x / 1000;
+		var y = data.position.y / 1000;
+		
+		/*var x = data.position.x,
+		    y = data.position.y;*/
+		
+		var dx = x-this.game.userSnake.worldPos.x;
+		var dy = y-this.game.userSnake.worldPos.y;
+		
+		this.game.userSnake.worldPos.x = x;
+		this.game.userSnake.worldPos.y = y;
 		//this.game.userSnake.update(dx, dy);
 		
 		var angle = data.velocity.angle*(Math.PI/180);	
@@ -135,8 +175,9 @@ var WebSocketService = function(webSocket,game)
 		var x,y;
 		for (var i = 0;i< items.length;i++)
 		{
-			var x = items[i].position.x;
-			var y = items[i].position.y;
+			// convert the integer positions to floats
+			var x = items[i].position.x / 1000;
+			var y = items[i].position.y / 1000;
 			
 			if (items[i].type == rock)
 			{

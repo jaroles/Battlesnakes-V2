@@ -56,8 +56,12 @@ Point.prototype.extend({
 	},
 	toJSON: function() {
 		return {
-			x: parseInt(this.x, 10),
-			y: parseInt(this.y, 10)
+			// multiply the coordinates by 1000 for integer packets
+			x: parseInt(this.x * 1000, 10),
+			y: parseInt(this.y * 1000, 10)
+			
+			//x: parseInt(this.x, 10),
+			//y: parseInt(this.y, 10)
 		};
 	},
 	multiply: function(scalar) {
