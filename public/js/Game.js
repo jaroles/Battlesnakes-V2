@@ -64,7 +64,7 @@ var Game = function(aSettings, aCanvas) {
 			if (mouse.set)
 			{
 				dy = (mouse.y - this.userSnake.y);
-				dx = mouse.x - this.userSnake.x;
+				dx = (mouse.x - this.userSnake.x);
 				
 				point = new Vector(dx, dy);
 				magnitude = point.magnitude();
@@ -98,15 +98,15 @@ var Game = function(aSettings, aCanvas) {
 				//console.log("Velocity:" + this.userSnake.velocity);
 				this.userSnake.angle = ang;
 				//console.log("Angle:" + this.userSnake.angle);
-				//this.userSnake.velocity = this.userSnake.targetvelocity;
+				// this.userSnake.velocity = this.userSnake.targetvelocity;
 				this.userSnake.requestvelocity = this.userSnake.targetvelocity;
 				//console.log("requestVelo:" + this.userSnake.requestvelocity);
-<<<<<<< HEAD
-				if (oldVelocity == 0 || (parseInt(oldAngle*(180/Math.PI)) != parseInt(ang*(180/Math.PI))))
-=======
-				console.log('User Snake: ', this.userSnake.id);
+
+				
+
+				// console.log('User Snake: ', this.userSnake.id);
+				// if (oldVelocity == 0 || dt > .01)
 				if (oldVelocity == 0 || dt > .01)
->>>>>>> e2863dec0010bd88f01b68a23e915fb9b11161a9
 				{
 					webSocketService.sendUpdate(this.userSnake);
 				}
@@ -253,7 +253,7 @@ var Game = function(aSettings, aCanvas) {
 	
 	game.onSocketMessage = function(e) 
 	{
-		console.log("Socket Message: ", e);
+		//console.log("Socket Message: ", e);
 		webSocketService.processMessage(e);
 	};
 	

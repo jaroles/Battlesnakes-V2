@@ -1,4 +1,4 @@
-*
+/*
 * @author: Ryan Howard
 * @author: Andrew Wagenheim
 * Software Development II
@@ -67,28 +67,21 @@ var WebSocketService = function(webSocket,game)
 		/*
 			we may have to redo this
 		*/
-
-		if(data.collision == true)
-		{
-			alert("we wont move");
-		}
-		else
-		{
-			
-			var dx = data.position.x-this.game.userSnake.worldPos.x; 
-			var dy = data.position.y-this.game.userSnake.worldPos.y;
+		//console.log(data);
+		var dx = data.position.x-this.game.userSnake.worldPos.x; 
+		var dy = data.position.y-this.game.userSnake.worldPos.y;
 		
-			// this.game.userSnake.worldPos.x = data.position.x;
-			// this.game.userSnake.worldPos.y = data.position.y;
-			// //this.game.userSnake.update(dx, dy);
+		this.game.userSnake.worldPos.x = data.position.x;
+		this.game.userSnake.worldPos.y = data.position.y;
+		//this.game.userSnake.update(dx, dy);
 		
-			// var angle = data.velocity.angle*(Math.PI/180);	
-			// var oldAngle = this.game.userSnake.angle;
-			// this.game.userSnake.angle = angle;
-			// this.game.userSnake.rotate((180/Math.PI)*(angle-oldAngle));
-			// this.game.userSnake.velocity = data.velocity.magnitude;
-			this.game.userSnake.update(dx, dy);
-		}
+		var angle = data.velocity.angle*(Math.PI/180);	
+		var oldAngle = this.game.userSnake.angle;
+		this.game.userSnake.angle = angle;
+		this.game.userSnake.rotate((180/Math.PI)*(angle-oldAngle));
+		this.game.userSnake.velocity = data.velocity.magnitude;
+	
+		
 	};
 	
 	/**
@@ -109,13 +102,13 @@ var WebSocketService = function(webSocket,game)
 		if (data.eggs[0].length)
 		{
 			// User collision with Egg
-			console.log("EggHandler: adding ", data.eggs[0].length);
+			//console.log("EggHandler: adding ", data.eggs[0].length);
 			this.game.userSnake.numSegments = 2+data.eggs.length;
 		}
 		else
 		{
 			// User collision with Hatchery
-			console.log("EggHandler: Else");
+			//console.log("EggHandler: Else");
 			
 			/*this.game.userSnake.body.removeSegments();
 			this.game.userSnake.body.add(new paper.Point(this.game.userSnake.x,this.game.userSnake.y));
@@ -136,7 +129,7 @@ var WebSocketService = function(webSocket,game)
 	*/
 	this.addEnvironmentHandler = function(data)
 	{		
-		console.log(data);
+		//console.log(data);
 		var items = data.items;
 		var environment = new Array();
 		var x,y;
@@ -311,7 +304,7 @@ var WebSocketService = function(webSocket,game)
 	*/
 	this.removeSnakeHandler = function(data)
 	{	
-		console.log(data);
+		//console.log(data);
 		//console.log(this.game.snakes);
 		for (var s = 0;s<data.snakes.length;s++)
 		{
@@ -322,8 +315,8 @@ var WebSocketService = function(webSocket,game)
 			{
 				this.game.snakes[i].body.remove();
 				this.game.snakes[i].head.remove();	
-				this.game.snakes[i].eye1.remove();
-				this.game.snakes[i].eye2.remove();
+				// this.game.snakes[i].eye1.remove();
+				// this.game.snakes[i].eye2.remove();
 				this.game.snakes.splice(i,1);
 			}
 		}
@@ -354,7 +347,7 @@ var WebSocketService = function(webSocket,game)
 	
 	this.removeEnvironmentHandler = function(data)
 	{
-		console.log(data.items);
+		//console.log(data.items);
 		var items = data.items;
 		var enviro = this.game.environment;
 		for (var i = 0;i<items.length;i++)
@@ -372,7 +365,7 @@ var WebSocketService = function(webSocket,game)
 	*/
 	this.processMessage = function(data) 
 	{
-		console.log("Process Message: ", data.type);
+		//console.log("Process Message: ", data.type);
 		
 		/*function stringer(obj, num) {
 			var string = '';
@@ -421,7 +414,7 @@ var WebSocketService = function(webSocket,game)
 				//velocity:{angle:parseInt(snake.angle*(180/Math.PI)),magnitude: snake.velocity}
 				velocity:{angle:parseInt(snake.angle*(180/Math.PI)),magnitude: snake.requestvelocity}
 				};
-		console.log("magSent:" + snake.requestvelocity);
+		//console.log("magSent:" + snake.requestvelocity);
 		this.sendMessage(message);
 	};
 	
@@ -438,50 +431,3 @@ var WebSocketService = function(webSocket,game)
 	
 };
 
-/*//console.log(data);
-		var items = data.items;
-		var environment = new Array();
-		var xDif = this.centerX-(this.game.userSnake.worldPos.x*this.game.scaleSpeed);
-		var yDif = this.centerY-(this.game.userSnake.worldPos.y*this.game.scaleSpeed);	
-		var x,y;
-		for (var i = 0;i< items.length;i++)
-		{
-			
-			x = (items[i].position.x*this.game.scaleSpeed)+xDif;
-			y = (items[i].position.y*this.game.scaleSpeed);//+yDif;//+yDif;
-			
-			if (items[i].type == rock)
-			{
-				environment[i] = new Rock(x,y,items[i].id);
-			}
-			else if (items[i].type == tree)
-			{
-				environment[i] = new Tree(x,y,items[i].id);
-			}
-			else if (items[i].type == bush)
-			{
-				environment[i] = new Bush(x,y,items[i].id);
-			}
-			else if (items[i].type == egg)
-			{
-				environment[i] = new Egg(x,y,items[i].id);
-			}
-			else if(items[i].type == hatchery)
-			{
-				console.log(this.game.userSnake.worldPos,items[i].position);
-				environment[i] = new Hatchery(x,y,items[i].id);
-			}
-			else
-			{
-				console.log(items[i].type);
-				environment[i] = new Troll(x,y,items[i].id);
-			}
-		}*/
-/*
-		/*var segments = [];
-		segments[0] = new paper.Segment(point);
-		for (var i = 0;i<data.segments.length;i++)
-		{
-			point = new paper.Point(this.centerX-this.game.scaleSpeed*(worldPos.x-data.segments[i].to.x),centerY);
-			segments[i+1] = new paper.Segment(point);
-		}

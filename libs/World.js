@@ -234,26 +234,23 @@ function World()
 			storedTime = curTime;
 		// }
 
-		for (var u = 0, U = users.length; u < U; ++u) {
+		for (var u = 0, U = users.length; u < U; ++u) 
+		{
 			var user = users[u],
 				snake = user.getSnake(),
 				velocity = snake.velocity.to,
 				oldX = snake.position.x,
 				oldY = snake.position.y,
-				newX = oldX + (velocity.x * elapsedTime) * 50,
-				newY = oldY + (velocity.y * elapsedTime) * 50,
+				newX = oldX + (velocity.x * elapsedTime),
+				newY = oldY + (velocity.y * elapsedTime),
 				collision = false,
 				OoB = false;
 			
-			//console.log(user.request);
-			
 			if(user.request)
 			{
-				console.log("OMG USERREQUEST WAS TRUE");
 				snake.move(newX, newY);
 				snake.wiggle();
 				snake.sprint(elapsedTime);
-	
 				var g = updateSnakeGrid(snake, velocity);
 				if (g) {
 					if (g != snake.grid) {
@@ -266,10 +263,11 @@ function World()
 	            var colObj = undefined;
 				if (!OoB) {
 					var gObjs = snake.grid.getGameObjects();
-					for (var i = 0, l = gObjs.length; i < l; ++i) {
+					for (var i = 0, l = gObjs.length; i < l; ++i) 
+					{
 						var gObj = gObjs[i];
 	                    if (!gObj) {continue;}
-						collision = snake.collision(gObj)
+						collision = snake.collision(gObj);
 						if (collision || collision === 0) {
 	                        colObj = gObj;
 							break;
@@ -296,7 +294,7 @@ function World()
 				
 				if(!collision)
 				{
-					user.request = false;
+					user.request = true;
 					user.sendUpdatePacket();
 					user.broadcastPlayerUpdate();
 				}
