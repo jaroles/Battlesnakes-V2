@@ -85,7 +85,6 @@ var WebSocketService = function(webSocket,game)
 		
 		//console.log(data.name,data.team,color,velocity,angle,-1,segments.length,segments,data.id,worldPos,this.game.scaleWindow,{x:this.centerX,y:this.centerY},true);
 		var snake = new Snake(data.name,data.team,color,velocity,angle,-1,segments.length,segments,data.id,worldPos,this.game.scaleWindow,{x:this.centerX,y:this.centerY},true);
-		console.log(snake);
 		
 		this.game.start(snake);	
 	};
@@ -224,12 +223,16 @@ var WebSocketService = function(webSocket,game)
 			tmpS = data.snakes[i];
 			id = tmpS.id;
 			if (id != US.id)
-			{
+			{	
 				team = tmpS.team;
 				color = team == 0 ? 'ff0000':'0000ff';
 				angle = tmpS.velocity.angle;
 				velocity = tmpS.velocity.magnitude;
-				worldPos = tmpS.position;
+				worldPos = 
+					{
+						x: tmpS.position.x / 1000,
+						y: tmpS.position.y / 1000
+					};
 				
 				drawx = worldPos.x-US.worldPos.x;
 				drawy = worldPos.y-US.worldPos.y;
@@ -279,7 +282,11 @@ var WebSocketService = function(webSocket,game)
 					color = team == 0 ? 'ff0000':'0000ff';
 					angle = tmpS.velocity.angle;
 					velocity = tmpS.velocity.magnitude;
-					worldPos = tmpS.position;
+					worldPos = 
+						{
+							x: tmpS.position.x / 1000,
+							y: tmpS.position.y / 1000
+						};
 					
 					drawx = worldPos.x-US.worldPos.x;
 					drawy = worldPos.y-US.worldPos.y;
