@@ -54,7 +54,7 @@ function World()
 
 		// populate random environment
 		console.log("Populating world with environment ...");
-		PopulateEnvironment(grid.get Grid(0, 0));
+		PopulateEnvironment(grid.getGrid(0, 0));
 		PopulateEnvironment(grid.getGrid(0, 2));
 		PopulateEnvironment(grid.getGrid(1, 0));
 		PopulateEnvironment(grid.getGrid(1, 1));
