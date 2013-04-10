@@ -16,6 +16,7 @@ function User(socket, playerevent, snakeID)
 	this.socketID;
 	this.userID = snakeID;
 	this.request;
+	this.collision;
     this.reset = function () {};
 
 	socket.on('message', function (msg){handleMessage(socket,msg);});
@@ -150,8 +151,9 @@ function User(socket, playerevent, snakeID)
 		return message;
 	};
 	this.sendUpdatePacket = function() {
-		console.log('sendUpdatePacket: ', snake.id, ' ', snake.position);
-		console.log('   ', snake.position.toJSON());
+		//DEBUG
+		//console.log('sendUpdatePacket: ', snake.id, ' ', snake.position);
+		//console.log('   ', snake.position.toJSON());
 		
 		var message = snake.toJSON();
 		message.type = 'update';
@@ -237,6 +239,8 @@ function User(socket, playerevent, snakeID)
 	}
 
 	this.broadcast = function(to, message) {
+		//console.log('broadcast', message.type);
+		
         if (!Array.isArray(to)) {
             to = [to]
         }
@@ -348,7 +352,7 @@ function User(socket, playerevent, snakeID)
 		}
 
 		//console.log(snake.id, ' ', snake.position);
-		user.broadcastPlayerUpdate();
+		//user.broadcastPlayerUpdate();
 	}
 
 	function handleChat(data) {

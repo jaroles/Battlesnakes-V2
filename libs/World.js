@@ -274,29 +274,36 @@ function World()
 						}
 					}
 				}
+
 				if (typeof collision == 'number') {
 					console.log('collision == number')
 					user.sendCollisionPacket(colObj);
-					user.broadcastPlayerUpdate();
+					//user.broadcastPlayerUpdate();
 				} else if (collision) {
 					console.log('collision == true')
+					//user.collide = true;
 					snake.move(oldX, oldY);
 					snake.velocity.set(0, 0);
 					user.sendCollisionPacket(colObj);
-					user.broadcastPlayerUpdate();
+					//user.broadcastPlayerUpdate();
 	            } else if (OoB) {
 					console.log('OoB ' + OoB);
 					snake.move(oldX, oldY);
 					snake.velocity.set(0, 0);
 					user.sendUpdatePacket();
-					user.broadcastPlayerUpdate();
+					//user.broadcastPlayerUpdate();
 				}
 				
-				if(!collision)
-				{
+				if(!collision ) {
+					//user.collide = false;
 					user.request = true;
 					user.sendUpdatePacket();
 					user.broadcastPlayerUpdate();
+					//if(newX != oldX && newY != oldY)
+					//{
+						//var time = new Date().toLocaleTimeString();
+						//console.log(time, '\: snake ', snake.id, ' moved.');
+					//}
 				}
 			}
 		}

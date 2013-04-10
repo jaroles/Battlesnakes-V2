@@ -119,8 +119,6 @@ var WebSocketService = function(webSocket,game)
 		this.game.userSnake.angle = angle;
 		this.game.userSnake.rotate((180/Math.PI)*(angle-oldAngle));
 		this.game.userSnake.velocity = data.velocity.magnitude;
-	
-		
 	};
 	
 	/**
@@ -168,7 +166,7 @@ var WebSocketService = function(webSocket,game)
 	*/
 	this.addEnvironmentHandler = function(data)
 	{		
-		//console.log(data);
+		// console.log(data);
 		var items = data.items;
 		var environment = new Array();
 		var x,y;
@@ -258,7 +256,6 @@ var WebSocketService = function(webSocket,game)
 	*/
 	this.playerUpdateHandler = function(data)
 	{
-		//console.log(data);
 		var snakes = data.snakes;
 	//	console.log(data.snakes);	
 		var US = this.game.userSnake;
@@ -272,8 +269,12 @@ var WebSocketService = function(webSocket,game)
 			id = tmpS.id;
 			if (this.game.userSnake.id != id)
 			{
+				console.log('Updated this client from a player update');
+				
 				s = 0;
-				while (s<this.game.snakes.length && this.game.snakes[s].id != id) {s++;}
+				while (s<this.game.snakes.length && this.game.snakes[s].id != id) {
+					s++;
+				}
 				
 				if (s <this.game.snakes.length)
 				{
