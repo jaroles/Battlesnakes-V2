@@ -116,7 +116,7 @@ var Game = function(aSettings, aCanvas) {
 					this.userSnake.rotate((180/Math.PI)*(ang-oldAngle));
 				}
 				
-				// this.userSnake.update(dx,dy);
+				this.userSnake.update(dx,dy);
 				this.updateOtherSnakes(dx,dy);	
 			}
 			else 

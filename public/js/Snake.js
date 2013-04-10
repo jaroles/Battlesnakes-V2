@@ -51,7 +51,7 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 	this.maxSegments = 20;
 	
 	this.body = new paper.Path();
-	//window.snakebody = this.body;
+	window.snakebody = this.body;
 	this.body.strokeColor = this.color;
 	this.body.strokeWidth = 2*this.scaleSize;
 	
@@ -59,56 +59,56 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 	var size = new paper.Size(400, 400);
 	this.head = new paper.Path.Rectangle(point, size);
 	this.head.fillColor = this.color;
-	/*this.head.strokeWidth = "1";
+	this.head.strokeWidth = "1";
 	this.head.strokeColor = this.color;
 	this.head.mitterLimit = "10";		
 	this.head.add(new paper.Point(this.x,this.y));
-	this.head.lineTo(new paper.Point(79.8+this.x, this.y));
-	this.head.lineTo(new paper.Point(119.19+this.x,this.y - 84.85));
-	this.head.lineTo(new paper.Point(48.3+this.x, this.y-356.68));
-	this.head.lineTo(new paper.Point(-48.3+this.x, this.y-356.68));
-	this.head.lineTo(new paper.Point(-119.19+this.x, this.y - 84.85));
-	this.head.lineTo(new paper.Point(-79.8+this.x, this.y)); //433.68));
+	//this.head.lineTo(new paper.Point(79.8+this.x, this.y));
+	// this.head.lineTo(new paper.Point(119.19+this.x,this.y - 84.85));
+	// this.head.lineTo(new paper.Point(48.3+this.x, this.y-356.68));
+	// this.head.lineTo(new paper.Point(-48.3+this.x, this.y-356.68));
+	// this.head.lineTo(new paper.Point(-119.19+this.x, this.y - 84.85));
+	// this.head.lineTo(new paper.Point(-79.8+this.x, this.y)); //433.68));
 	this.head.closePath();
-	this.head.smooth();*/
+	this.head.smooth();
 	
-	/*this.eye1 = new paper.Path();
-	this.eye1.fillColor = "pink";
-	this.eye1.strokeColor = "pink";
-	this.eye1.mitterLimit = "10";
-	this.eye1.add(new paper.Point(79.79+this.x, this.y - 247.8));
-	this.eye1.lineTo(new paper.Point(63.945+this.x, this.y-214.93));
-	this.eye1.lineTo(new paper.Point(48.1+this.x, this.y - 247.8));
-	this.eye1.lineTo(new paper.Point(63.945+this.x, this.y-289.5));
-	this.eye1.closePath();
-	this.eye1.smooth();
+	// this.eye1 = new paper.Path();
+	// this.eye1.fillColor = "pink";
+	// this.eye1.strokeColor = "pink";
+	// this.eye1.mitterLimit = "10";
+	// this.eye1.add(new paper.Point(79.79+this.x, this.y - 247.8));
+	// this.eye1.lineTo(new paper.Point(63.945+this.x, this.y-214.93));
+	// this.eye1.lineTo(new paper.Point(48.1+this.x, this.y - 247.8));
+	// this.eye1.lineTo(new paper.Point(63.945+this.x, this.y-289.5));
+	// this.eye1.closePath();
+	// this.eye1.smooth();
 	
-	this.eye2 = new paper.Path();
-	this.eye2.fillColor = "pink";
-	this.eye2.strokeColor = "pink";
-	this.eye2.mitterLimit = "10";
-	this.eye2.add(new paper.Point(-79.79+this.x, this.y - 247.8));
-	this.eye2.lineTo(new paper.Point(-63.945+this.x, this.y-214.93));
-	this.eye2.lineTo(new paper.Point(-48.1+this.x, this.y - 247.8));
-	this.eye2.lineTo(new paper.Point(-63.945+this.x, this.y-289.5));
-	this.eye2.closePath();
-	this.eye2.smooth();*/
+	// this.eye2 = new paper.Path();
+	// this.eye2.fillColor = "pink";
+	// this.eye2.strokeColor = "pink";
+	// this.eye2.mitterLimit = "10";
+	// this.eye2.add(new paper.Point(-79.79+this.x, this.y - 247.8));
+	// this.eye2.lineTo(new paper.Point(-63.945+this.x, this.y-214.93));
+	// this.eye2.lineTo(new paper.Point(-48.1+this.x, this.y - 247.8));
+	// this.eye2.lineTo(new paper.Point(-63.945+this.x, this.y-289.5));
+	// this.eye2.closePath();
+	// this.eye2.smooth();
 	
 	var matrix = paper.Matrix.getRotateInstance((57.295*(Math.PI/2)),this.x,this.y);
 	this.head.transform(matrix);
-	//this.eye1.transform(matrix);
-	//this.eye2.transform(matrix);
+	// this.eye1.transform(matrix);
+	// this.eye2.transform(matrix);
 	
 	var scaleSize = this.scaleSize/100;
 	matrix = paper.Matrix.getScaleInstance(scaleSize,scaleSize);
 	this.head.transform(matrix);
-	//this.eye1.transform(matrix);
-	//this.eye2.transform(matrix);
+	// this.eye1.transform(matrix);
+	// this.eye2.transform(matrix);
 	
 	matrix = paper.Matrix.getTranslateInstance(this.x-(this.x*scaleSize)-4,this.y-(this.y*scaleSize));
 	this.head.transform(matrix);
-	//this.eye1.transform(matrix);
-	//this.eye2.transform(matrix);
+	// this.eye1.transform(matrix);
+	// this.eye2.transform(matrix);
 	
 	/**
 	* Initiates the snake
@@ -117,7 +117,7 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 	{
 		
 		//console.log(this.bSegments.length,this.bSegments);
-		//var relative = (new Point(this.x,this.y)).subtract(new Point(worldPos));
+		var relative = (new Point(this.x,this.y)).subtract(new Point(worldPos));
 
 		this.mySpline = new CubicBezierSpline(this.bSegments).relocate(this.x,this.y);
 		(function(snake) {
@@ -152,7 +152,7 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 		
 		for (var i = 0; i < l; ++i) {
 			var seg = this.mySpline.bezierSegments[i];
-			//var from = seg.from;
+			var from = seg.from;
 			var c1 = seg.control1,
 				c2 = seg.control2,
 				to = seg.to;
@@ -160,11 +160,11 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 			this.body.cubicCurveTo(c1, c2, to);
 		}
 		
-		/*var segments = this.body.segments;
+		var segments = this.body.segments;
 		var dx = this.x - segments[0].point.x;
 		var dy = this.y - segments[0].point.y;
 		var m = paper.Matrix.getTranslateInstance(dx,dy);
-		this.body.transform(m);*/
+		this.body.transform(m);
 		
 		//
 		// Custom code
@@ -201,7 +201,7 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 		}
 		
 		var seg = this.mySpline.bezierSegments[0];
-		//var from = seg.from,
+		var from = seg.from,
 		var c1 = seg.control1;
 		var c2 = seg.control2;
 		var to = seg.to;
@@ -221,18 +221,18 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 	*/
 	this.rotate = function(da)
 	{
-		/*var rotationMatrix = paper.Matrix.getRotateInstance(da,this.x,this.y);
+		var rotationMatrix = paper.Matrix.getRotateInstance(da,this.x,this.y);
 		this.head.transform(rotationMatrix);
-		this.eye1.transform(rotationMatrix);
-		this.eye2.transform(rotationMatrix);
+		// this.eye1.transform(rotationMatrix);
+		// this.eye2.transform(rotationMatrix);
 		var dx = this.x - this.head.segments[0].point.x;
 		var dy = this.y - this.head.segments[0].point.y;
 		var trans = paper.Matrix.getTranslateInstance(dx,dy);
 		//console.log(dx,dy);
-		this.head.transform(trans);
-		this.eye1.transform(trans);
-		this.eye2.transform(trans);
-		//var translation*/
+		//this.head.transform(trans);
+		// this.eye1.transform(trans);
+		// this.eye2.transform(trans);
+		var translation;
 	};
 	
 	/**
@@ -274,38 +274,38 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 			this.y+=dy;
 			var trans = paper.Matrix.getTranslateInstance(dx,dy);
 			this.head.transform(trans);
-			//this.eye1.transform(trans);
-			//this.eye2.transform(trans);
+			// this.eye1.transform(trans);
+			// this.eye2.transform(trans);
 		}	
 			
-			/*var d = new paper.Point(dx, dy);
-			
-			var segments = this.body.segments;
-			//find length;
-			var length = (this.body.segments[0].point).subtract(this.body.segments[1].point).length;
+		var d = new paper.Point(dx, dy);
+		
+		var segments = this.body.segments;
+		// find length;
+		var length = (this.body.segments[0].point).subtract(this.body.segments[1].point).length;
 
-			this.body.segments[0].point = this.body.segments[0].point.add(d);
-			//apply velocity
-			for (var i = 0; i < this.body.segments.length - 1; i++) {
-				var nextSegment = this.body.segments[i + 1];
-				var position = this.body.segments[i].point;
-				var angle = (position.subtract(nextSegment.point)).angle;
-				var vector = new paper.Point({ angle: angle, length: 12*this.scaleSize});
-				nextSegment.point = position.subtract(vector);
-			}
-			//remove old control points
-			for (var i = 0;i<this.body.segments.length;++i)
-			{
-				this.body.segments[i].handleIn = zero.clone();
-				this.body.segments[i].handleOut = zero.clone();
-			}
-			
-			this.body.smooth();
-			//move to drawPostion
-			var dx = this.x - this.body.segments[0].point.x;
-			var dy = this.y - this.body.segments[0].point.y;
-			var m = paper.Matrix.getTranslateInstance(dx,dy);
-			this.body.transform(m);*/
+		this.body.segments[0].point = this.body.segments[0].point.add(d);
+		// apply velocity
+		for (var i = 0; i < this.body.segments.length - 1; i++) {
+			var nextSegment = this.body.segments[i + 1];
+			var position = this.body.segments[i].point;
+			var angle = (position.subtract(nextSegment.point)).angle;
+			var vector = new paper.Point({ angle: angle, length: 12*this.scaleSize});
+			nextSegment.point = position.subtract(vector);
+		}
+		// remove old control points
+		for (var i = 0;i<this.body.segments.length;++i)
+		{
+			this.body.segments[i].handleIn = zero.clone();
+			this.body.segments[i].handleOut = zero.clone();
+		}
+		
+		this.body.smooth();
+		// move to drawPostion
+		var dx = this.x - this.body.segments[0].point.x;
+		var dy = this.y - this.body.segments[0].point.y;
+		var m = paper.Matrix.getTranslateInstance(dx,dy);
+		this.body.transform(m);
 	};
 	
 	this.init();
