@@ -98,7 +98,7 @@ var WebSocketService = function(webSocket,game)
 		/*
 			we may have to redo this
 		*/
-		//console.log(data);
+		console.log('update rcv: ', data);
 		
 		// convert the packet integers to floats
 		var x = data.position.x / 1000;
@@ -245,9 +245,7 @@ var WebSocketService = function(webSocket,game)
 				segments = tmpS.segments;			
 				this.game.snakes.push(new Snake(id,team,color,velocity,angle,currentPowerUp,segments.length,segments,id,worldPos,this.game.scaleWindow,drawPos,false));
 			}
-		};
-		
-	
+		}
 	};
 	
 	/**
@@ -345,7 +343,6 @@ var WebSocketService = function(webSocket,game)
 				}
 			}
 		}
-		
 	};
 	/**
 	* Removes a disconnected snake from the game
@@ -455,7 +452,7 @@ var WebSocketService = function(webSocket,game)
 	* @param snake The client's snake
 	*/
 	this.sendUpdate = function(snake) 
-	{
+	{	
 		var message = {
 				type:'update',
 				id:snake.id,
@@ -464,6 +461,9 @@ var WebSocketService = function(webSocket,game)
 				velocity:{angle:parseInt(snake.angle*(180/Math.PI)),magnitude: snake.requestvelocity}
 				};
 		//console.log("magSent:" + snake.requestvelocity);
+		
+		console.log(message);
+		
 		this.sendMessage(message);
 	};
 	

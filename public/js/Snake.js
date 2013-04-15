@@ -51,9 +51,9 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 	this.maxSegments = 20;
 	
 	this.body = new paper.Path();
-	window.snakebody = this.body;
-	this.body.strokeColor = this.color;
-	this.body.strokeWidth = 2*this.scaleSize;
+	//window.snakebody = this.body;
+	//this.body.strokeColor = this.color;
+	//this.body.strokeWidth = 2*this.scaleSize;
 	
 	var point = new paper.Point(this.x - 200, this.y - 200);
 	var size = new paper.Size(400, 400);
@@ -63,7 +63,7 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 	this.head.strokeColor = this.color;
 	this.head.mitterLimit = "10";		
 	this.head.add(new paper.Point(this.x,this.y));
-	//this.head.lineTo(new paper.Point(79.8+this.x, this.y));
+	// this.head.lineTo(new paper.Point(79.8+this.x, this.y));
 	// this.head.lineTo(new paper.Point(119.19+this.x,this.y - 84.85));
 	// this.head.lineTo(new paper.Point(48.3+this.x, this.y-356.68));
 	// this.head.lineTo(new paper.Point(-48.3+this.x, this.y-356.68));

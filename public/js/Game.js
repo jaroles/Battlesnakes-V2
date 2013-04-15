@@ -114,7 +114,7 @@ var Game = function(aSettings, aCanvas) {
 					this.userSnake.rotate((180/Math.PI)*(ang-oldAngle));
 				}
 				
-				// this.userSnake.update(dx,dy);
+				this.userSnake.update(dx,dy);
 				this.updateOtherSnakes(dx,dy);	
 			}
 			else 
@@ -133,7 +133,7 @@ var Game = function(aSettings, aCanvas) {
 				for (var i = 0;i<this.snakes.length;i++)
 				{
 					var s = this.snakes[i];
-					if (s.velocity >0)
+					if (s.velocity > 0)
 					{
 						//console.log(Math.cos(s.angle)*s.velocity/s.targetvelocity,Math.sin(s.angle)*s.velocity/s.targetvelocity);
 						var dx = ((Math.cos(s.angle)*s.velocity)/s.targetvelocity) * dt;
