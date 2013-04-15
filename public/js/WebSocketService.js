@@ -269,7 +269,7 @@ var WebSocketService = function(webSocket,game)
 			id = tmpS.id;
 			if (this.game.userSnake.id != id)
 			{
-				console.log('Updated this client from a player update');
+				//console.log('Updated this client from a player update');
 				
 				s = 0;
 				while (s<this.game.snakes.length && this.game.snakes[s].id != id) {

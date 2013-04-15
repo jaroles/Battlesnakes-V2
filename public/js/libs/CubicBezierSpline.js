@@ -106,7 +106,7 @@ CubicBezierSpline.prototype.extend({
 					d.normalize().multiply(length);
 					to.set(from.subtract(d.to));
 				}
-				//this.smooth();
+				this.smooth();
 			}
 		}
 		return this;
