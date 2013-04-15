@@ -233,77 +233,79 @@ function World()
 		// if (elapsedTime !== 0) {
 			storedTime = curTime;
 		// }
-
-		for (var u = 0, U = users.length; u < U; ++u) 
+		if(dt > 1000)
 		{
-			var user = users[u],
-				snake = user.getSnake(),
-				velocity = snake.velocity.to,
-				oldX = snake.position.x,
-				oldY = snake.position.y,
-				newX = oldX + (velocity.x * elapsedTime),
-				newY = oldY + (velocity.y * elapsedTime),
-				collision = false,
-				OoB = false;
-			
-			if(user.request)
+			for (var u = 0, U = users.length; u < U; ++u) 
 			{
-				snake.move(newX, newY);
-				snake.wiggle();
-				snake.sprint(elapsedTime);
-				var g = updateSnakeGrid(snake, velocity);
-				if (g) {
-					if (g != snake.grid) {
-						changeGrid(snake, g, user);
+				var user = users[u],
+					snake = user.getSnake(),
+					velocity = snake.velocity.to,
+					oldX = snake.position.x,
+					oldY = snake.position.y,
+					newX = oldX + (velocity.x * elapsedTime),
+					newY = oldY + (velocity.y * elapsedTime),
+					collision = false,
+					OoB = false;
+				
+				if(user.request)
+				{
+					snake.move(newX, newY);
+					snake.wiggle();
+					snake.sprint(elapsedTime);
+					var g = updateSnakeGrid(snake, velocity);
+					if (g) {
+						if (g != snake.grid) {
+							changeGrid(snake, g, user);
+						}
+					} else {
+						OoB = true;
 					}
-				} else {
-					OoB = true;
-				}
-	
-	            var colObj = undefined;
-				if (!OoB) {
-					var gObjs = snake.grid.getGameObjects();
-					for (var i = 0, l = gObjs.length; i < l; ++i) 
-					{
-						var gObj = gObjs[i];
-	                    if (!gObj) {continue;}
-						collision = snake.collision(gObj);
-						if (collision || collision === 0) {
-	                        colObj = gObj;
-							break;
+		
+		            var colObj = undefined;
+					if (!OoB) {
+						var gObjs = snake.grid.getGameObjects();
+						for (var i = 0, l = gObjs.length; i < l; ++i) 
+						{
+							var gObj = gObjs[i];
+		                    if (!gObj) {continue;}
+							collision = snake.collision(gObj);
+							if (collision || collision === 0) {
+		                        colObj = gObj;
+								break;
+							}
 						}
 					}
-				}
-
-				if (typeof collision == 'number') {
-					console.log('collision == number')
-					user.sendCollisionPacket(colObj);
-					//user.broadcastPlayerUpdate();
-				} else if (collision) {
-					console.log('collision == true')
-					//user.collide = true;
-					snake.move(oldX, oldY);
-					snake.velocity.set(0, 0);
-					user.sendCollisionPacket(colObj);
-					//user.broadcastPlayerUpdate();
-	            } else if (OoB) {
-					console.log('OoB ' + OoB);
-					snake.move(oldX, oldY);
-					snake.velocity.set(0, 0);
-					user.sendUpdatePacket();
-					//user.broadcastPlayerUpdate();
-				}
-				
-				if(!collision ) {
-					//user.collide = false;
-					user.request = true;
-					user.sendUpdatePacket();
-					user.broadcastPlayerUpdate();
-					//if(newX != oldX && newY != oldY)
-					//{
-						//var time = new Date().toLocaleTimeString();
-						//console.log(time, '\: snake ', snake.id, ' moved.');
-					//}
+	
+					if (typeof collision == 'number') {
+						console.log('collision == number')
+						user.sendCollisionPacket(colObj);
+						//user.broadcastPlayerUpdate();
+					} else if (collision) {
+						console.log('collision == true')
+						//user.collide = true;
+						snake.move(oldX, oldY);
+						snake.velocity.set(0, 0);
+						user.sendCollisionPacket(colObj);
+						//user.broadcastPlayerUpdate();
+		            } else if (OoB) {
+						console.log('OoB ' + OoB);
+						snake.move(oldX, oldY);
+						snake.velocity.set(0, 0);
+						user.sendUpdatePacket();
+						//user.broadcastPlayerUpdate();
+					}
+					
+					if(!collision ) {
+						//user.collide = false;
+						user.request = true;
+						user.sendUpdatePacket();
+						user.broadcastPlayerUpdate();
+						//if(newX != oldX && newY != oldY)
+						//{
+							//var time = new Date().toLocaleTimeString();
+							//console.log(time, '\: snake ', snake.id, ' moved.');
+						//}
+					}
 				}
 			}
 		}
