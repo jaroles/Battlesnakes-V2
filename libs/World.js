@@ -246,6 +246,7 @@ function World()
 				collision = false,
 				OoB = false;
 			
+<<<<<<< HEAD
 			if(user.request)
 			{
 				snake.move(newX, newY);
@@ -258,6 +259,18 @@ function World()
 					}
 				} else {
 					OoB = true;
+=======
+			console.log("game update: ", snake.id, elapsedTime, velocity);
+
+			snake.move(newX, newY);
+			snake.wiggle();
+			snake.sprint(elapsedTime);
+
+			var g = updateSnakeGrid(snake, velocity);
+			if (g) {
+				if (g != snake.grid) {
+					changeGrid(snake, g, user);
+>>>>>>> refs/remotes/origin/jjumalon
 				}
 	
 	            var colObj = undefined;
