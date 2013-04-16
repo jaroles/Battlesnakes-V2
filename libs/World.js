@@ -253,6 +253,8 @@ function World()
 				
 				if(user.request)
 				{
+					console.log('user request: ', user.request);
+					
 					snake.move(newX, newY);
 					snake.wiggle();
 					snake.sprint(elapsedTime);
@@ -280,25 +282,26 @@ function World()
 						}
 					}
 					if (typeof collision == 'number') {
-						console.log('collision == number')
+						//console.log('collision == number')
 						user.sendCollisionPacket(colObj);
-						user.broadcastPlayerUpdate();
+						//user.broadcastPlayerUpdate();
 					} else if (collision) {
-						console.log('collision == true')
+						//console.log('collision == true')
 						snake.move(oldX, oldY);
 						snake.velocity.set(0, 0);
 						user.sendCollisionPacket(colObj);
-						user.broadcastPlayerUpdate();
+						//user.broadcastPlayerUpdate();
 		            } else if (OoB) {
-						console.log('OoB ' + OoB);
+						//console.log('OoB ' + OoB);
 						snake.move(oldX, oldY);
 						snake.velocity.set(0, 0);
-						user.sendUpdatePacket();
-						user.broadcastPlayerUpdate();
+						//user.sendUpdatePacket();
+						//user.broadcastPlayerUpdate();
 					}
 					
 					if(!collision)
 					{
+						//console.log('no collision');
 						user.request = true;
 						user.sendUpdatePacket();
 						user.broadcastPlayerUpdate();

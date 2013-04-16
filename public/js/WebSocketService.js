@@ -119,8 +119,6 @@ var WebSocketService = function(webSocket,game)
 		this.game.userSnake.angle = angle;
 		this.game.userSnake.rotate((180/Math.PI)*(angle-oldAngle));
 		this.game.userSnake.velocity = data.velocity.magnitude;
-	
-		console.log("fuck");
 	};
 	
 	/**

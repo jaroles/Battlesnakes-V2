@@ -153,7 +153,7 @@ function User(socket, playerevent, snakeID)
 		return message;
 	};
 	this.sendUpdatePacket = function() {
-		//console.log('sendUpdatePacket: ', snake.id, ' ', snake.position);
+		console.log('sendUpdatePacket: ', snake.id, ' ', snake.position);
 		//console.log('   ', snake.position.toJSON());
 		
 		var message = snake.toJSON();
@@ -230,7 +230,7 @@ function User(socket, playerevent, snakeID)
 	}
 
 	this.sendPlayerUpdate = function(env) {
-		//console.log('sendPlayerUpdate', user.userID, snake.position);
+		console.log('sendPlayerUpdate ', user.userID, snake.position);
 		var message = {
 			type: 'playerUpdate',
 			snakes: env
@@ -344,16 +344,20 @@ function User(socket, playerevent, snakeID)
 		// dVelocity = new Vector(dVelocity.to);
 
 		position = position.subtract(data.position);
+		
+		console.log('handleUpdate: ', snake.id, ' ', snake.position, 
+				' ', snake.velocity);
 
 		snake.velocity.set(dVelocity.to);
-		if (Math.abs(position.x) < 1 &&
+		/*if (Math.abs(position.x) < 1 &&
 			Math.abs(position.y) < 1) {
 		} else {
-			user.sendUpdatePacket();
-		}
+			//user.sendUpdatePacket();
+			console.log('user request: ', user.request);
+		}*/
 
 		//console.log(snake.id, ' ', snake.position);
-		user.broadcastPlayerUpdate();
+		//user.broadcastPlayerUpdate();
 	}
 
 	function handleChat(data) {
