@@ -259,53 +259,56 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 	*/
 	this.update = function(dx,dy)
 	{
-		dx *= this.targetvelocity;
-		dy *= this.targetvelocity;
-
-		this.worldPos.x += dx;
-		this.worldPos.y += dy;
-		
-		dx *= this.scaleSize;
-		dy *= this.scaleSize;
-			
-		if(!this.isUserSnake)
+		if(this.velocity != 0)
 		{
-			this.x+=dx;
-			this.y+=dy;
-			var trans = paper.Matrix.getTranslateInstance(dx,dy);
-			this.head.transform(trans);
-			// this.eye1.transform(trans);
-			// this.eye2.transform(trans);
-		}	
+			dx *= this.targetvelocity;
+			dy *= this.targetvelocity;
+	
+			this.worldPos.x += dx;
+			this.worldPos.y += dy;
 			
-		var d = new paper.Point(dx, dy);
-		
-		var segments = this.body.segments;
-		// find length;
-		var length = (this.body.segments[0].point).subtract(this.body.segments[1].point).length;
-
-		this.body.segments[0].point = this.body.segments[0].point.add(d);
-		// apply velocity
-		for (var i = 0; i < this.body.segments.length - 1; i++) {
-			var nextSegment = this.body.segments[i + 1];
-			var position = this.body.segments[i].point;
-			var angle = (position.subtract(nextSegment.point)).angle;
-			var vector = new paper.Point({ angle: angle, length: 12*this.scaleSize});
-			nextSegment.point = position.subtract(vector);
+			dx *= this.scaleSize;
+			dy *= this.scaleSize;
+				
+			if(!this.isUserSnake)
+			{
+				this.x+=dx;
+				this.y+=dy;
+				var trans = paper.Matrix.getTranslateInstance(dx,dy);
+				this.head.transform(trans);
+				// this.eye1.transform(trans);
+				// this.eye2.transform(trans);
+			}	
+				
+			var d = new paper.Point(dx, dy);
+			
+			var segments = this.body.segments;
+			// find length;
+			var length = (this.body.segments[0].point).subtract(this.body.segments[1].point).length;
+	
+			this.body.segments[0].point = this.body.segments[0].point.add(d);
+			// apply velocity
+			for (var i = 0; i < this.body.segments.length - 1; i++) {
+				var nextSegment = this.body.segments[i + 1];
+				var position = this.body.segments[i].point;
+				var angle = (position.subtract(nextSegment.point)).angle;
+				var vector = new paper.Point({ angle: angle, length: 12*this.scaleSize});
+				nextSegment.point = position.subtract(vector);
+			}
+			// remove old control points
+			for (var i = 0;i<this.body.segments.length;++i)
+			{
+				this.body.segments[i].handleIn = zero.clone();
+				this.body.segments[i].handleOut = zero.clone();
+			}
+			
+			this.body.smooth();
+			// move to drawPostion
+			var dx = this.x - this.body.segments[0].point.x;
+			var dy = this.y - this.body.segments[0].point.y;
+			var m = paper.Matrix.getTranslateInstance(dx,dy);
+			this.body.transform(m);
 		}
-		// remove old control points
-		for (var i = 0;i<this.body.segments.length;++i)
-		{
-			this.body.segments[i].handleIn = zero.clone();
-			this.body.segments[i].handleOut = zero.clone();
-		}
-		
-		this.body.smooth();
-		// move to drawPostion
-		var dx = this.x - this.body.segments[0].point.x;
-		var dy = this.y - this.body.segments[0].point.y;
-		var m = paper.Matrix.getTranslateInstance(dx,dy);
-		this.body.transform(m);
 	};
 	
 	this.init();
