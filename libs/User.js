@@ -2,6 +2,7 @@ var settings = require('./Settings');
 var Debug = require('./Debug');
 var Snake = require('./all/Snake');
 var d = new Debug();
+var dt = 0;
 
 /*
  * playerevent is your callback method to report anything to server class
@@ -16,7 +17,6 @@ function User(socket, playerevent, snakeID)
 	this.socketID;
 	this.userID = snakeID;
 	this.request;
-	this.collision;
     this.reset = function () {};
 
 	socket.on('message', function (msg){handleMessage(socket,msg);});
@@ -90,9 +90,11 @@ function User(socket, playerevent, snakeID)
 
 		snakeUpdate = snake.update;
 		snake.update = function() {
+			
 			if (snakeUpdate) {
 				snakeUpdate.call(snake);
 			}
+
 			user.sendUpdatePacket();
 			user.broadcastPlayerUpdate();
 		}
@@ -151,7 +153,6 @@ function User(socket, playerevent, snakeID)
 		return message;
 	};
 	this.sendUpdatePacket = function() {
-		//DEBUG
 		//console.log('sendUpdatePacket: ', snake.id, ' ', snake.position);
 		//console.log('   ', snake.position.toJSON());
 		
@@ -229,7 +230,7 @@ function User(socket, playerevent, snakeID)
 	}
 
 	this.sendPlayerUpdate = function(env) {
-		console.log('sendPlayerUpdate', user.userID, snake.position);
+		//console.log('sendPlayerUpdate', user.userID, snake.position);
 		var message = {
 			type: 'playerUpdate',
 			snakes: env
@@ -239,8 +240,6 @@ function User(socket, playerevent, snakeID)
 	}
 
 	this.broadcast = function(to, message) {
-		//console.log('broadcast', message.type);
-		
         if (!Array.isArray(to)) {
             to = [to]
         }
@@ -275,18 +274,7 @@ function User(socket, playerevent, snakeID)
 
 	this.broadcastPlayerUpdate = function(grids) {
         var to = (grids) ? grids : this.surroundingGridRooms();
-<<<<<<< HEAD
 		//console.log('broadcastPlayerUpdate', user.userID);
-=======
-		console.log('broadcastPlayerUpdate', user.userID);
-		/*var message = {
-				type: 'playerUpdate',
-				snakes: [snake.get()]
-		};
-		socket.emit('message', message);
-		this.broadcast(to, message);*/
-		
->>>>>>> refs/remotes/origin/jjumalon
 		this.broadcast(to, {
 			type: 'playerUpdate',
 			snakes: [snake.get()]
@@ -296,6 +284,7 @@ function User(socket, playerevent, snakeID)
 
 	function handleMessage(socket, e)
 	{
+		dt ++;
 		/*
 		 * parse JSON and read in the var 'type' to
 		 * determine how to handle the rest of the data.
@@ -320,7 +309,8 @@ function User(socket, playerevent, snakeID)
 		if (!e || !e.type) {
 			return;
 		}
-		switch (e.type) {
+		switch (e.type) 
+		{
 			case 'update':
 				handleUpdate(e);
 				break;
@@ -337,9 +327,6 @@ function User(socket, playerevent, snakeID)
 	};
 
 	function handleUpdate(data) {
-		
-		console.log('handleUpdate ', snake.id, ' at ', snake.position);
-		
 		var position = snake.position.clone(),
 			dVelocity = data.velocity;
 		user.request = true;
@@ -366,7 +353,7 @@ function User(socket, playerevent, snakeID)
 		}
 
 		//console.log(snake.id, ' ', snake.position);
-		//user.broadcastPlayerUpdate();
+		user.broadcastPlayerUpdate();
 	}
 
 	function handleChat(data) {

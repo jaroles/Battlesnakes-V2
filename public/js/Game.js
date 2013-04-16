@@ -102,9 +102,11 @@ var Game = function(aSettings, aCanvas) {
 				this.userSnake.requestvelocity = this.userSnake.targetvelocity;
 				//console.log("requestVelo:" + this.userSnake.requestvelocity);
 
+				
+
 				// console.log('User Snake: ', this.userSnake.id);
-				if (oldVelocity == 0 || (parseInt(oldAngle*(180/Math.PI)) != parseInt(ang*(180/Math.PI))))
-				//if (oldVelocity == 0 || dt > .01)
+				// if (oldVelocity == 0 || dt > .01)
+				if (oldVelocity == 0 || dt > 0.01)
 				{
 					webSocketService.sendUpdate(this.userSnake);
 				}
@@ -133,7 +135,7 @@ var Game = function(aSettings, aCanvas) {
 				for (var i = 0;i<this.snakes.length;i++)
 				{
 					var s = this.snakes[i];
-					if (s.velocity > 0)
+					if (s.velocity >0)
 					{
 						//console.log(Math.cos(s.angle)*s.velocity/s.targetvelocity,Math.sin(s.angle)*s.velocity/s.targetvelocity);
 						var dx = ((Math.cos(s.angle)*s.velocity)/s.targetvelocity) * dt;
@@ -146,18 +148,18 @@ var Game = function(aSettings, aCanvas) {
 	};
 	
 	game.updateOtherSnakes = function(dx,dy)
-	{		
-		/*if (this.userSnake.velocity)
+	{
+		if (this.userSnake.velocity)
 		{
 			var m = paper.Matrix.getTranslateInstance(-dx*this.userSnake.targetvelocity*this.scaleWindow,-dy*this.userSnake.targetvelocity*this.scaleWindow);
-			for (var i = 0; i<this.snakes.length; i++)
+			for (var i = 0;i<this.snakes.length;i++)
 			{
 				this.snakes[i].body.transform(m);
 				this.snakes[i].head.transform(m);
 				//this.snakes[i].eye1.transform(m);
 				//this.snakes[i].eye2.transform(m);
 			}
-		}*/
+		}
 	};
 	
 	/**

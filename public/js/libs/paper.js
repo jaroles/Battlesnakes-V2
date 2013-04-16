@@ -6794,15 +6794,16 @@ var View = this.View = PaperScopeItem.extend({
 
 	function mousemove(event) {
 		var view;
-		if (!dragging) {
-		 	view = View._views[DomEvent.getTarget(event).getAttribute('id')];
-			if (view) {
-				View._focused = tempFocus = view;
-			} else if (tempFocus && tempFocus == View._focused) {
-				View._focused = null;
-				updateFocus();
-			}
-		}
+		// if (!dragging) {
+		//  	//view = View._views[DomEvent.getTarget(event).getAttribute('id')];
+
+		// 	if (view) {
+		// 		View._focused = tempFocus = view;
+		// 	} else if (tempFocus && tempFocus == View._focused) {
+		// 		View._focused = null;
+		// 		updateFocus();
+		// 	}
+		// }
 		if (!(view = view || View._focused) || !(tool = view._scope.tool))
 			return;
 		var point = event && viewToProject(view, event);

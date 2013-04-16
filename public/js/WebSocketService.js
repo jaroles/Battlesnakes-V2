@@ -1,4 +1,4 @@
-/**
+/*
 * @author: Ryan Howard
 * @author: Andrew Wagenheim
 * Software Development II
@@ -33,7 +33,7 @@ var WebSocketService = function(webSocket,game)
 	{
 		//console.log(data);
 		
-		console.log(data);
+		//console.log(data);
 		
 		var canvas = document.getElementById('canvas');
 		var width = canvas.width;
@@ -98,7 +98,7 @@ var WebSocketService = function(webSocket,game)
 		/*
 			we may have to redo this
 		*/
-		console.log('update rcv: ', data);
+		//console.log(data);
 		
 		// convert the packet integers to floats
 		var x = data.position.x / 1000;
@@ -119,6 +119,8 @@ var WebSocketService = function(webSocket,game)
 		this.game.userSnake.angle = angle;
 		this.game.userSnake.rotate((180/Math.PI)*(angle-oldAngle));
 		this.game.userSnake.velocity = data.velocity.magnitude;
+	
+		console.log("fuck");
 	};
 	
 	/**
@@ -166,7 +168,7 @@ var WebSocketService = function(webSocket,game)
 	*/
 	this.addEnvironmentHandler = function(data)
 	{		
-		// console.log(data);
+		//console.log(data);
 		var items = data.items;
 		var environment = new Array();
 		var x,y;
@@ -245,7 +247,9 @@ var WebSocketService = function(webSocket,game)
 				segments = tmpS.segments;			
 				this.game.snakes.push(new Snake(id,team,color,velocity,angle,currentPowerUp,segments.length,segments,id,worldPos,this.game.scaleWindow,drawPos,false));
 			}
-		}
+		};
+		
+	
 	};
 	
 	/**
@@ -254,6 +258,7 @@ var WebSocketService = function(webSocket,game)
 	*/
 	this.playerUpdateHandler = function(data)
 	{
+		//console.log(data);
 		var snakes = data.snakes;
 	//	console.log(data.snakes);	
 		var US = this.game.userSnake;
@@ -267,12 +272,8 @@ var WebSocketService = function(webSocket,game)
 			id = tmpS.id;
 			if (this.game.userSnake.id != id)
 			{
-				//console.log('Updated this client from a player update');
-				
 				s = 0;
-				while (s<this.game.snakes.length && this.game.snakes[s].id != id) {
-					s++;
-				}
+				while (s<this.game.snakes.length && this.game.snakes[s].id != id) {s++;}
 				
 				if (s <this.game.snakes.length)
 				{
@@ -343,6 +344,7 @@ var WebSocketService = function(webSocket,game)
 				}
 			}
 		}
+		
 	};
 	/**
 	* Removes a disconnected snake from the game
@@ -452,7 +454,7 @@ var WebSocketService = function(webSocket,game)
 	* @param snake The client's snake
 	*/
 	this.sendUpdate = function(snake) 
-	{	
+	{
 		var message = {
 				type:'update',
 				id:snake.id,
@@ -461,9 +463,6 @@ var WebSocketService = function(webSocket,game)
 				velocity:{angle:parseInt(snake.angle*(180/Math.PI)),magnitude: snake.requestvelocity}
 				};
 		//console.log("magSent:" + snake.requestvelocity);
-		
-		console.log(message);
-		
 		this.sendMessage(message);
 	};
 	

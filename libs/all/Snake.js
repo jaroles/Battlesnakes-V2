@@ -57,6 +57,7 @@ Snake.prototype.extend({
 			d = (new Point(point)).subtract(this.position);
 		this.position = point;
 		this.segments.move(d);
+		this.collision(this);
 		return this;
 	},
 	relocate: function(pointOrX, y) {
