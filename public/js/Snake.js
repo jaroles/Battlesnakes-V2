@@ -62,7 +62,7 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 	this.head.strokeWidth = "1";
 	this.head.strokeColor = this.color;
 	this.head.mitterLimit = "10";		
-	this.head.add(new paper.Point(this.x,this.y));
+	// this.head.add(new paper.Point(this.x,this.y));
 	//this.head.lineTo(new paper.Point(79.8+this.x, this.y));
 	// this.head.lineTo(new paper.Point(119.19+this.x,this.y - 84.85));
 	// this.head.lineTo(new paper.Point(48.3+this.x, this.y-356.68));
@@ -225,14 +225,15 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 		this.head.transform(rotationMatrix);
 		// this.eye1.transform(rotationMatrix);
 		// this.eye2.transform(rotationMatrix);
-		var dx = this.x - this.head.segments[0].point.x;
-		var dy = this.y - this.head.segments[0].point.y;
-		var trans = paper.Matrix.getTranslateInstance(dx,dy);
+		// var dx = this.x - this.head.segments[0].point.x;
+		// var dy = this.y - this.head.segments[0].point.y;
+		// var trans = paper.Matrix.getTranslateInstance(dx,dy);
 		//console.log(dx,dy);
-		//this.head.transform(trans);
+		matrix = paper.Matrix.getTranslateInstance(this.x-this.x,this.y-this.y);
+		this.head.transform(matrix);
 		// this.eye1.transform(trans);
 		// this.eye2.transform(trans);
-		var translation;
+		// var translation;
 	};
 	
 	/**

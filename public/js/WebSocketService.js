@@ -315,8 +315,9 @@ var WebSocketService = function(webSocket,game)
 					this.game.snakes[s].x = drawPos.x;
 					this.game.snakes[s].y = drawPos.y;
 					
+					
 					//this.game.snakes[s].init();
-					this.game.snakes[s].rotate((180/Math.PI)*(angle-oldAng));
+					// this.game.snakes[s].rotate((180/Math.PI)*(angle-oldAng));
 					//console.log(angle);
 				}
 				else 
