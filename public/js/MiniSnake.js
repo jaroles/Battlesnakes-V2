@@ -29,7 +29,8 @@ function MiniSnake(team,color,state,pos,velocity)
 	this.head.strokeWidth = "1";
 	this.head.strokeColor = this.color;
 	this.head.mitterLimit = "10";		
-	this.head.add(new paper.Point(79.8+this.x, this.y));
+		this.head = new paper.Path.Rectangle(point, size);
+	/*this.head.add(new paper.Point(79.8+this.x, this.y));
 	this.head.lineTo(new paper.Point(119.19+this.x,this.y - 84.85));
 	this.head.lineTo(new paper.Point(48.3+this.x, this.y-356.68));
 	this.head.lineTo(new paper.Point(-48.3+this.x, this.y-356.68));
@@ -80,6 +81,7 @@ function MiniSnake(team,color,state,pos,velocity)
 	this.body = new paper.Path(segments);
 	this.body.strokeColor = this.color;
 	this.body.strokeWidth = 3.33333333;
+	*/
 	this.gametime;
 	this.lasttime = new Date().getTime();
 	/*var startTail = new paper.Point(segments[segments.length-1].point);
