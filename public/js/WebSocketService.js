@@ -51,29 +51,37 @@ var WebSocketService = function(webSocket,game)
 		var point = new paper.Point(this.centerX,this.centerY); 
 		
 	
-		var segments = 
-			{
-				from: 
+		var segments = new Array();
+		
+		for(var i = 0; i < data.segments.length; i++)
+		{
+			var tempSegments = 
 				{
-					x: data.segments[0].from.x / 1000,
-					y: data.segments[0].from.y / 1000,
-				},
-				control1: 
-				{
-					x: data.segments[0].control1.x / 1000,
-					y: data.segments[0].control1.y / 1000,
-				},
-				control2: 
-				{
-					x: data.segments[0].control2.x / 1000,
-					y: data.segments[0].control2.y / 1000,
-				},
-				to: 
-				{
-					x: data.segments[0].to.x / 1000,
-					y: data.segments[0].to.y / 1000,
+					from: 
+					{
+						x: data.segments[0].from.x / 1000,
+						y: data.segments[0].from.y / 1000,
+					},
+					control1: 
+					{
+						x: data.segments[0].control1.x / 1000,
+						y: data.segments[0].control1.y / 1000,
+					},
+					control2: 
+					{
+						x: data.segments[0].control2.x / 1000,
+						y: data.segments[0].control2.y / 1000,
+					},
+					to: 
+					{
+						x: data.segments[0].to.x / 1000,
+						y: data.segments[0].to.y / 1000,
+					}
 				}
-			}
+			
+			segments[i] = tempSegments;
+		}
+
 		//console.log(data.segments[0].from);
 		//console.log(segments);
 		
@@ -207,14 +215,15 @@ var WebSocketService = function(webSocket,game)
 	*/
 	this.addSnakeHandler = function(data)
 	{
-		//console.log(data);
+		console.log(data);
 		var snakes = data.snakes;
 		//console.log(data.snakes);
 		
 		var US = this.game.userSnake;
 		var currentPowerUp = 0;
 		var scaleSize = this.game.scaleWindow;
-		var id,team,color,angle,velocity,segments,worldPos,drawpos,drawx,drawy;
+		var id,team,color,angle,velocit,worldPos,drawpos,drawx,drawy;
+		var segments = new Array();
 		var tmpS;
 		for (var i = 0;i<snakes.length;i++)
 		{
@@ -242,7 +251,38 @@ var WebSocketService = function(webSocket,game)
 				drawy += US.y;
 				
 				drawPos = {x: drawx,y: drawy};
-				segments = tmpS.segments;			
+				
+				for(var i = 0; i < tmpS.segments.length; i++)
+				{
+					var tempSegment = 
+					{
+						from: 
+						{
+							x: tmpS.segments[i].from.x / 1000,
+							y: tmpS.segments[i].from.y / 1000,
+						},
+						control1: 
+						{
+							x: tmpS.segments[i].control1.x / 1000,
+							y: tmpS.segments[i].control1.y / 1000,
+						},
+						control2: 
+						{
+							x: tmpS.segments[i].control2.x / 1000,
+							y: tmpS.segments[i].control2.y / 1000,
+						},
+						to: 
+						{
+							x: tmpS.segments[i].to.x / 1000,
+							y: tmpS.segments[i].to.y / 1000,
+						}
+					}
+					//console.log(tempSegment);
+					
+					segments[i] = tempSegment;
+				}
+				//console.log(segments);	
+				
 				this.game.snakes.push(new Snake(id,team,color,velocity,angle,currentPowerUp,segments.length,segments,id,worldPos,this.game.scaleWindow,drawPos,false));
 			}
 		};
@@ -262,7 +302,8 @@ var WebSocketService = function(webSocket,game)
 		var US = this.game.userSnake;
 		var currentPowerUp = 0;
 		var scaleSize = this.game.scaleWindow;
-		var id,team,color,angle,velocity,segments,worldPos,drawpos,s;
+		var id,team,color,angle,velocity,worldPos,drawpos,s;
+		var segments = new Array();
 		var tmpS;
 		for (var i = 0;i<snakes.length;i++)
 		{
@@ -297,7 +338,40 @@ var WebSocketService = function(webSocket,game)
 					
 					drawPos = {x: drawx,y: drawy};
 					
-					segments = tmpS.segments;
+					//segments = tmpS.segments;
+					
+					for(var i = 0; i < tmpS.segments.length; i++)
+					{
+						var tempSegment = 
+						{
+							from: 
+							{
+								x: tmpS.segments[i].from.x / 1000,
+								y: tmpS.segments[i].from.y / 1000,
+							},
+							control1: 
+							{
+								x: tmpS.segments[i].control1.x / 1000,
+								y: tmpS.segments[i].control1.y / 1000,
+							},
+							control2: 
+							{
+								x: tmpS.segments[i].control2.x / 1000,
+								y: tmpS.segments[i].control2.y / 1000,
+							},
+							to: 
+							{
+								x: tmpS.segments[i].to.x / 1000,
+								y: tmpS.segments[i].to.y / 1000,
+							}
+						}
+						
+						//console.log(tempSegment);
+						
+						segments[i] = tempSegment;
+					}
+					
+					//console.log(segments);
 					
 					var oldAng = this.game.snakes[s].angle;
 					angle /= (180/Math.PI);
