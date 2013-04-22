@@ -111,10 +111,10 @@ var Game = function(aSettings, aCanvas) {
 					webSocketService.sendUpdate(this.userSnake);
 				}
 				
-				if(oldAngle != ang)
-				{
-					this.userSnake.rotate((180/Math.PI)*(ang-oldAngle));
-				}
+				// if(oldAngle != ang)
+				// {
+					// this.userSnake.rotate((180/Math.PI)*(ang-oldAngle));
+				// }
 				
 				this.userSnake.update(dx,dy);
 				this.updateOtherSnakes(dx,dy);	
