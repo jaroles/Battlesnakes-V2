@@ -153,7 +153,7 @@ function User(socket, playerevent, snakeID)
 		return message;
 	};
 	this.sendUpdatePacket = function() {
-		console.log('sendUpdatePacket: ', snake.id, ' ', snake.position);
+		//console.log('sendUpdatePacket: ', snake.id, ' ', snake.position);
 		//console.log('   ', snake.position.toJSON());
 		
 		var message = snake.toJSON();
@@ -345,8 +345,8 @@ function User(socket, playerevent, snakeID)
 
 		position = position.subtract(data.position);
 		
-		console.log('handleUpdate: ', snake.id, ' ', snake.position, 
-				' ', snake.velocity);
+		//console.log('handleUpdate: ', snake.id, ' ', snake.position, 
+			//	' ', snake.velocity);
 
 		snake.velocity.set(dVelocity.to);
 		/*if (Math.abs(position.x) < 1 &&

@@ -117,6 +117,14 @@ Grid.prototype.extend({
 			return undefined;
 		}
 	},
+	getRandomGrid: function() {
+		var rand1 = Math.floor((Math.random()*2.99));
+		var rand2 = Math.random() > .5? 0 : 2;
+		//console.log("grid: " + rand1 + ", " + rand2);
+		var gridThing = this.getGrid(rand1, rand2);
+		//console.log(gridThing);
+		return  gridThing;
+	},
 
 	addGameObjectToGrid: function(gobj, gridOrRow, column) {
 		var grid = this.getGrid(gridOrRow, column);

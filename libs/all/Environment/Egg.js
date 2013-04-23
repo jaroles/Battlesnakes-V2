@@ -43,7 +43,8 @@ Egg.prototype.extend({
 			if (col) {
 				gameObject.pickUpEgg(this)
 			}
-			return (this.isCollidable) ? col : false;
+			var toReturn = (col) ? 'egg' : false;
+			return toReturn;
 		}
 	}
 });
