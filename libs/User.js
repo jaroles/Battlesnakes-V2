@@ -77,8 +77,6 @@ function User(socket, playerevent, snakeID)
 
 		snakeDropOffEggs = snake.dropOffEggs;
 		snake.dropOffEggs = function(hatchery) {
-			console.log('snake ', snake.id, ' dropOffEggs');
-			
 			if (snakeDropOffEggs) {
 				snakeDropOffEggs.call(snake, hatchery);
 			}

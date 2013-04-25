@@ -275,6 +275,15 @@ function World()
 							var gObj = gObjs[i];
 		                    if (!gObj) {continue;}
 							collision = snake.collision(gObj);
+							if(collision == 'egg' && gObj.type == 2)
+							{
+								collision = false;
+								//console.log("ADDED NEW EGG");
+								var newEgg = new Egg;
+								gridSec = grid.getRandomGrid();
+								gridSec.addGameObject(newEgg);
+								FindNewPosition(newEgg, gridSec);
+							}
 							if (collision || collision === 0) {
 		                        colObj = gObj;
 								break;
