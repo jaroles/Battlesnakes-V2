@@ -17,7 +17,7 @@
 
 class GameObject;
 
-class EnvironmentObject : public GameObject, public node::ObjectWrap
+class EnvironmentObject : public GameObject//, public node::ObjectWrap
 {
 public:
 

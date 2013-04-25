@@ -9,7 +9,7 @@
 
 #include "CubicBezierSegment.h"
 
-const float CubicBezierSegment::XI = 0.0000005;
+const float CubicBezierSegment::XI = 0.0000005f;
 
 CubicBezierSegment::CubicBezierSegment()
 {

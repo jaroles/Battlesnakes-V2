@@ -26,7 +26,7 @@ public:
 	static const std::vector<const MiniSnake*>* getMiniSnakes(int team); // TODO
 
 private:
-	static std::vector<GameObject*>* world_;
+	static const std::vector<const GameObject*>* world_;
 };
 
 #endif /* WORLD_H_ */

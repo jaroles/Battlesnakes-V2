@@ -20,7 +20,7 @@
 #include "Teams.h"
 #include "Vector.h"
 
-class Snake : public GameObject, public node::ObjectWrap
+class Snake : public GameObject//, public node::ObjectWrap
 {
 public:
 	Snake();

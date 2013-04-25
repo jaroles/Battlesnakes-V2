@@ -29,6 +29,14 @@ GridController::~GridController()
 	delete world_;
 }
 
+GridController::GridController(Grid& world)
+{
+	world_ = &world;
+	minisnakes_ = new std::vector<MiniSnakes*>();
+	inconSize = world_->getSize();
+}
+
+
 GridController::GridController(Grid& world, std::vector<MiniSnake*>& minisnakes)
 {
 	world_ = &world;

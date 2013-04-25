@@ -77,14 +77,20 @@ function User(socket, playerevent, snakeID)
 
 		snakeDropOffEggs = snake.dropOffEggs;
 		snake.dropOffEggs = function(hatchery) {
+			console.log('snake ', snake.id, ' dropOffEggs');
+			
 			if (snakeDropOffEggs) {
 				snakeDropOffEggs.call(snake, hatchery);
 			}
+			
 			var eggs = this.eggs.splice(0);
 			this.score('dropOffEggs', eggs.length);
+			
             user.sendUpdatePacket();
             user.broadcastPlayerUpdate();
 			user.sendEggPacket();
+			user.broadcastMiniSnakes();
+			
 			return eggs;
 		}
 
@@ -150,10 +156,11 @@ function User(socket, playerevent, snakeID)
         message.collision = true;
         message.collidedWith = obj;
 		socket.emit('message', message);
+		
 		return message;
 	};
 	this.sendUpdatePacket = function() {
-		console.log('sendUpdatePacket: ', snake.id, ' ', snake.position);
+		//console.log('sendUpdatePacket: ', snake.id, ' ', snake.position);
 		//console.log('   ', snake.position.toJSON());
 		
 		var message = snake.toJSON();
@@ -230,7 +237,7 @@ function User(socket, playerevent, snakeID)
 	}
 
 	this.sendPlayerUpdate = function(env) {
-		console.log('sendPlayerUpdate ', user.userID, snake.position);
+		//console.log('sendPlayerUpdate ', user.userID, snake.position);
 		var message = {
 			type: 'playerUpdate',
 			snakes: env
@@ -280,7 +287,16 @@ function User(socket, playerevent, snakeID)
 			snakes: [snake.get()]
 		});
 	}
-
+	
+	this.broadcastMiniSnakes = function(grids) {
+		console.log('broadcastMiniSnakes');
+		
+		var to = (grids) ? grids : this.surroundingGridRooms();
+		this.broadcast(to, {
+			type: 'miniSnakes',
+			minisnakes: [null]
+		});
+	}
 
 	function handleMessage(socket, e)
 	{
@@ -345,8 +361,8 @@ function User(socket, playerevent, snakeID)
 
 		position = position.subtract(data.position);
 		
-		console.log('handleUpdate: ', snake.id, ' ', snake.position, 
-				' ', snake.velocity);
+		/*console.log('handleUpdate: ', snake.id, ' ', snake.position, 
+				' ', snake.velocity);*/
 
 		snake.velocity.set(dVelocity.to);
 		/*if (Math.abs(position.x) < 1 &&

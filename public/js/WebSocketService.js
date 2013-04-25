@@ -144,10 +144,13 @@ var WebSocketService = function(webSocket,game)
 	*/
 	this.eggHandler = function(data) 
 	{	
+		console.log(data);
+		
 		if (data.eggs[0].length)
 		{
 			// User collision with Egg
 			//console.log("EggHandler: adding ", data.eggs[0].length);
+			
 			this.game.userSnake.numSegments = 2+data.eggs.length;
 		}
 		else
@@ -155,9 +158,11 @@ var WebSocketService = function(webSocket,game)
 			// User collision with Hatchery
 			//console.log("EggHandler: Else");
 			
-			/*this.game.userSnake.body.removeSegments();
+			// TODO
+			// Segments initially long and incorrect after returning to hatchery
+			this.game.userSnake.body.removeSegments();
 			this.game.userSnake.body.add(new paper.Point(this.game.userSnake.x,this.game.userSnake.y));
-			this.game.userSnake.numSegments = 2;*/
+			this.game.userSnake.numSegments = 2;
 		}
 		
 		this.game.userSnake.init(); 

@@ -22,7 +22,7 @@ public:
 	CubicBezierCurve();
 	virtual ~CubicBezierCurve();
 
-	static std::vector<std::tr1::shared_ptr<Point> > approximate(const CubicBezierSegment & controlPts, int segments);
+	static std::vector<boost::shared_ptr<Point> > approximate(const CubicBezierSegment & controlPts, int segments);
 };
 
 #endif /* CUBICBEZIERCURVE_H_ */

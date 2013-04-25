@@ -253,7 +253,7 @@ function World()
 				
 				if(user.request)
 				{
-					console.log('user request: ', user.request);
+					//console.log('user request: ', user.request);
 					
 					snake.move(newX, newY);
 					snake.wiggle();

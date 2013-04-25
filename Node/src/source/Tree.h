@@ -15,7 +15,7 @@
 #include "EnvironmentObject.h"
 #include "GameObject.h"
 
-class Tree : public EnvironmentObject, public node::ObjectWrap
+class Tree : public EnvironmentObject//, public node::ObjectWrap
 {
 	public:
 		Tree();

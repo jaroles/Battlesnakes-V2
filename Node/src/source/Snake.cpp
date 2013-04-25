@@ -18,7 +18,7 @@ Snake::Snake()
 
 	this->id = 0;
 	this->name = new std::string("");
-	this->team = Teams::RED;
+	this->team = Teams::kRed;
 	this->color = new std::string("FF0000");
 	this->velocity = new Vector();
 	this->numSegments = 100;
@@ -41,15 +41,18 @@ bool Snake::collide(GameObject & gameObject)
 {
 	bool collide = false;
 
-	if(gameObject.isStationary)
+	if(gameObject.isStationary())
 	{
 		//return gameObject->collide(this);
 		return gameObject.collide(*this);
 	}
 	else
 	{
-		Point* offset = gameObject.position;
-		Vector* velocity = gameObject.velocity;
+		Snake* snake = dynamic_cast<Snake*>(&gameObject);
+		//Point* offset = gameObject.position;
+		//Vector* velocity = gameObject.velocity;
+		Point* offset = snake->position;
+		Vector* velocity = snake->velocity;
 		float angle = velocity->angle();
 		float magnitude = velocity->magnitude();
 

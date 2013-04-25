@@ -17,13 +17,13 @@
 #include "GridSection.h"
 #include "MiniSnake.h"
 
-
 class GridController : public node::ObjectWrap
 {
 	public:
 		GridController();
 		virtual ~GridController();
 
+		GridController(Grid& world);
 		GridController(Grid& world, std::vector<MiniSnake*>& minisnakes);
 
 		void update();

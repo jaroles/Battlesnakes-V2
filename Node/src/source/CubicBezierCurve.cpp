@@ -17,9 +17,9 @@ CubicBezierCurve::~CubicBezierCurve()
 
 }
 
-std::vector<std::tr1::shared_ptr<Point> > CubicBezierCurve::approximate(const CubicBezierSegment & controlPts, int segments)
+std::vector<boost::shared_ptr<Point> > CubicBezierCurve::approximate(const CubicBezierSegment & controlPts, int segments)
 {
-	std::vector<std::tr1::shared_ptr<Point> > previousPts;
+	std::vector<boost::shared_ptr<Point> > previousPts;
 	float step = 1.0 / segments,
 		  t = 0.0;
 
@@ -27,7 +27,7 @@ std::vector<std::tr1::shared_ptr<Point> > CubicBezierCurve::approximate(const Cu
 	{
 		t += step;
 
-		std::tr1::shared_ptr<Point> point(new Point(controlPts.x(t), controlPts.y(t)));
+		boost::shared_ptr<Point> point(new Point(controlPts.x(t), controlPts.y(t)));
 
 		previousPts.push_back(point);
 	}

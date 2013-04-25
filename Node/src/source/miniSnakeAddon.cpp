@@ -264,9 +264,37 @@ Handle<Value> Main(const Arguments& args)
 	return v8::Undefined();
 }
 
+Handle<Value> Init(const Arguments& args)
+{
+	HandleScope scope;
+
+	Grid* grid;
+
+	if(args[0]->IsUndefined() == true)
+	{
+		grid = new Grid();
+	}
+	else
+	{
+		grid = new Grid(args[0]->NumberValue());
+	}
+
+	//extern GridController* gridController = new GridController(*grid);
+
+	return v8::Undefined();
+}
+
+Handle<Value> AddGameObject(const Arguments& args)
+{
+
+}
+
+
 void InitAll(Handle<Object> target)
 {
 	target->Set(String::NewSymbol("main"), FunctionTemplate::New(Main)->GetFunction());
+	target->Set(String::NewSymbol("init"), FunctionTemplate::New(Init)->GetFunction());
+	target->Set(String::NewSymbol("addGameObject"), FunctionTemplate::New(AddGameObject)->GetFunction());
 }
 
 NODE_MODULE(miniSnakeAddon, InitAll)
