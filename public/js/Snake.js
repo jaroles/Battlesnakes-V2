@@ -56,8 +56,8 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 	this.body.strokeWidth = 2*this.scaleSize;
 	
 	var point = new paper.Point(this.x - 200, this.y - 200);
-	var size = new paper.Size(400, 400);
-	this.head = new paper.Path.Rectangle(point, size);
+	// var size = new paper.Size(400, 400);
+	this.head = new paper.Path.Rectangle(point, 380);
 	this.head.fillColor = this.color;
 	this.head.strokeWidth = "1";
 	this.head.strokeColor = this.color;
