@@ -484,6 +484,46 @@ var WebSocketService = function(webSocket,game)
 		}
 	};
 	
+	this.miniSnakesHandler = function(data)
+	{
+		console.log("Got a minisnake Packet!");
+		/* WARNING: We don't have minisnakes set up exactly yet. This is psuedocode for when we do
+		 * You should be able to just switch variable names around though...or pretty close
+		while(data.hasNext())
+		{
+			var inSnake = data.next();
+			var thisSnake = 0;
+			for( var i =0; i < miniSnakeArray.length; i++)
+			{
+				if(inSnake.id == miniSnakeArray[i].id)
+				{
+					thisSnake = miniSnakeArray[i];
+				}
+			}
+			if(thisSnake)
+			{
+				if(state = 0)//for dead
+				{
+					miniSnakeArray.remove(thisSnake);
+				}
+				if(state = 1)//for moving
+				{
+					thisSnake.setPosition(inSnake.position.x, inSnake.position.y);
+					thisSnake.velocity(inSnake.velocity);
+				}
+				if(state = 2)//for attack/dead
+				{
+					miniSnakeArray.remove(thisSnake);
+				}
+			}
+			else
+			{
+				var newSnake = new MiniSnake(inSnake.id, inSnake.position, inSake.team, inSnake.velocity, inSnake.state);
+				miniSnakeArray.add(newSnake);
+			}
+		}
+	*/}
+	
 	
 	/**
 	* Determines which type of message is being sent

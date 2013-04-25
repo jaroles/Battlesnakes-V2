@@ -1,9 +1,10 @@
-function MiniSnake(id, position, team, velocity) 
+function MiniSnake(id, position, team, velocity, state) 
 {
 	this.id = id;
 
 	this.team = team;
 	this.velocity = velocity;
+	this.state = state;
 	
 	this.position = new Point(position.x, position.y);
 
@@ -21,5 +22,10 @@ function MiniSnake(id, position, team, velocity)
 	this.setVelocity = function(velo)
 	{
 		this.velocity = velo;
+	};
+	
+	this.setState= function(stat)
+	{
+		this.state = stat;
 	};
 }
