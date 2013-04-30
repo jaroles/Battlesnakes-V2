@@ -489,40 +489,35 @@ var WebSocketService = function(webSocket,game)
 		console.log("Got a minisnake Packet!");
 		/* WARNING: We don't have minisnakes set up exactly yet. This is psuedocode for when we do
 		 * You should be able to just switch variable names around though...or pretty close
-		while(data.hasNext())
+		 */
+		miniSnakeArray = this.game.miniSnake;
+		for( var i =0; i < miniSnakeArray.length; i++)
 		{
-			var inSnake = data.next();
+			var inSnake = data.miniSnakes[i];
 			var thisSnake = 0;
-			for( var i =0; i < miniSnakeArray.length; i++)
+			if(inSnake.id == miniSnakeArray[i].id)
 			{
-				if(inSnake.id == miniSnakeArray[i].id)
-				{
-					thisSnake = miniSnakeArray[i];
-				}
-			}
-			if(thisSnake)
-			{
-				if(state = 0)//for dead
-				{
-					miniSnakeArray.remove(thisSnake);
-				}
-				if(state = 1)//for moving
-				{
-					thisSnake.setPosition(inSnake.position.x, inSnake.position.y);
-					thisSnake.velocity(inSnake.velocity);
-				}
-				if(state = 2)//for attack/dead
-				{
-					miniSnakeArray.remove(thisSnake);
-				}
-			}
-			else
-			{
-				var newSnake = new MiniSnake(inSnake.id, inSnake.position, inSake.team, inSnake.velocity, inSnake.state);
-				miniSnakeArray.add(newSnake);
+				thisSnake = miniSnakeArray[i];
 			}
 		}
-	*/}
+		if(thisSnake)
+		{
+			if(state == 0 || state == 2)//for dead or attack
+			{
+					miniSnakeArray.splice(miniSnakeArray.indexOf(thisSnake), 1);
+			}
+			if(state == 1)//for moving
+			{
+				thisSnake.setPosition(inSnake.position.x, inSnake.position.y);
+				thisSnake.velocity(inSnake.velocity);
+			}
+		}
+		else
+		{
+			var newSnake = new MiniSnake(inSnake.id, inSnake.position, inSake.team, inSnake.velocity, inSnake.state);
+			miniSnakeArray.push(newSnake);
+		}
+	}
 	
 	
 	/**
