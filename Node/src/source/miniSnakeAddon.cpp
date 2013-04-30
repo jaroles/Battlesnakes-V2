@@ -13,6 +13,7 @@
 #include <node.h>
 #include <v8.h>
 
+#include "GameObject.h"
 #include "Grid.h"
 #include "GridController.h"
 #include "MiniSnake.h"
@@ -284,17 +285,22 @@ Handle<Value> Init(const Arguments& args)
 	return v8::Undefined();
 }
 
-Handle<Value> AddGameObject(const Arguments& args)
+/*Handle<Value> AddGameObject(const Arguments& args)
 {
 	return v8::Undefined();
-}
-
+}*/
 
 void InitAll(Handle<Object> target)
 {
+	Point::Init(target);
+	EnvironmentObject::Init(target);
+	GridController::Init(target);
+	MiniSnake::Init(target);
+	Vector::Init(target);
+
 	target->Set(String::NewSymbol("main"), FunctionTemplate::New(Main)->GetFunction());
 	target->Set(String::NewSymbol("init"), FunctionTemplate::New(Init)->GetFunction());
-	target->Set(String::NewSymbol("addGameObject"), FunctionTemplate::New(AddGameObject)->GetFunction());
+	//target->Set(String::NewSymbol("addGameObject"), FunctionTemplate::New(AddGameObject)->GetFunction());
 }
 
 NODE_MODULE(miniSnakeAddon, InitAll)

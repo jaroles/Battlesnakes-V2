@@ -228,7 +228,13 @@ void GridController::Init(v8::Handle<v8::Object> target)
 
 v8::Handle<v8::Value> GridController::nodeNew(const v8::Arguments& args)
 {
-	return v8::Undefined();
+	v8::HandleScope scope;
+
+	GridController* gridController = new GridController();
+
+	gridController->Wrap(args.This());
+
+	return args.This();
 }
 
 v8::Handle<v8::Value> GridController::nodeUpdate(const v8::Arguments& args)

@@ -10,9 +10,11 @@
 
 #include "Grid.h"
 
+#define DEFAULT_SIZE 3
+
 Grid::Grid()
 {
-	size_ = 20;
+	size_ = DEFAULT_SIZE; // Default size of Grid
 	grid_ = new std::vector<std::vector<GridSection*> >();
 
 	// Grid made backwards to compensate for grid starting (0,0) from bottom left
@@ -26,7 +28,7 @@ Grid::Grid()
 	}
 
 	// DEBUG
-	std::cout << "   Populating world with objects... " << std::endl;
+	/*std::cout << "   Populating world with objects... " << std::endl;
 
 	blueHatchery_ = new Hatchery(Point(200, 200), Teams::kBlue);
 	redHatchery_ = new Hatchery(Point(1720, 1720), Teams::kRed);
@@ -80,7 +82,7 @@ Grid::Grid()
 				                       "{" << xo3 << "," << xy3 << "}}]],";
 
 		this->addObject(*object);
-	}
+	}*/
 }
 
 Grid::~Grid()

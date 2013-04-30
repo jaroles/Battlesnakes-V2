@@ -58,7 +58,30 @@ void EnvironmentObject::Init(v8::Handle<v8::Object> target)
 
 v8::Handle<v8::Value> EnvironmentObject::nodeNew(const v8::Arguments& args)
 {
-	return v8::Undefined();
+	v8::HandleScope scope;
+
+	int type = args[0]->NumberValue();
+	std::string name;
+	Point* position = ObjectWrap::Unwrap<Point>(args[1]->ToObject());
+
+	switch (type)
+	{
+		case 1: 
+			name = "bush";
+			break;
+		case 2:
+			name = "tree";
+			break;
+		case 3:
+			name = "rock";
+			break;
+	}
+
+	EnvironmentObject* obj = new EnvironmentObject(name, *position);
+
+	obj->Wrap(args.This());
+
+	return args.This();
 }
 
 v8::Handle<v8::Value> EnvironmentObject::nodeCollide(const v8::Arguments& args)

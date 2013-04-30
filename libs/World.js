@@ -12,6 +12,7 @@ var MiniSnake = require('./all/MiniSnake');
 var Teams = require('./all/Teams');
 var Point = require('./all/Point');
 var Debug = require('./Debug');
+var MiniSnakeAddon = require('./node/MiniSnakeAddon');
 var d = new Debug();
 var dt = 0;
 
@@ -19,6 +20,7 @@ var dt = 0;
 function World()
 {
 	var grid;
+	var msGrid; // MiniSnake Grid Controller
 	var a = 0;
 	var storedTime = (new Date()).getTime();
 	var scale = 25;
@@ -28,6 +30,9 @@ function World()
 	{
 		grid = new Grid();
 		grid.init();
+		
+		// Create the MiniSnake Grid
+		msGrid = new MiniSnakeAddon.GridController();
 
 		InitEnvironment();
 	};
@@ -135,11 +140,12 @@ function World()
 			var type = Math.floor((Math.random() * num)),
 				obj = new objects[type];
 			grid.addGameObject(obj);
-			FindNewPosition(obj, grid)
+			
+			FindNewPosition(obj, type, grid)
 		}
 	};
 
-	function FindNewPosition(obj, g) {
+	function FindNewPosition(obj, type, g) {
 		var gridsObj = g.getGameObjects();
 		var gb = grid.getBoundsOfGrid(g);
 		var found = false;
@@ -176,6 +182,11 @@ function World()
 				}
 			}
 		}
+		
+		// Create an environment object for MiniSnakes
+		var position = new MiniSnakeAddon.Point(x, y);
+		var msObj = new MiniSnakeAddon.EnvironmentObject(type, position);
+		msGrid.addObject(msObj);
 	};
 
 	function GetHatcheryGrid(team) {
