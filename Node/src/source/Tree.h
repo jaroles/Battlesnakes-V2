@@ -5,6 +5,8 @@
  *      Author: Kevin Wegrowski
  */
 
+#define BUILDING_NODE_EXTENSION
+
 #ifndef TREE_H_
 #define TREE_H_
 

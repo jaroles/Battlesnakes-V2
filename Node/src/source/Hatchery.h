@@ -5,6 +5,8 @@
  *      Author: Kevin Wegrowski
  */
 
+#define BUILDING_NODE_EXTENSION
+
 #ifndef HATCHERY_H_
 #define HATCHERY_H_
 

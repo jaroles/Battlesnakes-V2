@@ -5,6 +5,8 @@
  *      Author: Kevin Wegrowski
  */
 
+#define BUILDING_NODE_EXTENSION
+
 #ifndef BUSH_H_
 #define BUSH_H_
 
@@ -15,6 +17,8 @@
 #include "EnvironmentObject.h"
 #include "GameObject.h"
 
+class Point;
+
 class Bush : public EnvironmentObject//, public node::ObjectWrap
 {
 	public:
@@ -24,7 +28,7 @@ class Bush : public EnvironmentObject//, public node::ObjectWrap
 
 		bool collide(GameObject& gameObject);
 
-	// Node Implementation
+		// Node Implementation
 		static void Init(v8::Handle<v8::Object> target);
 
 	private:

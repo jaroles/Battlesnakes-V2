@@ -5,7 +5,7 @@
  *      Author: Kevin Wegrowski
  */
 
-#define BUILDING_NODE_MODULE
+//#define BUILDING_NODE_MODULE
 
 #include "Bush.h"
 

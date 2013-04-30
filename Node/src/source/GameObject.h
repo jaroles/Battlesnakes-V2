@@ -5,6 +5,8 @@
  *      Author: Jure Jumalon
  */
 
+#define BUILDING_NODE_EXTENSION
+
 #ifndef GAMEOBJECT_H_
 #define GAMEOBJECT_H_
 

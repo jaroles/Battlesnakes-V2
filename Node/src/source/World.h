@@ -5,6 +5,8 @@
  *      Author: Jure Jumalon
  */
 
+#define BUILDING_NODE_EXTENSION
+
 #ifndef WORLD_H_
 #define WORLD_H_
 

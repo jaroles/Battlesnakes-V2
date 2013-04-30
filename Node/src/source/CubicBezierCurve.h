@@ -5,6 +5,8 @@
  *      Author: Jure Jumalon
  */
 
+#define BUILDING_NODE_EXTENSION
+
 #ifndef CUBICBEZIERCURVE_H_
 #define CUBICBEZIERCURVE_H_
 

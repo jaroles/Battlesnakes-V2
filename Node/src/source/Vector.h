@@ -5,6 +5,8 @@
  *      Author: Jure Jumalon
  */
 
+#define BUILDING_NODE_EXTENSION
+
 #ifndef VECTOR_H_
 #define VECTOR_H_
 

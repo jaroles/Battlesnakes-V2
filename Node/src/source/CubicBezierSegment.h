@@ -5,6 +5,8 @@
  *      Author: Kevin Wegrowski
  */
 
+#define BUILDING_NODE_EXTENSION
+
 #ifndef CUBICBEZIERSEGMENT_H_
 #define CUBICBEZIERSEGMENT_H_
 

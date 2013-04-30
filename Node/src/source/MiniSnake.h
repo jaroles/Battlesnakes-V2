@@ -5,6 +5,8 @@
  *      Author: Jure Jumalon
  */
 
+#define BUILDING_NODE_EXTENSION
+
 #ifndef MINISNAKE_H_
 #define MINISNAKE_H_
 
@@ -30,14 +32,14 @@
 class GameObject;
 class Grid;
 
-struct IntersectData
-{
-	Point intersect_;
-	float steer_;
-};
-
 class MiniSnake : public GameObject
 {
+	struct IntersectData
+	{
+		Point intersect_;
+		float steer_;
+	};
+
 public:
 	static const float kZoneRadius, kMaxVelocity;
 	static const int kAttackState, kDeadState, kMoveState;
@@ -73,9 +75,9 @@ private:
 	IntersectData collisionTrajectory(const EnvironmentObject& object) const;
 
 	const std::vector<GameObject*>* getZone(const std::vector<GameObject*>& grid) const; //TODO
-	const std::vector<const EnvironmentObject*> getEnvironment() const; // TODO
-	const std::vector<const MiniSnake*> getAllies() const;
-	const std::vector<const MiniSnake*> getEnemies() const;
+	//const std::vector<const EnvironmentObject*> getEnvironment() const; // DEPRECATED
+	//const std::vector<const MiniSnake*> getAllies() const; // DEPRECATED
+	//const std::vector<const MiniSnake*> getEnemies() const; // DEPRECATED
 
 	void setState(int state);
 

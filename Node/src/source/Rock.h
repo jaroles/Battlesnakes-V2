@@ -5,6 +5,8 @@
  *      Author: Kevin Wegrowski
  */
 
+#define BUILDING_NODE_EXTENSION
+
 #ifndef ROCK_H_
 #define ROCK_H_
 

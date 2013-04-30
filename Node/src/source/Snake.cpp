@@ -5,7 +5,7 @@
  *      Author: Jure Jumalon
  */
 
-#define BUILDING_NODE_MODULE
+#define BUILDING_NODE_EXTENSION
 
 #include "Snake.h"
 
@@ -99,7 +99,7 @@ void Snake::Init(v8::Handle<v8::Object> target)
 	tpl->SetClassName(v8::String::NewSymbol("Snake"));
 	tpl->InstanceTemplate()->SetInternalFieldCount(1);
 	// Prototype functions
-	tpl->PrototypeTemplate()->Set(v8::String::NewSymbol("collide"), v8::FunctionTemplate::New(nodeCollide)->GetFunction());
+	//tpl->PrototypeTemplate()->Set(v8::String::NewSymbol("collide"), v8::FunctionTemplate::New(nodeCollide)->GetFunction());
 	tpl->PrototypeTemplate()->Set(v8::String::NewSymbol("changeTeam"), v8::FunctionTemplate::New(nodeChangeTeam)->GetFunction());
 
 

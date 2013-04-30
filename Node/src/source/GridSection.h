@@ -5,6 +5,8 @@
  *      Author: Kevin
  */
 
+#define BUILDING_NODE_EXTENSION
+
 #ifndef GRIDSECTION_H_
 #define GRIDSECTION_H_
 

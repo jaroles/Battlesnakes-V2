@@ -5,6 +5,8 @@
  *      Author: Jure Jumalon
  */
 
+#define BUILDING_NODE_EXTENSION
+
 #include "MiniSnake.h"
 
 const float MiniSnake::kZoneRadius = 50;
@@ -442,9 +444,10 @@ const std::vector<GameObject*>* MiniSnake::getZone(const std::vector<GameObject*
 	return zone;
 }
 
+// DEPRECATED
 // Returns a vector array of environment objects within the minisnake's
 // zone radius.
-const std::vector<const EnvironmentObject*> MiniSnake::getEnvironment() const
+/*const std::vector<const EnvironmentObject*> MiniSnake::getEnvironment() const
 {
 	// TODO
 	// * Sort environment array by distance from minisnake
@@ -466,11 +469,12 @@ const std::vector<const EnvironmentObject*> MiniSnake::getEnvironment() const
 	}
 
 	return environment;
-}
+}*/
 
+// DEPRECATED
 // Returns a vector array of ally minisnakes within the minisnake's
 // zone radius.
-const std::vector<const MiniSnake*> MiniSnake::getAllies() const
+/*const std::vector<const MiniSnake*> MiniSnake::getAllies() const
 {
 	const std::vector<const MiniSnake*>*
 			gridAllies = World::getMiniSnakes(team_);
@@ -490,11 +494,12 @@ const std::vector<const MiniSnake*> MiniSnake::getAllies() const
 	}
 
 	return allies;
-}
+}*/
 
+// DEPRECATED
 // Returns a vector array of enemy minisnakes within the minisnake's
 // zone radius.
-const std::vector<const MiniSnake*> MiniSnake::getEnemies() const
+/*const std::vector<const MiniSnake*> MiniSnake::getEnemies() const
 {
 	const std::vector<const MiniSnake*>*
 			gridEnemies = World::getMiniSnakes(Teams::enemyTeam(team_));
@@ -514,7 +519,7 @@ const std::vector<const MiniSnake*> MiniSnake::getEnemies() const
 	}
 
 	return enemies;
-}
+}*/
 
 // Returns a vector that will attempt to direct the minisnake away from the
 // nearest environment object on the minisnake's current trajectory.
@@ -611,7 +616,7 @@ Vector MiniSnake::obstacleAvoidance(const std::vector<const EnvironmentObject*>&
 // If there is no collision course with any environment object, the current
 // position of the minisnake is returned in the intersect point and 0 is
 // returned in the steer value.
-IntersectData
+MiniSnake::IntersectData
 		MiniSnake::collisionTrajectory(const EnvironmentObject& object) const
 {
 	IntersectData data;

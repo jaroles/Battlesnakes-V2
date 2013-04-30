@@ -5,6 +5,8 @@
  *      Author: Kevin Wegrowski
  */
 
+#define BUILDING_NODE_EXTENSION
+
 #ifndef GRIDCONTROLLER_H_
 #define GRIDCONTROLLER_H_
 

@@ -5,6 +5,8 @@
  *      Author: Jure Jumalon
  */
 
+#define BUILDING_NODE_EXTENSION
+
 #ifndef ENVIRONMENTOBJECT_H_
 #define ENVIRONMENTOBJECT_H_
 
