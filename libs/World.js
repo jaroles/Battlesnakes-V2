@@ -8,6 +8,7 @@ var Rock = require('./all/Environment/Rock');
 var Tree = require('./all/Environment/Tree');
 var GameObject = require('./all/GameObject');
 var Snake = require('./all/Snake');
+var MiniSnake = require('./all/MiniSnake');
 var Teams = require('./all/Teams');
 var Point = require('./all/Point');
 var Debug = require('./Debug');
