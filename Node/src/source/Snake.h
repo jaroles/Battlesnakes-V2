@@ -8,7 +8,8 @@
 #ifndef SNAKE_H_
 #define SNAKE_H_
 
-#include <boost/tr1/memory.hpp>
+//#include <boost/tr1/memory.hpp>
+#include <memory>
 #include <iterator>
 #include <node.h>
 #include <string>

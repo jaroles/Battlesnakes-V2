@@ -8,7 +8,9 @@
 #ifndef CUBICBEZIERCURVE_H_
 #define CUBICBEZIERCURVE_H_
 
-#include <boost/tr1/memory.hpp>
+//#include <boost/tr1/memory.hpp>
+#include <memory>
+#include <boost/shared_ptr.hpp>
 #include <vector>
 
 #include "CubicBezierSegment.h"

@@ -153,8 +153,8 @@ v8::Handle<v8::Value> Point::nodeNew(const v8::Arguments& args)
 	//Point* obj = new Point();
 
 	// Set point coordinates to function arguments
-	float x = args[0]->IsUndefined() ? 0 : args[0]->NumberValue();
-	float y = args[1]->IsUndefined() ? 0 : args[1]->NumberValue();
+	float x = args[0]->IsUndefined() ? 0.f : (float)args[0]->NumberValue();
+	float y = args[1]->IsUndefined() ? 0.f : (float)args[1]->NumberValue();
 
 	Point* obj = new Point(x, y);
 

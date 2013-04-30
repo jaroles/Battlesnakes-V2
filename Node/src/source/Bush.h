@@ -15,7 +15,7 @@
 #include "EnvironmentObject.h"
 #include "GameObject.h"
 
-class Bush : public EnvironmentObject, public node::ObjectWrap
+class Bush : public EnvironmentObject//, public node::ObjectWrap
 {
 	public:
 		Bush();

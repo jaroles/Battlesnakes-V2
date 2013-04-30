@@ -13,10 +13,10 @@ using namespace std;
 
 int main()
 {
-	Point* from (new Point(1.1, 1.2));
-	Point* c1 (new Point(2.1, 2.2));
-	Point* c2 (new Point(3.1, 3.2));
-	Point* to (new Point(4.1, 4.2));
+	Point* from (new Point(1.1f, 1.2f));
+	Point* c1 (new Point(2.1f, 2.2f));
+	Point* c2 (new Point(3.1f, 3.2f));
+	Point* to (new Point(4.1f, 4.2f));
 
 	CubicBezierSegment* cbs1 =  new CubicBezierSegment(*from, *c1, *c2, *to);
 

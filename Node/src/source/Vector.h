@@ -11,8 +11,10 @@
 #include <cmath>
 #include <iostream>
 #include <node.h>
-#include <boost/tr1/memory.hpp>
+//#include <boost/tr1/memory.hpp>
 //#include <boost/shared_ptr.hpp>
+#include <memory>
+#include <boost/shared_ptr.hpp>
 #include "Point.h"
 
 class Vector : public node::ObjectWrap

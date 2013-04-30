@@ -12,10 +12,14 @@
 #include <math.h>
 #include <memory>
 #include <node.h>
-#include <boost/tr1/memory.hpp>
+//#include <boost/tr1/memory.hpp>
+#include <memory>
+#include <boost/shared_ptr.hpp>
 #include <vector>
 
 //#include "../../lib/node/src/node.h"
+
+#define M_PI 3.1415926535f
 
 class Point : public node::ObjectWrap
 {

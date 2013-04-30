@@ -9,7 +9,8 @@
 #define CUBICBEZIERSEGMENT_H_
 
 #include <cmath>
-#include <boost/tr1/memory.hpp>
+//#include <boost/tr1/memory.hpp>
+#include <memory>
 #include <iostream>
 #include <node.h>
 #include <stddef.h>

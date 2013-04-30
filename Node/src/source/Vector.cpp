@@ -35,8 +35,8 @@ Vector::Vector(const Point& to, float magnitude)
 {
 	Vector direction(to);
 
-	float x = magnitude * cos(direction.angle() * M_PI / 180);
-	float y = magnitude * sin(direction.angle() * M_PI / 180);
+	float x = magnitude * cos(direction.angle() * M_PI / 180.f);
+	float y = magnitude * sin(direction.angle() * M_PI / 180.f);
 
 	to_ = new Point(x, y);
 }

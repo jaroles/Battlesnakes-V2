@@ -13,7 +13,7 @@
 #include "EnvironmentObject.h"
 #include "GameObject.h"
 
-class Rock : public EnvironmentObject, public node::ObjectWrap
+class Rock : public EnvironmentObject//, public node::ObjectWrap
 {
 	public:
 

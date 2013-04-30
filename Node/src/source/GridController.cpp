@@ -32,7 +32,7 @@ GridController::~GridController()
 GridController::GridController(Grid& world)
 {
 	world_ = &world;
-	minisnakes_ = new std::vector<MiniSnakes*>();
+	minisnakes_ = new std::vector<MiniSnake*>();
 	inconSize = world_->getSize();
 }
 

@@ -286,7 +286,7 @@ Handle<Value> Init(const Arguments& args)
 
 Handle<Value> AddGameObject(const Arguments& args)
 {
-
+	return v8::Undefined();
 }
 
 

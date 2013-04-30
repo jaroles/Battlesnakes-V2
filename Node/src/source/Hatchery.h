@@ -16,7 +16,7 @@
 #include "GameObject.h"
 #include "Teams.h"
 
-class Hatchery : public EnvironmentObject, public node::ObjectWrap
+class Hatchery : public EnvironmentObject//, public node::ObjectWrap
 {
 	public:
 		Hatchery();
