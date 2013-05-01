@@ -12,7 +12,7 @@ var MiniSnake = require('./all/MiniSnake');
 var Teams = require('./all/Teams');
 var Point = require('./all/Point');
 var Debug = require('./Debug');
-var MiniSnakeAddon = require('./node/MiniSnakeAddon');
+var MiniSnakeAddon = require('./node/x64/Debug/MiniSnakeAddon');
 var d = new Debug();
 var dt = 0;
 

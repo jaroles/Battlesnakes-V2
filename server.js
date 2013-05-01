@@ -155,7 +155,8 @@ this.StartGame();
 
 function update() {
 	world.update.call(world, users);
-	process.nextTick(update);
+	//process.nextTick(update); // node 0.8
+	setImmediate(update); // node 0.10
 }
 
 update();
