@@ -7,8 +7,8 @@
 
 #include "Teams.h"
 
-const int Teams::kBlue = 0;
-const int Teams::kRed = 1;
+const int Teams::kBlue = 1;
+const int Teams::kRed = 0;
 
 Teams::Teams()
 {

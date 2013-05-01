@@ -39,6 +39,8 @@ class GridController : public node::ObjectWrap
 		const MiniSnake* getMiniSnake(int id) const;
 		const std::vector<MiniSnake*>* getMiniSnakes() const;
 
+		static int snakeID;
+
 		// Node Implementation
 		static void Init(v8::Handle<v8::Object> target);
 

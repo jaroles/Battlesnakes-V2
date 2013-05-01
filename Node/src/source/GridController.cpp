@@ -9,6 +9,8 @@
 
 #include "GridController.h"
 
+int GridController::snakeID = 10000;
+
 GridController::GridController()
 {
 	world_ = new Grid();
@@ -249,9 +251,12 @@ v8::Handle<v8::Value> GridController::nodeUpdate(const v8::Arguments& args)
 v8::Handle<v8::Value> GridController::nodeSpawnMiniSnake(const v8::Arguments& args)
 {
 	GridController* gridController = ObjectWrap::Unwrap<GridController>(args.This());
-	MiniSnake* snake = ObjectWrap::Unwrap<MiniSnake>(args[0]->ToObject());
 
-	gridController->addObject(*snake);
+	//MiniSnake* snake = ObjectWrap::Unwrap<MiniSnake>(args[0]->ToObject());
+	//gridController->addObject(*snake);
+
+	int team = args[0]->NumberValue();
+	gridController->spawnMiniSnake(snakeID++, team);
 
 	return v8::Undefined();
 }

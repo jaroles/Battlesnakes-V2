@@ -20,7 +20,7 @@ var dt = 0;
 function World()
 {
 	var grid;
-	var msGrid; // MiniSnake Grid Controller
+	var miniSnakeController; // MiniSnake Grid Controller
 	var a = 0;
 	var storedTime = (new Date()).getTime();
 	var scale = 25;
@@ -31,8 +31,8 @@ function World()
 		grid = new Grid();
 		grid.init();
 		
-		// Create the MiniSnake Grid
-		msGrid = new MiniSnakeAddon.GridController();
+		// Create the MiniSnake Controller
+		miniSnakeController = new MiniSnakeAddon.GridController();
 
 		InitEnvironment();
 	};
@@ -47,7 +47,13 @@ function World()
 		g.hasHatchery = Teams.Red;
 		bounds = grid.getBoundsOfGrid(g);
 		g.gameObjects[0].position.set(bounds.x + bounds.width/2, bounds.y + bounds.height/2);
-
+		
+		// Add Red Hatchery to MiniSnakes
+		var redHatchPoint = new MiniSnakeAddon.Point(
+				bounds.x + bounds.width/2, 
+				bounds.y + bounds.height/2);
+		var redHatchery = new MiniSnakeAddon.Hatchery(redHatchPoint, 0);
+		miniSnakeController.addObject(redHatchery);
 
 		g = grid.getGrid(2, 1);
 		g.addGameObject(new Hatchery(1));
@@ -55,6 +61,13 @@ function World()
 		bounds = grid.getBoundsOfGrid(g);
 		g.gameObjects[0].position.set(bounds.x + bounds.width/2, bounds.y + bounds.height/2);
 
+		// Add Blue Hatchery to MiniSnakes
+		var blueHatchPoint = new MiniSnakeAddon.Point(
+				bounds.x + bounds.width/2, 
+				bounds.y + bounds.height/2);
+		var blueHatchery = new MiniSnakeAddon.Hatchery(blueHatchPoint, 1);
+		miniSnakeController.addObject(blueHatchery);
+		
 		// Surround the world with rocks
 		console.log("Surrounding world with rocks ...");
 		SurroundWorld();
@@ -186,7 +199,7 @@ function World()
 		// Create an environment object for MiniSnakes
 		var position = new MiniSnakeAddon.Point(x, y);
 		var msObj = new MiniSnakeAddon.EnvironmentObject(type, position);
-		msGrid.addObject(msObj);
+		miniSnakeController.addObject(msObj);
 	};
 
 	function GetHatcheryGrid(team) {
@@ -250,6 +263,8 @@ function World()
 		// if (elapsedTime !== 0) {
 			storedTime = curTime;
 		// }
+			
+			miniSnakeController.update(); // Update MiniSnakes
 
 			for (var u = 0, U = users.length; u < U; ++u) 
 			{

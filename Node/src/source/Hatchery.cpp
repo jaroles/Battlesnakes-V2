@@ -58,7 +58,16 @@ void Hatchery::Init(v8::Handle<v8::Object> target)
 
 v8::Handle<v8::Value> Hatchery::nodeNew(const v8::Arguments& args)
 {
-	return v8::Undefined();
+	v8::HandleScope scope;
+
+	Point* position = ObjectWrap::Unwrap<Point>(args[0]->ToObject());
+	int team = args[1]->NumberValue();
+	
+	Hatchery* hatchery = new Hatchery(*position, team);
+
+	hatchery->Wrap(args.This());
+
+	return args.This();
 }
 
 v8::Handle<v8::Value> Hatchery::nodeCollide(const v8::Arguments& args)

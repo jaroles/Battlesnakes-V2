@@ -292,6 +292,7 @@ Handle<Value> Init(const Arguments& args)
 
 void InitAll(Handle<Object> target)
 {
+	Hatchery::Init(target);
 	Point::Init(target);
 	EnvironmentObject::Init(target);
 	GridController::Init(target);
