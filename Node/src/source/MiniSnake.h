@@ -83,6 +83,7 @@ private:
 
 	// Node Implementation
 	static v8::Handle<v8::Value> nodeNew(const v8::Arguments& args);
+	static v8::Handle<v8::Value> nodeGetID(const v8::Arguments& args);
 	static v8::Handle<v8::Value> nodeGetTeam(const v8::Arguments& args);
 	static v8::Handle<v8::Value> nodeGetState(const v8::Arguments& args);
 	static v8::Handle<v8::Value> nodeGetVelocity(const v8::Arguments& args);

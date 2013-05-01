@@ -27,7 +27,24 @@ GameObject::GameObject(const std::string& type, const Point& position)
 	}
 	if(type_->compare("rock") == 0 || type_->compare("tree") == 0 || type_->compare("bush") == 0 || type_->compare("hatchery") == 0)
 	{
-		collidable_ = type.compare("bush") == 0 ? false : true;
+		collidable_ = type_->compare("bush") == 0 ? false : true;
+		stationary_ = true;
+	}
+}
+
+GameObject::GameObject(const GameObject& object)
+{
+	type_ = new std::string(*object.type_);
+	position_ = new Point(*object.position_);
+
+	if(type_->compare("minisnake") == 0)
+	{
+		collidable_ = true;
+		stationary_ = false;
+	}
+	if(type_->compare("rock") == 0 || type_->compare("tree") == 0 || type_->compare("bush") == 0 || type_->compare("hatchery") == 0)
+	{
+		collidable_ = type_->compare("bush") == 0 ? false : true;
 		stationary_ = true;
 	}
 }

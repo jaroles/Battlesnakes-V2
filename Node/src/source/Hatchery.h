@@ -23,6 +23,7 @@ class Hatchery : public EnvironmentObject//, public node::ObjectWrap
 	public:
 		Hatchery();
 		Hatchery(const Point& position, int team);
+		Hatchery(const Hatchery& hatch);
 		virtual ~Hatchery();
 
 		bool collide(GameObject& gameObject);

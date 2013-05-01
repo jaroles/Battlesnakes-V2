@@ -197,9 +197,11 @@ function World()
 		}
 		
 		// Create an environment object for MiniSnakes
-		var position = new MiniSnakeAddon.Point(x, y);
-		var msObj = new MiniSnakeAddon.EnvironmentObject(type, position);
-		miniSnakeController.addObject(msObj);
+		if(found && typeof type == 'number') {
+			var position = new MiniSnakeAddon.Point(x, y);
+			var msObj = new MiniSnakeAddon.EnvironmentObject(type, position);
+			miniSnakeController.addObject(msObj);
+		}
 	};
 
 	function GetHatcheryGrid(team) {
@@ -246,7 +248,7 @@ function World()
 				break;
 		}
 		g.addGameObject(snake);
-		FindNewPosition(snake, g);
+		FindNewPosition(snake, 'snake', g);
     };
 
 	this.GetCurrentSize = function() {
@@ -309,14 +311,46 @@ function World()
 								var newEgg = new Egg;
 								gridSec = grid.getRandomGrid();
 								gridSec.addGameObject(newEgg);
-								FindNewPosition(newEgg, gridSec);
+								FindNewPosition(newEgg, 'egg', gridSec);
 							}
+							
+							// If collision with Hatchery, spawn MiniSnake
+							// TODO Check if player has eggs
+							if(collision == 'hatchery0')
+							{
+								console.log('before spawn');
+								//miniSnakeController.spawnMiniSnake(0);
+								console.log('after spawn');
+								
+								collision = true;
+								colObj = gObj;
+								break;
+								
+								//var miniSnakes = miniSnakeController.getMiniSnakes();
+								//console.log(miniSnake[0].getID());
+							}
+							else if(collision == 'hatchery1')
+							{
+								console.log('before spawn');
+								//miniSnakeController.spawnMiniSnake(0);
+								console.log('after spawn');
+								
+								collision = true;
+								colObj = gObj;
+								break;
+								
+								//var miniSnakes = miniSnakeController.getMiniSnakes();
+								//console.log(miniSnake[0].getID());
+							}
+							
 							if (collision || collision === 0) {
+								console.log(snake.id, collision);
 		                        colObj = gObj;
 								break;
 							}
 						}
 					}
+					
 					if (typeof collision == 'number') {
 						//console.log('collision == number')
 						user.sendCollisionPacket(colObj);

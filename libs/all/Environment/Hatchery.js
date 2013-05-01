@@ -36,7 +36,8 @@ Hatchery.prototype.extend({
 			if (col && gameObject.hasEggs()) {
 				gameObject.dropOffEggs(this);
 			}
-			return col;
+			var toReturn = (col) ? 'hatchery' + this.color : false;
+			return toReturn;
 		}
 	}
 

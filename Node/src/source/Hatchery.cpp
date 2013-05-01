@@ -17,6 +17,11 @@ Hatchery::Hatchery(const Point& position, int team) : EnvironmentObject(std::str
 	team_ = team;
 }
 
+Hatchery::Hatchery(const Hatchery& hatchery) : EnvironmentObject(std::string("hatchery"), *hatchery.position_)
+{
+	team_ = hatchery.team_;
+}
+
 Hatchery::~Hatchery()
 {
 }

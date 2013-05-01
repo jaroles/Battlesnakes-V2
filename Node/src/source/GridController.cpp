@@ -69,7 +69,11 @@ void GridController::update()
 		int xg = floor( x / 96 ); // getting the specific GridSection row of the MiniSnake
 		int yg = floor( y / 96 ); // getting the specific GridSection column of the MiniSnake
 
+		std::cout << "Initiate MiniSnake " << snakeP->getID() << " update..." << std::endl;
+
 		(*snakeIt)->update(); // update the snake's location
+
+		std::cout << "MiniSnake " << snakeP->getID() << " update successful" << std::endl;
 
 		int xgn = (*snakeIt)->getPosition().get()[0] / 96; // MiniSnake's new x to check against the old x
 		int ygn = (*snakeIt)->getPosition().get()[1] / 96; // MiniSnake's new y to check against the old y
@@ -114,7 +118,7 @@ void GridController::spawnMiniSnake(int id, int team)
 	int x = (rand() % EnvironmentObject::kHatcherySize) + xh;
 	int y = (rand() % EnvironmentObject::kHatcherySize) + yh - EnvironmentObject::kHatcherySize;
 
-	minisnakes_->push_back(new MiniSnake(id, Point(x, y), Teams::kBlue, *world_));
+	minisnakes_->push_back(new MiniSnake(id, Point(x, y), team, *world_));
 }
 
 void GridController::addObject(GameObject& object)
@@ -266,7 +270,10 @@ v8::Handle<v8::Value> GridController::nodeAddObject(const v8::Arguments& args)
 	GridController* gridController = ObjectWrap::Unwrap<GridController>(args.This());
 	GameObject* object = ObjectWrap::Unwrap<GameObject>(args[0]->ToObject());
 
-	gridController->addObject(*object);
+	// Create a new Object to stay in memory
+	GameObject* createObj = new GameObject(*object);
+
+	gridController->addObject(*createObj);
 
 	return v8::Undefined();
 }

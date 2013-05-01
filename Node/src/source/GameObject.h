@@ -24,6 +24,7 @@ public:
 		: collidable_(true), stationary_(true) {}
 	virtual ~GameObject();
 	GameObject(const std::string& type, const Point& position);
+	GameObject(const GameObject& object);
 
 	virtual bool collide(GameObject& object) = 0;
 

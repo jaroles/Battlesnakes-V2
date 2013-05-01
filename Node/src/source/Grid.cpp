@@ -134,7 +134,26 @@ int Grid::getSize() const
 void Grid::addObject(GameObject& object)
 {
 	GridSection* gridSection = this->getGridSection(object.getPosition());
-	gridSection->addGameObject(object);
+
+	if(object.getType().compare("hatchery") == 0)
+	{
+		Hatchery* hatchery = (Hatchery*)&object;
+
+		if(hatchery->getTeam() == Teams::kRed)
+		{
+			redHatchery_ = new Hatchery(*hatchery);
+			gridSection->addGameObject(*redHatchery_);
+		}
+		else if(hatchery->getTeam() == Teams::kBlue)
+		{
+			blueHatchery_ = new Hatchery(*hatchery);
+			gridSection->addGameObject(*blueHatchery_);
+		}
+	}
+	else
+	{
+		gridSection->addGameObject(object);
+	}
 }
 
 GridSection* Grid::getGridSection(const Point& point) const
@@ -170,37 +189,38 @@ const std::vector<GameObject*>* Grid::getObjectInfo(const Point& point) const
 	std::vector<std::vector<GameObject*>* >* vectorHold =
 			new std::vector<std::vector<GameObject*>* >();
 
-
-
 	std::vector<const GridSection*>::const_iterator grid;
 
 	if (xs && ys)
 	{
 		for(grid = surrounding->begin(); grid < surrounding->end(); grid++)
 		{
-			vectorHold->push_back((std::vector<GameObject*>*)(*grid)->getGameObjects());
+			//vectorHold->push_back((std::vector<GameObject*>*)(*grid)->getGameObjects());
+			vectorHold->push_back((*grid)->getGameObjects());
 		}
-
 	}
 	else if (xs)
 	{
 		for(grid = surrounding->begin(); grid < surrounding->end(); grid++)
 		{
-			vectorHold->push_back((std::vector<GameObject*>*)(*grid)->getGameObjects());
+			//vectorHold->push_back((std::vector<GameObject*>*)(*grid)->getGameObjects());
+			vectorHold->push_back((*grid)->getGameObjects());
 		}
 	}
 	else if (ys)
 	{
 		for(grid = surrounding->begin(); grid < surrounding->end(); grid++)
 		{
-			vectorHold->push_back((std::vector<GameObject*>*)(*grid)->getGameObjects());
+			//vectorHold->push_back((std::vector<GameObject*>*)(*grid)->getGameObjects());
+			vectorHold->push_back((*grid)->getGameObjects());
 		}
 	}
 	else if (!(xs && ys))
 	{
 		for(grid = surrounding->begin(); grid < surrounding->end(); grid++)
 		{
-			vectorHold->push_back((std::vector<GameObject*>*)(*grid)->getGameObjects());
+			//vectorHold->push_back((std::vector<GameObject*>*)(*grid)->getGameObjects());
+			vectorHold->push_back((*grid)->getGameObjects());
 		}
 	}
 
@@ -237,6 +257,8 @@ const Hatchery* Grid::getHatchery(int team) const
 
 const std::vector<const EnvironmentObject*>* Grid::getEnvironmentInfo(const std::vector<GameObject*>& gameObjects)
 {
+	std::cout << "Retrieving Environment Info" << std::endl;
+
 	std::vector<const EnvironmentObject*>* environment = new std::vector<const EnvironmentObject*>();
 	std::vector<GameObject*>::const_iterator it;
 
@@ -251,6 +273,8 @@ const std::vector<const EnvironmentObject*>* Grid::getEnvironmentInfo(const std:
 			environment->push_back(object);
 		}
 	}
+
+	std::cout << "Environment Info retrieved successfully" << std::endl;
 
 	return environment;
 }
