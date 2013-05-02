@@ -327,33 +327,7 @@ function World()
 								collision = true;
 								colObj = gObj;
 							}
-							if(collision == 'hatchery0')
-							{
-								//console.log('before spawn');
-								miniSnakeController.spawnMiniSnake(0);
-								//console.log('after spawn');
-								
-								collision = true;
-								colObj = gObj;
-								break;
-								
-								//var miniSnakes = miniSnakeController.getMiniSnakes();
-								//console.log(miniSnake[0].getID());
-							}
-							else if(collision == 'hatchery1')
-							{
-								//console.log('before spawn');
-								miniSnakeController.spawnMiniSnake(1);
-								//console.log('after spawn');
-								
-								collision = true;
-								colObj = gObj;
-								break;
-								
-								//var miniSnakes = miniSnakeController.getMiniSnakes();
-								//console.log(miniSnake[0].getID());
-							}
-							
+
 							if (collision || collision === 0) {
 								console.log(snake.id, collision);
 		                        colObj = gObj;
