@@ -490,7 +490,6 @@ var WebSocketService = function(webSocket,game)
 	
 	this.miniSnakesHandler = function(data)
 	{
-		
 		console.log("Got a minisnake Packet!");
 		/* WARNING: We don't have minisnakes set up exactly yet. This is psuedocode for when we do
 		 * You should be able to just switch variable names around though...or pretty close
@@ -520,7 +519,7 @@ var WebSocketService = function(webSocket,game)
 				}
 				if(state == 0)//for moving
 				{
-					thisSnake.move(inSnake.position.x, inSnake.position.y);
+					thisSnake.move(inSnake.position.x/1000, inSnake.position.y/1000);
 					thisSnake.updateVelocity(inSnake.velocity);
 				}
 			}
