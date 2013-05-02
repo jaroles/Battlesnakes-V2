@@ -144,6 +144,12 @@ var Game = function(aSettings, aCanvas) {
 					}
 				}
 			}
+			
+			if(this.miniSnakes.length > 0) {
+				for(var i = 0; i < this.miniSnakes.length; i++) {
+					var miniSnake = this.miniSnakes[i];
+				}
+			}
 		}
 	};
 	

@@ -491,13 +491,14 @@ var WebSocketService = function(webSocket,game)
 	
 	this.miniSnakesHandler = function(data)
 	{
-		console.log("Got a minisnake Packet!");
+		console.log(data);
 		/* WARNING: We don't have minisnakes set up exactly yet. This is psuedocode for when we do
 		 * You should be able to just switch variable names around though...or pretty close
 		 */
-		console.log(data.minisnakes);
+		
 		miniSnakeArray = this.game.miniSnakes;
-		console.log(miniSnakeArray);
+		//console.log(miniSnakeArray);	
+		
 		for(var j = 0; j < data.minisnakes.length; j++)
 		{
 			var inSnake = data.minisnakes[j];
@@ -531,7 +532,37 @@ var WebSocketService = function(webSocket,game)
 			{
 				//team,color,state,pos,velocity
 				//new Snake('',1,000000,0,0,-1,1,null,1,null,this.game.scaleWindow,{x:this.centerX,y:this.centerY},true);
-				var miniS = new MiniSnake(inSnake.id, inSnake.team, inSnake.team==1? '#ff0000' : '#0000ff', inSnake.state, inSnake.position, inSnake.velocity.magnitude);
+				
+				var user = this.game.userSnake;
+				var scaleSize = this.game.scaleWindow;
+				
+				var position = {
+						x: inSnake.position.x / 1000,
+						y: inSnake.position.y / 1000
+				};
+				
+				var drawx = position.x - user.worldPos.x;
+				var drawy = position.y - user.worldPos.y;
+				
+				drawx *= scaleSize;
+				drawy *= scaleSize;
+				
+				drawx += user.x;
+				drawy += user.y;
+				
+				drawPos = {
+					x: drawx,
+					y: drawy
+				};
+				
+				var miniS = new MiniSnake(
+						inSnake.id, 
+						inSnake.team, 
+						inSnake.team == 1 ? 'ff0000' : '0000ff', 
+						inSnake.state, 
+						position,
+						drawPos,
+						inSnake.velocity.magnitude);
 				miniSnakeArray.push(miniS);
 			}	
 		}

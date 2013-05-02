@@ -338,12 +338,12 @@ function World()
 							{
 								if(collision.eggs > 0)
 									{console.log('Spawning ' + collision.eggs + ' minisnake(s)');}
-								for(var i = 0; i < collision.eggs; i++)
-								{
+								//for(var i = 0; i < collision.eggs; i++)
+								//{
 									 var miniSnake = this.createMiniSnake(collision.team);
 									 miniSnakes.push(miniSnake);
 									 miniSnakeController.addMiniSnake(miniSnake);
-								}
+								//}
 								collision = true;
 								colObj = gObj;
 								break;

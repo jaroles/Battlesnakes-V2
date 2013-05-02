@@ -61,7 +61,7 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 	this.head.fillColor = this.color;
 	this.head.strokeWidth = "1";
 	this.head.strokeColor = this.color;
-	this.head.mitterLimit = "10";		
+	this.head.mitterLimit = "10";
 	// this.head.add(new paper.Point(this.x,this.y));
 	//this.head.lineTo(new paper.Point(79.8+this.x, this.y));
 	// this.head.lineTo(new paper.Point(119.19+this.x,this.y - 84.85));
