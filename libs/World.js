@@ -316,7 +316,7 @@ function World()
 							
 							// If collision with Hatchery, spawn MiniSnake
 							// TODO Check if player has eggs
-							if(collision.hasOwnProperty('type') && collision.type == 'hatch')
+							if(collision != undefined && collision.hasOwnProperty('type') && collision.type == 'hatch')
 							{
 								if(collision.eggs > 0)
 									{console.log('Spawning ' + collision.eggs + ' minisnakes');}

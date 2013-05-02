@@ -516,8 +516,8 @@ var WebSocketService = function(webSocket,game)
 				}
 				if(state == 0)//for moving
 				{
-					thisSnake.setPosition(inSnake.position.x, inSnake.position.y);
-					thisSnake.velocity(inSnake.velocity);
+					thisSnake.move(inSnake.position.x, inSnake.position.y);
+					thisSnake.updateVelocity(inSnake.velocity);
 				}
 			}
 			else
