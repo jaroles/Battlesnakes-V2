@@ -23,6 +23,8 @@
 
 #define M_PI 3.1415926535f
 
+//extern v8::Persistent<v8::Function> nodePointConstructor;
+
 class Point : public node::ObjectWrap
 {
 public:

@@ -130,6 +130,10 @@ void Point::Init(v8::Handle<v8::Object> target)
 
 	v8::Persistent<v8::Function> constructor = v8::Persistent<v8::Function>::New(tpl->GetFunction());
 	target->Set(v8::String::NewSymbol("Point"), constructor);
+
+	// Public constructor
+	/*nodePointConstructor = v8::Persistent<v8::Function>::New(tpl->GetFunction());
+	target->Set(v8::String::NewSymbol("Point"), nodePointConstructor);*/
 }
 
 v8::Handle<v8::Value> Point::nodeCreate(const v8::Arguments& args, const Point& point)

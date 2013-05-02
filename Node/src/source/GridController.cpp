@@ -13,6 +13,7 @@ int GridController::snakeID = 10000;
 
 GridController::GridController()
 {
+	// Create World
 	world_ = new Grid();
 	minisnakes_ = new std::vector<MiniSnake*>();
 	inconSize = world_->getSize();
@@ -114,7 +115,28 @@ void GridController::spawnMiniSnake(int id, int team)
 	int x = (rand() % EnvironmentObject::kHatcherySize) + xh;
 	int y = (rand() % EnvironmentObject::kHatcherySize) + yh - EnvironmentObject::kHatcherySize;
 
+    /*int argc = 2;
+	v8::Local<v8::Value> argv1[] = {v8::Number::New(x),v8::Number::New(y)};
+	v8::Local<v8::Object> position = Point::nodePointConstructor->NewInstance(argc, argv1);
+
+	argc = 3;
+	v8::Local<v8::Value> argv2[] = 
+	{
+		v8::Number::New(id),
+		node::ObjectWrap::Unwrap<Point>(position),
+		v8::Number::New(team)
+	};
+
+	v8::Local<v8::Object> minisnake = MiniSnake::nodeMiniSnakeConstructor->NewInstance(argc, argv1);
+	
+	minisnakes_->push_back(ObjectWrap::Unwrap<MiniSnake>(minisnake));*/
+
 	minisnakes_->push_back(new MiniSnake(id, Point(x, y), team, *world_));
+}
+
+void GridController::addMiniSnake(MiniSnake& snake)
+{
+	minisnakes_->push_back(&snake);
 }
 
 void GridController::addObject(GameObject& object)
@@ -218,6 +240,7 @@ void GridController::Init(v8::Handle<v8::Object> target)
 	// Prototype functions
 	tpl->PrototypeTemplate()->Set(v8::String::NewSymbol("update"), v8::FunctionTemplate::New(nodeUpdate)->GetFunction());
 	tpl->PrototypeTemplate()->Set(v8::String::NewSymbol("spawnMiniSnake"), v8::FunctionTemplate::New(nodeSpawnMiniSnake)->GetFunction());
+	tpl->PrototypeTemplate()->Set(v8::String::NewSymbol("addMiniSnake"), v8::FunctionTemplate::New(nodeAddMiniSnake)->GetFunction());
 	tpl->PrototypeTemplate()->Set(v8::String::NewSymbol("addObject"), v8::FunctionTemplate::New(nodeAddObject)->GetFunction());
 	tpl->PrototypeTemplate()->Set(v8::String::NewSymbol("removeObject"), v8::FunctionTemplate::New(nodeRemoveObject)->GetFunction());
 	tpl->PrototypeTemplate()->Set(v8::String::NewSymbol("updateWorldSize"), v8::FunctionTemplate::New(nodeUpdateWorldSize)->GetFunction());
@@ -232,7 +255,9 @@ v8::Handle<v8::Value> GridController::nodeNew(const v8::Arguments& args)
 {
 	v8::HandleScope scope;
 
-	GridController* gridController = new GridController();
+	//GridController* gridController = new GridController();
+	Grid* grid = ObjectWrap::Unwrap<Grid>(args[0]->ToObject());
+	GridController* gridController = new GridController(*grid);
 
 	gridController->Wrap(args.This());
 
@@ -257,6 +282,19 @@ v8::Handle<v8::Value> GridController::nodeSpawnMiniSnake(const v8::Arguments& ar
 
 	int team = args[0]->NumberValue();
 	gridController->spawnMiniSnake(snakeID++, team);
+
+	return v8::Undefined();
+}
+
+v8::Handle<v8::Value> GridController::nodeAddMiniSnake(const v8::Arguments& args)
+{
+	GridController* gridController = ObjectWrap::Unwrap<GridController>(args.This());
+
+	MiniSnake* snakeObj = ObjectWrap::Unwrap<MiniSnake>(args[0]->ToObject());
+	//MiniSnake* snake = new MiniSnake(*snakeObj);
+	
+	gridController->addMiniSnake(*snakeObj);
+	//gridController->addMiniSnake(*snake);
 
 	return v8::Undefined();
 }
@@ -311,7 +349,22 @@ v8::Handle<v8::Value> GridController::nodeGetMiniSnakes(const v8::Arguments& arg
 	const std::vector<MiniSnake*>* miniSnakes = gridController->getMiniSnakes();
 	unsigned int snakeCount = miniSnakes->size();
 
-	v8::Array* miniSnakesArray = *v8::Array::New(snakeCount);
+	v8::Handle<v8::Array> miniSnakesArray = v8::Array::New(snakeCount);
+	std::vector<MiniSnake*>::const_iterator snake = miniSnakes->begin();
+
+	for(unsigned int i = 0; i < snakeCount; i++)
+	{
+		//v8::Handle<v8::Object> snakeObject = v8::Handle<v8::Object>::Handle();
+		//MiniSnake::nodeWrap(snakeObject, **snake);
+		//v8::Handle<v8::Value> snakeObject = MiniSnake::nodeWrap(v8::Handle<v8::Object>::Handle(), **snake);
+		miniSnakesArray->Set(i, (*snake)->handle_);
+		snake++;
+		//std::cout << "MiniSnakes Array populated" << std::endl;
+	}
+
+	return miniSnakesArray;
+
+	/*v8::Array* miniSnakesArray = *v8::Array::New(snakeCount);
 	std::vector<MiniSnake*>::const_iterator snake = miniSnakes->begin();
 
 	for(unsigned int i = 0; i < snakeCount; i++)
@@ -322,5 +375,5 @@ v8::Handle<v8::Value> GridController::nodeGetMiniSnakes(const v8::Arguments& arg
 
 	v8::Handle<v8::Array> matrixHandle(miniSnakesArray);
 
-	return scope.Close(matrixHandle);
+	return scope.Close(matrixHandle);*/
 }

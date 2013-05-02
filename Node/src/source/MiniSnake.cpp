@@ -64,7 +64,6 @@ void MiniSnake::update()
 	{
 		// Retrieve information about the game objects surrounding the minisnake.
 		const std::vector<GameObject*>* grid = world_->getObjectInfo(*position_);
-		std::vector<GameObject*>::const_iterator it;
 		const std::vector<GameObject*>* zone = this->getZone(*grid);
 		const std::vector<const EnvironmentObject*>* environment = Grid::getEnvironmentInfo(*zone);
 		const std::vector<const MiniSnake*>* allies = Grid::getMiniSnakeInfo(*zone, team_);
@@ -837,21 +836,29 @@ void MiniSnake::Init(v8::Handle<v8::Object> target)
 	tpl->SetClassName(v8::String::NewSymbol("MiniSnake"));
 	tpl->InstanceTemplate()->SetInternalFieldCount(1);
 	// Prototype functions
+	tpl->PrototypeTemplate()->Set(v8::String::NewSymbol("getPosition"), v8::FunctionTemplate::New(nodeGetPosition)->GetFunction());
 	tpl->PrototypeTemplate()->Set(v8::String::NewSymbol("getID"), v8::FunctionTemplate::New(nodeGetID)->GetFunction());
+	tpl->PrototypeTemplate()->Set(v8::String::NewSymbol("getTeam"), v8::FunctionTemplate::New(nodeGetTeam)->GetFunction());
 	tpl->PrototypeTemplate()->Set(v8::String::NewSymbol("getVelocity"), v8::FunctionTemplate::New(nodeGetVelocity)->GetFunction());
 	tpl->PrototypeTemplate()->Set(v8::String::NewSymbol("getState"), v8::FunctionTemplate::New(nodeGetState)->GetFunction());
 
 	v8::Persistent<v8::Function> constructor = v8::Persistent<v8::Function>::New(tpl->GetFunction());
 	target->Set(v8::String::NewSymbol("MiniSnake"), constructor);
+
+	// Public Constructor
+	/*nodeMiniSnakeConstructor = v8::Persistent<v8::Function>::New(tpl->GetFunction());
+	target->Set(v8::String::NewSymbol("MiniSnake"), nodeMiniSnakeConstructor);*/
 }
 
-v8::Handle<v8::Value> MiniSnake::nodeWrap(const v8::Arguments& args, MiniSnake& snake)
+//v8::Handle<v8::Value> MiniSnake::nodeWrap(const v8::Arguments& args, MiniSnake& snake)
+//v8::Handle<v8::Object> MiniSnake::nodeWrap(v8::Handle<v8::Object>& object, MiniSnake& snake)
+void MiniSnake::nodeWrap(v8::Handle<v8::Object>& object, MiniSnake& snake)
 {
 	MiniSnake* get = &snake;
 
-	get->Wrap(args.This());
+	get->Wrap(object);
 
-	return args.This();
+	//return object;
 }
 
 v8::Handle<v8::Value> MiniSnake::nodeNew(const v8::Arguments& args)
@@ -867,8 +874,28 @@ v8::Handle<v8::Value> MiniSnake::nodeNew(const v8::Arguments& args)
 
 	snake->Wrap(args.This());
 
+	// DEBUG nodeNew
+	std::cout << "MiniSnake " << id << " created successfully" << std::endl;
+	std::cout << "   Position: (" << position->get()[0] << "," << position->get()[1] << ")" << std::endl;
+	std::cout << "   Grid size: " << world->getSize() << std::endl;
+
 	return args.This();
 }
+
+v8::Handle<v8::Value> MiniSnake::nodeGetPosition(const v8::Arguments& args)
+{
+	v8::HandleScope scope;
+
+	MiniSnake* snake = ObjectWrap::Unwrap<MiniSnake>(args.This());
+	Point position = snake->getPosition();
+
+	v8::Local<v8::Array> positionArray = v8::Array::New(2);
+	positionArray->Set(0, v8::Number::New(position.get()[0]));
+	positionArray->Set(1, v8::Number::New(position.get()[1]));
+
+	return scope.Close(positionArray);
+}
+
 
 v8::Handle<v8::Value> MiniSnake::nodeGetID(const v8::Arguments& args)
 {
@@ -902,7 +929,13 @@ v8::Handle<v8::Value> MiniSnake::nodeGetVelocity(const v8::Arguments& args)
 	v8::HandleScope scope;
 
 	MiniSnake* snake = ObjectWrap::Unwrap<MiniSnake>(args.This());
+	Vector velocity = snake->getVelocity();
+	Point to = velocity.getTo();
 
-	return Vector::nodeCreate(args, snake->getVelocity());
+	v8::Local<v8::Array> velocityArray = v8::Array::New(2);
+	velocityArray->Set(0, v8::Number::New(to.get()[0]));
+	velocityArray->Set(1, v8::Number::New(to.get()[1]));
+
+	return scope.Close(velocityArray);
 }
 

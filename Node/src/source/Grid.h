@@ -24,7 +24,7 @@
 class GridSection;
 class MiniSnake;
 
-class Grid
+class Grid : public node::ObjectWrap
 {
 	public:
 		Grid();
@@ -42,8 +42,15 @@ class Grid
 		static const std::vector<const EnvironmentObject*>* getEnvironmentInfo(const std::vector<GameObject*>& gameObjects);
 		static const std::vector<const MiniSnake*>* getMiniSnakeInfo(const std::vector<GameObject*>& gameObjects, int team);
 
+		// Node Implementation
+		static void Init(v8::Handle<v8::Object> target);
+		//static v8::Persistent<v8::Function> nodeGridConstructor;
+
 	private:
 		EnvironmentObject* createEnvObject();
+
+		// Node Implementation
+		static v8::Handle<v8::Value> nodeNew(const v8::Arguments& args);
 
 		std::vector<std::vector <GridSection*> >* grid_;
 		Hatchery* blueHatchery_;

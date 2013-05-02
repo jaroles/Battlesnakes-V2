@@ -11,6 +11,7 @@ var Snake = require('./all/Snake');
 var MiniSnake = require('./all/MiniSnake');
 var Teams = require('./all/Teams');
 var Point = require('./all/Point');
+var Vector = require('./all/Vector');
 var Debug = require('./Debug');
 var MiniSnakeAddon = require('./node/x64/Debug/MiniSnakeAddon');
 var d = new Debug();
@@ -20,11 +21,18 @@ var dt = 0;
 function World()
 {
 	var grid;
-	var miniSnakeController; // MiniSnake Grid Controller
+	var redHatchery;
+	var blueHatchery;
 	var a = 0;
 	var storedTime = (new Date()).getTime();
 	var scale = 25;
 	var world = this;
+	
+	// MiniSnake variables
+	var miniSnakeGrid;
+	var miniSnakeController; // MiniSnake Grid Controller
+	var miniSnakes = new Array();
+	var miniSnakeID = 10000;
 
 	function init()
 	{
@@ -32,7 +40,8 @@ function World()
 		grid.init();
 		
 		// Create the MiniSnake Controller
-		miniSnakeController = new MiniSnakeAddon.GridController();
+		miniSnakeGrid = new MiniSnakeAddon.Grid();
+		miniSnakeController = new MiniSnakeAddon.GridController(miniSnakeGrid);
 
 		InitEnvironment();
 	};
@@ -43,7 +52,8 @@ function World()
 		// set up Hatcherys
 
 		var g = grid.getGrid(0, 1);
-		g.addGameObject(new Hatchery(0));
+		redHatchery = new Hatchery(Teams.Red);
+		g.addGameObject(redHatchery);
 		g.hasHatchery = Teams.Red;
 		bounds = grid.getBoundsOfGrid(g);
 		g.gameObjects[0].position.set(bounds.x + bounds.width/2, bounds.y + bounds.height/2);
@@ -52,11 +62,12 @@ function World()
 		var redHatchPoint = new MiniSnakeAddon.Point(
 				bounds.x + bounds.width/2, 
 				bounds.y + bounds.height/2);
-		var redHatchery = new MiniSnakeAddon.Hatchery(redHatchPoint, 0);
-		miniSnakeController.addObject(redHatchery);
+		var redMiniSnakeHatchery = new MiniSnakeAddon.Hatchery(redHatchPoint, 0);
+		miniSnakeController.addObject(redMiniSnakeHatchery);
 
 		g = grid.getGrid(2, 1);
-		g.addGameObject(new Hatchery(1));
+		blueHatchery = new Hatchery(Teams.Blue);
+		g.addGameObject(blueHatchery);
 		g.hasHatchery = Teams.Blue;
 		bounds = grid.getBoundsOfGrid(g);
 		g.gameObjects[0].position.set(bounds.x + bounds.width/2, bounds.y + bounds.height/2);
@@ -65,8 +76,8 @@ function World()
 		var blueHatchPoint = new MiniSnakeAddon.Point(
 				bounds.x + bounds.width/2, 
 				bounds.y + bounds.height/2);
-		var blueHatchery = new MiniSnakeAddon.Hatchery(blueHatchPoint, 1);
-		miniSnakeController.addObject(blueHatchery);
+		var blueMiniSnakeHatchery = new MiniSnakeAddon.Hatchery(blueHatchPoint, 1);
+		miniSnakeController.addObject(blueMiniSnakeHatchery);
 		
 		// Surround the world with rocks
 		console.log("Surrounding world with rocks ...");
@@ -266,7 +277,9 @@ function World()
 			storedTime = curTime;
 		// }
 			
-			miniSnakeController.update(); // Update MiniSnakes
+			if(miniSnakes.length > 0) {
+				miniSnakeController.update(); // Update MiniSnakes
+			}
 
 			for (var u = 0, U = users.length; u < U; ++u) 
 			{
@@ -279,6 +292,11 @@ function World()
 					newY = oldY + (velocity.y * elapsedTime),
 					collision = false,
 					OoB = false;
+				
+				if(miniSnakes.length > 0) {
+					var miniSnakeData = this.getMiniSnakes();
+					user.broadcastMiniSnakes(miniSnakeData);
+				}
 				
 				if(user.request)
 				{
@@ -314,15 +332,16 @@ function World()
 								FindNewPosition(newEgg, 'egg', gridSec);
 							}
 							
-							// If collision with Hatchery, spawn MiniSnake
-							// TODO Check if player has eggs
+							// If collision with Hatchery, spawn MiniSnakes
 							if(collision.hasOwnProperty('type') && collision.type == 'hatch')
 							{
 								if(collision.eggs > 0)
-									{console.log('Spawning ' + collision.eggs + ' minisnakes');}
+									{console.log('Spawning ' + collision.eggs + ' minisnake(s)');}
 								for(var i = 0; i < collision.eggs; i++)
 								{
-									miniSnakeController.spawnMiniSnake(collision.team);
+									 var miniSnake = this.createMiniSnake(collision.team);
+									 miniSnakes.push(miniSnake);
+									 miniSnakeController.addMiniSnake(miniSnake);
 								}
 								collision = true;
 								colObj = gObj;
@@ -464,6 +483,73 @@ function World()
 		});
 
 		return env;
+	};
+	
+	this.createMiniSnake = function(team) {
+		var hatcheryPosition;
+		var width;
+		var height;
+		
+		if(team == Teams.Red) {
+			hatcheryPosition = redHatchery.position;
+			width = redHatchery.width;
+			height = redHatchery.height;
+		}
+		else if (team == Teams.Blue) {
+			hatcheryPosition = blueHatchery.position;
+			width = blueHatchery.width;
+			height = blueHatchery.height;
+		}
+		
+		var xh = hatcheryPosition.x - width / 2;
+		var yh = hatcheryPosition.y - height / 2;
+		
+		var x = (Math.random() * width) + xh;
+		var y = (Math.random() * height) + xh - height;
+		
+		var position = new MiniSnakeAddon.Point(x, y);
+		
+		var miniSnake = new MiniSnakeAddon.MiniSnake(
+				miniSnakeID++, 
+				position, 
+				team, 
+				miniSnakeGrid);
+					
+		return miniSnake;
+	};
+	
+	this.getMiniSnakes = function() {
+		//var miniSnakes = miniSnakeController.getMiniSnakes();
+		var miniSnakesArray = new Array();
+		
+		for(i = 0; i < miniSnakes.length; i++) {
+			var miniSnake = miniSnakes[i];
+			
+			var position = miniSnake.getPosition();
+			var posX = position[0];
+			var posY = position[1];
+			var positionPoint = new Point(posX, posY);
+			
+			var velocity = miniSnake.getVelocity();
+			var toX = velocity[0];
+			var toY = velocity[1];
+			var velocityVector = new Vector(toX, toY);
+			velocityVector.computeAngle();
+			
+			var miniSnakeObj = {
+					id: miniSnake.getID(),
+					team: miniSnake.getTeam(),
+					position: positionPoint,
+					velocity: velocityVector,
+					state: miniSnake.getState()
+			}
+			
+			miniSnakesArray.push(miniSnakeObj);
+		}
+		
+		console.log(miniSnakesArray);
+		
+		return miniSnakesArray;
 	};
 
 	init();

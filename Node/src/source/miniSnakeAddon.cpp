@@ -285,16 +285,12 @@ Handle<Value> Init(const Arguments& args)
 	return v8::Undefined();
 }
 
-/*Handle<Value> AddGameObject(const Arguments& args)
-{
-	return v8::Undefined();
-}*/
-
 void InitAll(Handle<Object> target)
 {
 	Hatchery::Init(target);
 	Point::Init(target);
 	EnvironmentObject::Init(target);
+	Grid::Init(target);
 	GridController::Init(target);
 	MiniSnake::Init(target);
 	Vector::Init(target);

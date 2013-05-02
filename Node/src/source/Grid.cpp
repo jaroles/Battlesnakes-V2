@@ -327,3 +327,31 @@ EnvironmentObject* Grid::createEnvObject()
 
 	return envObject;
 }
+
+// Node Implementation
+
+void Grid::Init(v8::Handle<v8::Object> target)
+{
+	// Prepare constructor template
+	v8::Local<v8::FunctionTemplate> tpl = v8::FunctionTemplate::New(nodeNew);
+	tpl->SetClassName(v8::String::NewSymbol("Grid"));
+	tpl->InstanceTemplate()->SetInternalFieldCount(1);
+
+	v8::Persistent<v8::Function> constructor = v8::Persistent<v8::Function>::New(tpl->GetFunction());
+	target->Set(v8::String::NewSymbol("Grid"), constructor);
+
+	// Public Constructor
+	/*nodeGridConstructor = v8::Persistent<v8::Function>::New(tpl->GetFunction());
+	target->Set(v8::String::NewSymbol("Grid"), nodeGridConstructor);*/
+}
+
+v8::Handle<v8::Value> Grid::nodeNew(const v8::Arguments& args)
+{
+	v8::HandleScope scope;
+
+	Grid* world = new Grid();
+
+	world->Wrap(args.This());
+
+	return args.This();
+}

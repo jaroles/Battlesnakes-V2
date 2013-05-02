@@ -30,6 +30,7 @@ class GridController : public node::ObjectWrap
 
 		void update();
 		void spawnMiniSnake(int id, int team);
+		void addMiniSnake(MiniSnake& snake);
 
 		void addObject(GameObject& object);
 		void removeObject(GameObject& object);
@@ -49,6 +50,7 @@ class GridController : public node::ObjectWrap
 		static v8::Handle<v8::Value> nodeNew(const v8::Arguments& args);
 		static v8::Handle<v8::Value> nodeUpdate(const v8::Arguments& args);
 		static v8::Handle<v8::Value> nodeSpawnMiniSnake(const v8::Arguments& args);
+		static v8::Handle<v8::Value> nodeAddMiniSnake(const v8::Arguments& args);
 		static v8::Handle<v8::Value> nodeAddObject(const v8::Arguments& args);
 		static v8::Handle<v8::Value> nodeRemoveObject(const v8::Arguments& args);
 		static v8::Handle<v8::Value> nodeUpdateWorldSize(const v8::Arguments& args);

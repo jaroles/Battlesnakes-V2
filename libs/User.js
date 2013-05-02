@@ -87,7 +87,7 @@ function User(socket, playerevent, snakeID)
             user.sendUpdatePacket();
             user.broadcastPlayerUpdate();
 			user.sendEggPacket();
-			user.broadcastMiniSnakes();
+			//user.broadcastMiniSnakes();
 			
 			return eggs;
 		}
@@ -286,13 +286,13 @@ function User(socket, playerevent, snakeID)
 		});
 	}
 	
-	this.broadcastMiniSnakes = function(grids) {
+	this.broadcastMiniSnakes = function(snakes, grids) {
 		console.log('broadcastMiniSnakes');
 		
 		var to = (grids) ? grids : this.surroundingGridRooms();
 		this.broadcast(to, {
 			type: 'miniSnakes',
-			minisnakes: [null]
+			minisnakes: [snakes]
 		});
 	}
 

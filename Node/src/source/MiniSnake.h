@@ -55,7 +55,10 @@ public:
 
 	// Node Implementation
 	static void Init(v8::Handle<v8::Object> target);
-	static v8::Handle<v8::Value> nodeWrap(const v8::Arguments& args, MiniSnake& snake);
+	//static v8::Handle<v8::Value> nodeWrap(const v8::Arguments& args, MiniSnake& snake);
+	//static v8::Handle<v8::Object> nodeWrap(v8::Handle<v8::Object>& object, MiniSnake& snake);
+	static void nodeWrap(v8::Handle<v8::Object>& object, MiniSnake& snake);
+	//static v8::Persistent<v8::Function> nodeMiniSnakeConstructor;
 
 	Vector getVelocity() const;
 	int getID() const;
@@ -83,6 +86,7 @@ private:
 
 	// Node Implementation
 	static v8::Handle<v8::Value> nodeNew(const v8::Arguments& args);
+	static v8::Handle<v8::Value> nodeGetPosition(const v8::Arguments& args);
 	static v8::Handle<v8::Value> nodeGetID(const v8::Arguments& args);
 	static v8::Handle<v8::Value> nodeGetTeam(const v8::Arguments& args);
 	static v8::Handle<v8::Value> nodeGetState(const v8::Arguments& args);
