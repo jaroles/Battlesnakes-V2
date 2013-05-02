@@ -410,7 +410,7 @@ function World()
 		user.sendRemoveSnakePacket(removeSnake);
 		user.sendAddSnakePacket(addSnake);
 		
-		console.log('once: ' + once);
+		// console.log('once: ' + once);
 		if(once <= 3)
 		{
 			// user.broadcastRemoveSnake(remove);
