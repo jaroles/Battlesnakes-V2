@@ -318,40 +318,15 @@ function World()
 							// TODO Check if player has eggs
 							if(collision.hasOwnProperty('type') && collision.type == 'hatch')
 							{
-								console.log('' + collision.eggs + " Snakes spawned!");
+								if(collision.eggs > 0)
+									{console.log('Spawning ' + collision.eggs + ' minisnakes');}
 								for(var i = 0; i < collision.eggs; i++)
 								{
 									miniSnakeController.spawnMiniSnake(collision.team);
 								}
-								console.log("Spawned!");
-								collision = true;
-								colObj = gObj;
-							}
-							if(collision == 'hatchery0')
-							{
-								//console.log('before spawn');
-								miniSnakeController.spawnMiniSnake(0);
-								//console.log('after spawn');
-								
 								collision = true;
 								colObj = gObj;
 								break;
-								
-								//var miniSnakes = miniSnakeController.getMiniSnakes();
-								//console.log(miniSnake[0].getID());
-							}
-							else if(collision == 'hatchery1')
-							{
-								//console.log('before spawn');
-								miniSnakeController.spawnMiniSnake(1);
-								//console.log('after spawn');
-								
-								collision = true;
-								colObj = gObj;
-								break;
-								
-								//var miniSnakes = miniSnakeController.getMiniSnakes();
-								//console.log(miniSnake[0].getID());
 							}
 							
 							if (collision || collision === 0) {
