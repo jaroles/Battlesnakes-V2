@@ -17,7 +17,6 @@ var MiniSnakeAddon = require('./node/x64/Debug/MiniSnakeAddon');
 var d = new Debug();
 var dt = 0;
 
-
 function World()
 {
 	var grid;
@@ -559,7 +558,7 @@ function World()
 			miniSnakesArray.push(miniSnakeObj);
 		}
 		
-		console.log(miniSnakesArray);
+		//console.log(miniSnakesArray);
 		
 		return miniSnakesArray;
 	};

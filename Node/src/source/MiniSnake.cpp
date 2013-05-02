@@ -95,6 +95,12 @@ void MiniSnake::update()
 			velocity_ = new Vector(angle, kMaxVelocity);
 		}
 
+		std::cout << "MiniSnake " << id_ << std::endl;
+		std::cout << "   State   : " << state_ << std::endl;
+		std::cout << "   Velocity: " << velocity_->magnitude() << std::endl;
+		std::cout << "   Position: (" << position_->get()[0] <<
+			"," << position_->get()[1] << ")" << std::endl;
+
 		// DEBUG
 		/*std::vector<const MiniSnake*>::const_iterator enemy;
 		for(enemy = enemies->begin(); enemy < enemies->end(); enemy++)
