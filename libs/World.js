@@ -316,6 +316,17 @@ function World()
 							
 							// If collision with Hatchery, spawn MiniSnake
 							// TODO Check if player has eggs
+							if(collision.hasOwnProperty('type') && collision.type == 'hatch')
+							{
+								console.log('' + collision.eggs + " Snakes spawned!");
+								for(var i = 0; i < collision.eggs; i++)
+								{
+									miniSnakeController.spawnMiniSnake(collision.team);
+								}
+								console.log("Spawned!");
+								collision = true;
+								colObj = gObj;
+							}
 							if(collision == 'hatchery0')
 							{
 								console.log('before spawn');

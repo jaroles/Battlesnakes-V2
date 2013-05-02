@@ -26,6 +26,7 @@ Hatchery.prototype.extend({
 				this.position.x + this.width/2,
 				this.position.y - this.height/2
 			);
+		var eggNums = 0;
 		if (gameObject.isStationary) {
 			return gameObject.position.x + gameObject.width >= this.position.x
 				&& gameObject.position.y + gameObject.height >= this.position.y
@@ -34,9 +35,15 @@ Hatchery.prototype.extend({
 		} else {
 			var col = gameObject.position.inside(topLeft, bottomRight);
 			if (col && gameObject.hasEggs()) {
+				eggNums = gameObject.eggs.length;
 				gameObject.dropOffEggs(this);
 			}
-			var toReturn = (col) ? 'hatchery' + this.color : false;
+			var hatch = {
+					type:'hatch',
+					eggs:eggNums,
+					team:this.color
+			};
+			var toReturn = (col) ? hatch : false;
 			return toReturn;
 		}
 	}
