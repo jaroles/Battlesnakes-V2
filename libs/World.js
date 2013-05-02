@@ -27,6 +27,7 @@ function World()
 	var storedTime = (new Date()).getTime();
 	var scale = 25;
 	var world = this;
+	var once = 0;
 	
 	// MiniSnake variables
 	var miniSnakeGrid;
@@ -430,7 +431,7 @@ function World()
 		user.sendAddSnakePacket(addSnake);
 		
 		// console.log('once: ' + once);
-		/*if(once <= 3)
+		if(once <= 3)
 		{
 			// user.broadcastRemoveSnake(remove);
 			user.broadcastAddSnake(add);
@@ -440,7 +441,7 @@ function World()
 		if(once == 15)
 		{
 			once = 0;
-		}*/
+		}
 	}
 
 	function environment(gridsOrGameObject) {
@@ -561,6 +562,18 @@ function World()
 		
 		return miniSnakesArray;
 	};
+	
+	this.removeMiniSnakes = function () {
+		for(i = 0; i < miniSnakes.length; i++) {
+			var miniSnake = miniSnakes[i];
+			
+			var state = miniSnake.getState();
+			
+			if(state == 0 || state == -1) {
+				miniSnakes.splice(miniSnakes.indexOf(miniSnake), 1);
+			}
+		}
+	}
 
 	init();
 }
