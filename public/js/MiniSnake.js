@@ -84,6 +84,7 @@ function MiniSnake(id,team,color,state,pos,drawPos,velocity)
 			var xStep = Math.cos(this.angle)*18;
 			var yStep = Math.sin(this.angle)*18;
 			
+			
 			/*this.body.insert(1,new paper.Point(x,y));
 			if (this.body.segments.length > this.numSegments)
 			{
