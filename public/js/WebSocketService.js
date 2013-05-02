@@ -10,6 +10,7 @@
 * @param webSocket The web socket used for server communication
 * @param game The current game communicating with the server
 */
+
 var WebSocketService = function(webSocket,game) 
 {
 	var webSocketService = this;
@@ -494,10 +495,13 @@ var WebSocketService = function(webSocket,game)
 		/* WARNING: We don't have minisnakes set up exactly yet. This is psuedocode for when we do
 		 * You should be able to just switch variable names around though...or pretty close
 		 */
-		miniSnakeArray = this.game.miniSnake;
-		for(var j = 0; j < data.length; j++)
+		console.log(data.minisnakes);
+		miniSnakeArray = this.game.miniSnakes;
+		console.log(miniSnakeArray);
+		for(var j = 0; j < data.minisnakes.length; j++)
 		{
-			var inSnake = data[j];
+			var inSnake = data.minisnakes[j];
+			console.log(inSnake);
 			var thisSnake = 0;
 			for( var i =0; i < miniSnakeArray.length; i++)
 			{
@@ -509,15 +513,15 @@ var WebSocketService = function(webSocket,game)
 			}
 			if(thisSnake != 0)
 			{
-				if(state == 1)//for attack
+				if(inSnake.state == 1)//for attack
 				{
 					miniSnakeArray.splice(miniSnakeArray.indexOf(thisSnake), 1);
 				}
-				if(state == -1) // for death
+				if(inSnake.state == -1) // for death
 				{
 					miniSnakeArray.splice(miniSnakeArray.indexOf(thisSnake), 1);
 				}
-				if(state == 0)//for moving
+				if(inSnake.state == 0)//for moving
 				{
 					thisSnake.move(inSnake.position.x/1000, inSnake.position.y/1000);
 					thisSnake.updateVelocity(inSnake.velocity);
@@ -525,8 +529,10 @@ var WebSocketService = function(webSocket,game)
 			}
 			else
 			{
-				var newSnake = new MiniSnake(inSnake.id, inSnake.position, inSnake.team, inSnake.velocity, inSnake.state);
-				miniSnakeArray.push(newSnake);
+				//team,color,state,pos,velocity
+				//new Snake('',1,000000,0,0,-1,1,null,1,null,this.game.scaleWindow,{x:this.centerX,y:this.centerY},true);
+				var miniS = new MiniSnake(inSnake.id, inSnake.team, inSnake.team==1? '#ff0000' : '#0000ff', inSnake.state, inSnake.position, inSnake.velocity.magnitude);
+				miniSnakeArray.push(miniS);
 			}	
 		}
 	}

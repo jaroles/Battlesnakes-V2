@@ -8,16 +8,18 @@
 /**
 * Draws a Minisnake in the world
 */
-MiniSnake.prototype = new GameObject()
-function MiniSnake(team,color,state,pos,velocity)
+MiniSnake.prototype = new GameObject();
+
+function MiniSnake(id,team,color,state,pos,velocity)
 {
 	this.worldPos = pos;
 	
+	this.id = id
 	this.team = team;
 	this.velocity = velocity;
-	this.angle = angle;
-	this.x = segments[0].point.x;
-	this.y = segments[0].point.y;
+	//this.angle = angle;
+	//this.x = segments[0].point.x;
+	//this.y = segments[0].point.y;
 	this.color ="#"+ color;
 	
 	this.wiggleHeight = 3;	
@@ -29,7 +31,7 @@ function MiniSnake(team,color,state,pos,velocity)
 	this.head.strokeWidth = "1";
 	this.head.strokeColor = this.color;
 	this.head.mitterLimit = "10";		
-		this.head = new paper.Path.Rectangle(point, size);
+		this.head = new paper.Path.Rectangle(pos, 2);
 	/*this.head.add(new paper.Point(79.8+this.x, this.y));
 	this.head.lineTo(new paper.Point(119.19+this.x,this.y - 84.85));
 	this.head.lineTo(new paper.Point(48.3+this.x, this.y-356.68));
@@ -161,7 +163,7 @@ function MiniSnake(team,color,state,pos,velocity)
 			var xStep = Math.cos(this.angle)*18;
 			var yStep = Math.sin(this.angle)*18;
 			
-			this.body.insert(1,new paper.Point(x,y));
+			/*this.body.insert(1,new paper.Point(x,y));
 			if (this.body.segments.length > this.numSegments)
 			{
 				this.body.removeSegments(this.numSegments+1,this.body.segments.length);
@@ -171,7 +173,7 @@ function MiniSnake(team,color,state,pos,velocity)
 				this.body.segments[i].point.x  -= xStep;
 				this.body.segments[i].point.y -= yStep;
 			}
-			this.body.smooth();
+			this.body.smooth();*/
 	};
 	
 }

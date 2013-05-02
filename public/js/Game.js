@@ -433,7 +433,7 @@ var Game = function(aSettings, aCanvas) {
 		socket.on('message', game.onSocketMessage);
 		socket.on('disconnect', game.onSocketClose);
 		
-		webSocketService = new WebSocketService(socket);
+		webSocketService = new WebSocketService(socket, this);
 
 	})();
 };
