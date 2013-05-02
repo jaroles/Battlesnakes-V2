@@ -495,15 +495,10 @@ var WebSocketService = function(webSocket,game)
 		/* WARNING: We don't have minisnakes set up exactly yet. This is psuedocode for when we do
 		 * You should be able to just switch variable names around though...or pretty close
 		 */
-<<<<<<< HEAD
-		
+
 		miniSnakeArray = this.game.miniSnakes;
 		//console.log(miniSnakeArray);	
-		
-=======
-		var miniSnakeArray = this.game.miniSnakes;
-		console.log(miniSnakeArray);
->>>>>>> branch 'master' of git@github.com:jaroles/Battlesnakes-V2.git
+
 		for(var j = 0; j < data.minisnakes.length; j++)
 		{
 			var inSnake = data.minisnakes[j];
