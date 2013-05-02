@@ -286,14 +286,20 @@ function User(socket, playerevent, snakeID)
 		});
 	}
 	
-	this.broadcastMiniSnakes = function(snakes, grids) {
+	this.sendMiniSnakes = function(snakes) {
 		console.log('broadcastMiniSnakes');
-		
+		/*
 		var to = (grids) ? grids : this.surroundingGridRooms();
 		this.broadcast(to, {
 			type: 'miniSnakes',
 			minisnakes: [snakes]
-		});
+		});*/
+		var message = {
+				type: 'miniSnakes',
+				snakes: [snakes]
+			};
+			socket.emit('message', message);
+			return message;
 	}
 
 	function handleMessage(socket, e)

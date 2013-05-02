@@ -295,7 +295,7 @@ function World()
 				
 				if(miniSnakes.length > 0) {
 					var miniSnakeData = this.getMiniSnakes();
-					user.broadcastMiniSnakes(miniSnakeData);
+					user.sendMiniSnakes(miniSnakeData);
 				}
 				
 				if(user.request)

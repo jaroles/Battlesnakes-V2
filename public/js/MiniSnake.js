@@ -117,17 +117,11 @@ function MiniSnake(team,color,state,pos,velocity)
 	* @param dx Change in X position of the minisnake
 	* @param dy Change in Y position of the minisnake
 	*/
-	this.move = function(dx,dy)
+	this.move = function(x , y)
 	{
-		var last = (this.lasttime) ? this.lasttime : (new Date()).getTime();
-		var currentTime = (new Date()).getTime();
-		var dt = (currentTime - last) / 1000;
-		this.lasttime = currentTime;
-		
-
-		this.worldPos.x += dx * dt;
-		this.worldPos.y += dy * dt;
-		this.updatePath(dx * dt, dy * dt);
+		this.worldPos.x = x;
+		this.worldPos.y = y;
+		this.updatePath(x, y);
 	};
 	
 	/**
@@ -162,12 +156,12 @@ function MiniSnake(team,color,state,pos,velocity)
 	* @param dx Change in X position of the minisnake
 	* @param dy Change in Y position of the minisnake
 	*/
-	this.updatePath = function(dx, dy)
+	this.updatePath = function(x, y)
 	{	
 			var xStep = Math.cos(this.angle)*18;
 			var yStep = Math.sin(this.angle)*18;
 			
-			this.body.insert(1,new paper.Point(this.x + dx,this.y+dy));
+			this.body.insert(1,new paper.Point(x,y));
 			if (this.body.segments.length > this.numSegments)
 			{
 				this.body.removeSegments(this.numSegments+1,this.body.segments.length);
