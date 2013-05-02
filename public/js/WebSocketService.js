@@ -125,7 +125,7 @@ var WebSocketService = function(webSocket,game)
 		var angle = data.velocity.angle*(Math.PI/180);	
 		var oldAngle = this.game.userSnake.angle;
 		this.game.userSnake.angle = angle;
-		this.game.userSnake.rotate((180/Math.PI)*(angle-oldAngle));
+		// this.game.userSnake.rotate((180/Math.PI)*(angle-oldAngle));
 		this.game.userSnake.velocity = data.velocity.magnitude;
 	};
 	
@@ -301,7 +301,7 @@ var WebSocketService = function(webSocket,game)
 	*/
 	this.playerUpdateHandler = function(data)
 	{
-		//console.log(data);
+		console.log(data);
 		var snakes = data.snakes;
 	//	console.log(data.snakes);	
 		var US = this.game.userSnake;
@@ -480,7 +480,11 @@ var WebSocketService = function(webSocket,game)
 		{
 			var e = 0;
 			while (e<enviro.length && enviro[e].id != items[i]) {e++;}
-			enviro.splice(e,1);
+			if(enviro[e].type != "Hatchery")
+			{
+				enviro.splice(e,1);
+			}
+
 		}
 	};
 	
@@ -516,8 +520,8 @@ var WebSocketService = function(webSocket,game)
 				}
 				if(state == 0)//for moving
 				{
-					thisSnake.setPosition(inSnake.position.x, inSnake.position.y);
-					thisSnake.velocity(inSnake.velocity);
+					thisSnake.move(inSnake.position.x, inSnake.position.y);
+					thisSnake.updateVelocity(inSnake.velocity);
 				}
 			}
 			else

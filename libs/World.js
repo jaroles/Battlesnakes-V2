@@ -333,7 +333,7 @@ function World()
 							}
 							
 							// If collision with Hatchery, spawn MiniSnakes
-							if(collision.hasOwnProperty('type') && collision.type == 'hatch')
+							if(collision != undefined && collision.hasOwnProperty('type') && collision.type == 'hatch')
 							{
 								if(collision.eggs > 0)
 									{console.log('Spawning ' + collision.eggs + ' minisnake(s)');}
@@ -428,9 +428,19 @@ function World()
 		user.sendAddEnvironmentPacket(addEnvironment);
 		user.sendRemoveSnakePacket(removeSnake);
 		user.sendAddSnakePacket(addSnake);
-
-        user.broadcastRemoveSnake(remove);
-        user.broadcastAddSnake(add);
+		
+		// console.log('once: ' + once);
+		if(once <= 3)
+		{
+			// user.broadcastRemoveSnake(remove);
+			user.broadcastAddSnake(add);
+		}
+		
+        once++;
+		if(once == 15)
+		{
+			once = 0;
+		}
 	}
 
 	function environment(gridsOrGameObject) {
