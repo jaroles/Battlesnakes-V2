@@ -37,8 +37,8 @@ class GridController : public node::ObjectWrap
 
 		void updateWorldSize(int newSize);
 
-		const MiniSnake* getMiniSnake(int id) const;
-		const std::vector<MiniSnake*>* getMiniSnakes() const;
+		MiniSnake* getMiniSnake(int id) const;
+		std::vector<MiniSnake*>* getMiniSnakes() const;
 
 		static int snakeID;
 
@@ -51,7 +51,7 @@ class GridController : public node::ObjectWrap
 		static v8::Handle<v8::Value> nodeUpdate(const v8::Arguments& args);
 		static v8::Handle<v8::Value> nodeSpawnMiniSnake(const v8::Arguments& args);
 		static v8::Handle<v8::Value> nodeAddMiniSnake(const v8::Arguments& args);
-		static v8::Handle<v8::Value> nodeAddMiniSnake(const v8::Arguments& args);
+		static v8::Handle<v8::Value> nodeRemoveMiniSnake(const v8::Arguments& args);
 		static v8::Handle<v8::Value> nodeAddObject(const v8::Arguments& args);
 		static v8::Handle<v8::Value> nodeRemoveObject(const v8::Arguments& args);
 		static v8::Handle<v8::Value> nodeUpdateWorldSize(const v8::Arguments& args);

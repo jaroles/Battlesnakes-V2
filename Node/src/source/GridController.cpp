@@ -209,7 +209,7 @@ void GridController::updateWorldSize(int newSize)
 }
 
 // Accessors and Mutators
-const MiniSnake* GridController::getMiniSnake(int id) const
+MiniSnake* GridController::getMiniSnake(int id) const
 {
 	std::vector<MiniSnake*>::iterator snake;
 
@@ -224,7 +224,7 @@ const MiniSnake* GridController::getMiniSnake(int id) const
 	return NULL;
 }
 
-const std::vector<MiniSnake*>* GridController::getMiniSnakes() const
+std::vector<MiniSnake*>* GridController::getMiniSnakes() const
 {
 	return minisnakes_;
 }
@@ -241,6 +241,7 @@ void GridController::Init(v8::Handle<v8::Object> target)
 	tpl->PrototypeTemplate()->Set(v8::String::NewSymbol("update"), v8::FunctionTemplate::New(nodeUpdate)->GetFunction());
 	tpl->PrototypeTemplate()->Set(v8::String::NewSymbol("spawnMiniSnake"), v8::FunctionTemplate::New(nodeSpawnMiniSnake)->GetFunction());
 	tpl->PrototypeTemplate()->Set(v8::String::NewSymbol("addMiniSnake"), v8::FunctionTemplate::New(nodeAddMiniSnake)->GetFunction());
+	tpl->PrototypeTemplate()->Set(v8::String::NewSymbol("removeMiniSnake"), v8::FunctionTemplate::New(nodeRemoveMiniSnake)->GetFunction());
 	tpl->PrototypeTemplate()->Set(v8::String::NewSymbol("addObject"), v8::FunctionTemplate::New(nodeAddObject)->GetFunction());
 	tpl->PrototypeTemplate()->Set(v8::String::NewSymbol("removeObject"), v8::FunctionTemplate::New(nodeRemoveObject)->GetFunction());
 	tpl->PrototypeTemplate()->Set(v8::String::NewSymbol("updateWorldSize"), v8::FunctionTemplate::New(nodeUpdateWorldSize)->GetFunction());
@@ -296,6 +297,29 @@ v8::Handle<v8::Value> GridController::nodeAddMiniSnake(const v8::Arguments& args
 	gridController->addMiniSnake(*snakeObj);
 	//gridController->addMiniSnake(*snake);
 
+	return v8::Undefined();
+}
+
+v8::Handle<v8::Value> GridController::nodeRemoveMiniSnake(const v8::Arguments& args)
+{
+	GridController* gridController = ObjectWrap::Unwrap<GridController>(args.This());
+
+	int id = (int)args[0]->NumberValue();
+	std::vector<MiniSnake*>* miniSnakes = gridController->getMiniSnakes();
+
+	bool deleted = false;
+	std::vector<MiniSnake*>::iterator it = miniSnakes->begin();
+
+	while(!deleted && it < miniSnakes->end())
+	{
+		if((*it)->getID() == id)
+		{
+			deleted = true;
+			//delete (*it); // Let the server handle deleting the minisnake from memory
+			miniSnakes->erase(it);
+		}
+	}
+	
 	return v8::Undefined();
 }
 

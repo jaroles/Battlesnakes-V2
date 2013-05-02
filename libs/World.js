@@ -570,7 +570,10 @@ function World()
 			var state = miniSnake.getState();
 			
 			if(state == 1 || state == -1) {
+				var id = miniSnake.getID();
+				//miniSnakeController.removeMiniSnake(id);
 				miniSnakes.splice(miniSnakes.indexOf(miniSnake), 1);
+				miniSnakeController.removeMiniSnake(id);
 			}
 		}
 	}
