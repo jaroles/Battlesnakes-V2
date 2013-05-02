@@ -410,8 +410,8 @@ function World()
 		user.sendRemoveSnakePacket(removeSnake);
 		user.sendAddSnakePacket(addSnake);
 
-        user.broadcastRemoveSnake(remove);
-        user.broadcastAddSnake(add);
+        // user.broadcastRemoveSnake(remove);
+        // user.broadcastAddSnake(add);
 	}
 
 	function environment(gridsOrGameObject) {

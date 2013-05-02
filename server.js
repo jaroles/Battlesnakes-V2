@@ -115,12 +115,12 @@ Server.PlayerEvent = function(event)
 			user.sendAddEnvironmentPacket(world.surroundingEnvironment(snake));
 			
 			//Send other snakes to the user
-			var otherSnakes = world.surroundingSnakes(snake);
-			user.sendAddSnakePacket(otherSnakes);
+			// var otherSnakes = world.surroundingSnakes(snake);
+			// user.sendAddSnakePacket(otherSnakes);
 			// user.sendPlayerUpdate(otherSnakes);
 			
 			//Send user to the  other snakes
-			user.broadcastAddSnake();
+			// user.broadcastAddSnake();
 			// user.broadcastPlayerUpdate();
 			break;
 		case 'disconnect':
