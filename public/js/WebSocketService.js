@@ -301,7 +301,7 @@ var WebSocketService = function(webSocket,game)
 	*/
 	this.playerUpdateHandler = function(data)
 	{
-		//console.log(data);
+		console.log(data);
 		var snakes = data.snakes;
 	//	console.log(data.snakes);	
 		var US = this.game.userSnake;
@@ -480,7 +480,11 @@ var WebSocketService = function(webSocket,game)
 		{
 			var e = 0;
 			while (e<enviro.length && enviro[e].id != items[i]) {e++;}
-			enviro.splice(e,1);
+			if(enviro[e].type != "Hatchery")
+			{
+				enviro.splice(e,1);
+			}
+
 		}
 	};
 	
