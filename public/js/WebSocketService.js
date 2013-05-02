@@ -125,7 +125,7 @@ var WebSocketService = function(webSocket,game)
 		var angle = data.velocity.angle*(Math.PI/180);	
 		var oldAngle = this.game.userSnake.angle;
 		this.game.userSnake.angle = angle;
-		this.game.userSnake.rotate((180/Math.PI)*(angle-oldAngle));
+		// this.game.userSnake.rotate((180/Math.PI)*(angle-oldAngle));
 		this.game.userSnake.velocity = data.velocity.magnitude;
 	};
 	

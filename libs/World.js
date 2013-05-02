@@ -25,7 +25,7 @@ function World()
 	var storedTime = (new Date()).getTime();
 	var scale = 25;
 	var world = this;
-
+	var once = 0;
 	function init()
 	{
 		grid = new Grid();
@@ -409,9 +409,15 @@ function World()
 		user.sendAddEnvironmentPacket(addEnvironment);
 		user.sendRemoveSnakePacket(removeSnake);
 		user.sendAddSnakePacket(addSnake);
-
+		
+		
+		if(this.once == 0)
+		{
+			user.broadcastAddSnake(add);
+			this.once++;
+		}
         // user.broadcastRemoveSnake(remove);
-        // user.broadcastAddSnake(add);
+        
 	}
 
 	function environment(gridsOrGameObject) {

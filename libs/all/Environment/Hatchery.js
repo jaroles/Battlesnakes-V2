@@ -34,7 +34,7 @@ Hatchery.prototype.extend({
 				&& gameObject.position.y <= this.position.y + this.height;
 		} else {
 			var col = gameObject.position.inside(topLeft, bottomRight);
-			if (col && gameObject.hasEggs()) {
+			if (col && gameObject.hasEggs() &&gameObject.team== this.color) {
 				eggNums = gameObject.eggs.length;
 				gameObject.dropOffEggs(this);
 			}
