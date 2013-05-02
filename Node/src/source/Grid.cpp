@@ -257,8 +257,6 @@ const Hatchery* Grid::getHatchery(int team) const
 
 const std::vector<const EnvironmentObject*>* Grid::getEnvironmentInfo(const std::vector<GameObject*>& gameObjects)
 {
-	std::cout << "Retrieving Environment Info" << std::endl;
-
 	std::vector<const EnvironmentObject*>* environment = new std::vector<const EnvironmentObject*>();
 	std::vector<GameObject*>::const_iterator it;
 
@@ -273,8 +271,6 @@ const std::vector<const EnvironmentObject*>* Grid::getEnvironmentInfo(const std:
 			environment->push_back(object);
 		}
 	}
-
-	std::cout << "Environment Info retrieved successfully" << std::endl;
 
 	return environment;
 }

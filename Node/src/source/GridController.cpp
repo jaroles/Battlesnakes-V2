@@ -69,11 +69,7 @@ void GridController::update()
 		int xg = floor( x / 96 ); // getting the specific GridSection row of the MiniSnake
 		int yg = floor( y / 96 ); // getting the specific GridSection column of the MiniSnake
 
-		std::cout << "Initiate MiniSnake " << snakeP->getID() << " update..." << std::endl;
-
 		(*snakeIt)->update(); // update the snake's location
-
-		std::cout << "MiniSnake " << snakeP->getID() << " update successful" << std::endl;
 
 		int xgn = (*snakeIt)->getPosition().get()[0] / 96; // MiniSnake's new x to check against the old x
 		int ygn = (*snakeIt)->getPosition().get()[1] / 96; // MiniSnake's new y to check against the old y
@@ -271,9 +267,18 @@ v8::Handle<v8::Value> GridController::nodeAddObject(const v8::Arguments& args)
 	GameObject* object = ObjectWrap::Unwrap<GameObject>(args[0]->ToObject());
 
 	// Create a new Object to stay in memory
-	GameObject* createObj = new GameObject(*object);
-
-	gridController->addObject(*createObj);
+	std::string type = object->getType();
+	if(type.compare("rock") == 0 || type.compare("tree") == 0 || type.compare("bush") == 0)
+	{
+		EnvironmentObject* environment = new EnvironmentObject(type, object->getPosition());
+		gridController->addObject(*environment);
+	}
+	else if(type.compare("hatchery") == 0)
+	{
+		Hatchery* hatchObj = (Hatchery*)object;
+		Hatchery* hatchery = new Hatchery(hatchObj->getPosition(), hatchObj->getTeam());
+		gridController->addObject(*hatchery);
+	}
 
 	return v8::Undefined();
 }
