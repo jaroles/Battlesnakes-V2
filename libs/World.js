@@ -430,7 +430,7 @@ function World()
 		user.sendAddSnakePacket(addSnake);
 		
 		// console.log('once: ' + once);
-		if(once <= 3)
+		/*if(once <= 3)
 		{
 			// user.broadcastRemoveSnake(remove);
 			user.broadcastAddSnake(add);
@@ -440,7 +440,7 @@ function World()
 		if(once == 15)
 		{
 			once = 0;
-		}
+		}*/
 	}
 
 	function environment(gridsOrGameObject) {
@@ -549,8 +549,8 @@ function World()
 			var miniSnakeObj = {
 					id: miniSnake.getID(),
 					team: miniSnake.getTeam(),
-					position: positionPoint,
-					velocity: velocityVector,
+					position: positionPoint.toJSON(),
+					velocity: velocityVector.toJSON(),
 					state: miniSnake.getState()
 			}
 			
