@@ -297,6 +297,7 @@ function World()
 				if(miniSnakes.length > 0) {
 					var miniSnakeData = this.getMiniSnakes();
 					user.sendMiniSnakes(miniSnakeData);
+					this.removeMiniSnakes();
 				}
 				
 				if(user.request)
@@ -569,7 +570,7 @@ function World()
 			
 			var state = miniSnake.getState();
 			
-			if(state == 0 || state == -1) {
+			if(state == 1 || state == -1) {
 				miniSnakes.splice(miniSnakes.indexOf(miniSnake), 1);
 			}
 		}

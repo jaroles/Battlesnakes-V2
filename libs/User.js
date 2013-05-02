@@ -296,7 +296,7 @@ function User(socket, playerevent, snakeID)
 		});*/
 		var message = {
 				type: 'miniSnakes',
-				snakes: [snakes]
+				snakes: snakes
 			};
 			socket.emit('message', message);
 			return message;
