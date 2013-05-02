@@ -62,33 +62,11 @@ void MiniSnake::update()
 
 	if(state_ != kDeadState && state_ != kAttackState)
 	{
-		std::cout << "Initiate MiniSnake information retrieval" << std::endl;
-
 		// Retrieve information about the game objects surrounding the minisnake.
 		const std::vector<GameObject*>* grid = world_->getObjectInfo(*position_);
-
-		std::cout << "MiniSnake retrieves grid successfully" << std::endl;
-		std::cout << "   Print grid: " << grid->size() << std::endl;
 		std::vector<GameObject*>::const_iterator it;
-		if(!grid->empty())
-		{
-			for(it = grid->begin(); it < grid->end(); it++)
-			{
-				std::cout << "      Object " /*<< (*it)->getType()*/ << std::endl;
-			}
-		}
-		else
-		{
-			std::cout << "      Grid Empty!" << std::endl;
-		}
 		const std::vector<GameObject*>* zone = this->getZone(*grid);
-
-		std::cout << "MiniSnake retrieves zone successfully" << std::endl;
-
 		const std::vector<const EnvironmentObject*>* environment = Grid::getEnvironmentInfo(*zone);
-		
-		std::cout << "MiniSnake retrieves environment successfully" << std::endl;
-
 		const std::vector<const MiniSnake*>* allies = Grid::getMiniSnakeInfo(*zone, team_);
 		const std::vector<const MiniSnake*>* enemies = Grid::getMiniSnakeInfo(*zone, Teams::enemyTeam(team_));
 
@@ -446,31 +424,20 @@ const std::vector<GameObject*>* MiniSnake::getZone(const std::vector<GameObject*
 {
 	// TODO
 	// * Sort environment array by distance from minisnake
-
-	std::cout << "   MiniSnake " << id_ << " getting zone..." << std::endl;
-
 	std::vector<GameObject*>* zone = new std::vector<GameObject*>;
 	std::vector<GameObject*>::const_iterator it;
 
 	for(it = grid.begin(); it < grid.end(); it++)
 	{
-		std::cout << "   Each object ";
-		std::cout << (*it)->getType();
-
 		Point objPosition = (*it)->getPosition();
 
 		// If an object's distance from the minisnake is less than the
 		// zone radius, add it to the environment vector
 		if(Point::distance(*position_, objPosition) < MiniSnake::kZoneRadius)
 		{
-			std::cout << " added to environment";
 			zone->push_back(*it);
 		}
-
-		std::cout << std::endl;
 	}
-
-	std::cout << "   MiniSnake " << id_ << " retrieved zone" << std::endl;
 
 	return zone;
 }

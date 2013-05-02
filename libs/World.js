@@ -318,9 +318,9 @@ function World()
 							// TODO Check if player has eggs
 							if(collision == 'hatchery0')
 							{
-								console.log('before spawn');
-								//miniSnakeController.spawnMiniSnake(0);
-								console.log('after spawn');
+								//console.log('before spawn');
+								miniSnakeController.spawnMiniSnake(0);
+								//console.log('after spawn');
 								
 								collision = true;
 								colObj = gObj;
@@ -331,9 +331,9 @@ function World()
 							}
 							else if(collision == 'hatchery1')
 							{
-								console.log('before spawn');
-								//miniSnakeController.spawnMiniSnake(0);
-								console.log('after spawn');
+								//console.log('before spawn');
+								miniSnakeController.spawnMiniSnake(1);
+								//console.log('after spawn');
 								
 								collision = true;
 								colObj = gObj;
