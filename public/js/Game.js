@@ -148,6 +148,13 @@ var Game = function(aSettings, aCanvas) {
 			if(this.miniSnakes.length > 0) {
 				for(var i = 0; i < this.miniSnakes.length; i++) {
 					var miniSnake = this.miniSnakes[i];
+					if(miniSnake.velocity > 0) {
+						var dx = ((Math.cos(miniSnake.velocity.angle)*
+								miniSnake.velocity)) * dt;
+						var dy = ((Math.cos(miniSnake.velocity.angle)*
+								miniSnake.velocity)) * dt;
+						miniSnake.move();
+					}
 				}
 			}
 		}
@@ -164,6 +171,11 @@ var Game = function(aSettings, aCanvas) {
 				this.snakes[i].head.transform(m);
 				//this.snakes[i].eye1.transform(m);
 				//this.snakes[i].eye2.transform(m);
+			}
+			
+			for(var i = 0; i < this.miniSnakes.length; i++)
+			{
+				this.miniSnakes[i].head.transform(m);
 			}
 		}
 	};

@@ -308,18 +308,38 @@ v8::Handle<v8::Value> GridController::nodeRemoveMiniSnake(const v8::Arguments& a
 	std::vector<MiniSnake*>* miniSnakes = gridController->getMiniSnakes();
 
 	bool deleted = false;
-	std::vector<MiniSnake*>::iterator it = miniSnakes->begin();
+	std::vector<MiniSnake*>::iterator miniSnake = miniSnakes->begin();
 
-	while(!deleted && it < miniSnakes->end())
+	// DEBUG removeMiniSnake
+	//std::cout << "removeMiniSnake: Removing MiniSnake " << id << "..." << std::endl;
+
+	while(!deleted && miniSnake < miniSnakes->end())
 	{
-		if((*it)->getID() == id)
+		if((*miniSnake)->getID() == id)
 		{
 			deleted = true;
 			//delete (*it); // Let the server handle deleting the minisnake from memory
-			miniSnakes->erase(it);
+			//std::cout << "   MiniSnake removal found!" << std::endl;
+			miniSnake = miniSnakes->erase(miniSnake);
+			//std::cout << "   MiniSnake " << id << " erased" << std::endl;
+		}
+
+		if(miniSnake < miniSnakes->end())
+		{
+			miniSnake++;
 		}
 	}
 	
+	// DEBUG removeMiniSnake
+	/*if(deleted)
+	{
+		std::cout << "MiniSnake " << id << " removed" << std::endl;
+	}
+	else
+	{
+		std::cout << "MiniSnake " << id << " could not be removed" << std::endl;
+	}*/
+
 	return v8::Undefined();
 }
 

@@ -302,7 +302,7 @@ var WebSocketService = function(webSocket,game)
 	*/
 	this.playerUpdateHandler = function(data)
 	{
-		console.log(data);
+		//console.log(data);
 		var snakes = data.snakes;
 	//	console.log(data.snakes);	
 		var US = this.game.userSnake;
@@ -491,7 +491,7 @@ var WebSocketService = function(webSocket,game)
 	
 	this.miniSnakesHandler = function(data)
 	{
-		console.log(data);
+		//console.log(data);
 		/* WARNING: We don't have minisnakes set up exactly yet. This is psuedocode for when we do
 		 * You should be able to just switch variable names around though...or pretty close
 		 */
@@ -501,7 +501,39 @@ var WebSocketService = function(webSocket,game)
 
 		for(var j = 0; j < data.minisnakes.length; j++)
 		{
-			var inSnake = data.minisnakes[j];
+			var dataSnake = data.minisnakes[j];
+			var miniSnake = 0;
+			
+			for(var i = 0; i < miniSnakeArray.length; i++) {
+				if(miniSnakeArray[i].id == dataSnake.id) {
+					miniSnake = miniSnakeArray[i];
+					break;
+				}
+			}
+			
+			// If the MiniSnake already exists for the user
+			if(miniSnake) {
+				//miniSnake.velocity = dataSnake.velocity;
+				
+				// If the MiniSnake is moving, update it
+				if(dataSnake.state == 0) {
+					var to = {
+							x: dataSnake.position.x / 1000,
+							y: dataSnake.position.y / 1000
+					}
+					
+					miniSnake.velocity = dataSnake.velocity;
+					miniSnake.update(to);
+				}
+				// Else, the MiniSnake is dead
+				else {
+					miniSnake.head.remove();
+					miniSnakeArray.splice(i,1);
+				}
+
+			}
+			
+			/*var inSnake = data.minisnakes[j];
 			console.log(inSnake);
 			var thisSnake = 0;
 			for( var i =0; i < miniSnakeArray.length; i++)
@@ -528,10 +560,14 @@ var WebSocketService = function(webSocket,game)
 					thisSnake.updateVelocity(inSnake.velocity);
 				}
 			}
-			else
-			{
+			else*/
+			
+			// If not, create a new MiniSnake for the user
+			else {
 				//team,color,state,pos,velocity
 				//new Snake('',1,000000,0,0,-1,1,null,1,null,this.game.scaleWindow,{x:this.centerX,y:this.centerY},true);
+				
+				var inSnake = data.minisnakes[j];
 				
 				var user = this.game.userSnake;
 				var scaleSize = this.game.scaleWindow;
@@ -558,11 +594,13 @@ var WebSocketService = function(webSocket,game)
 				var miniS = new MiniSnake(
 						inSnake.id, 
 						inSnake.team, 
-						inSnake.team == 1 ? 'ff0000' : '0000ff', 
+						inSnake.team == 0 ? 'ff0000' : '0000ff', 
 						inSnake.state, 
 						position,
 						drawPos,
-						inSnake.velocity.magnitude);
+						inSnake.velocity,
+						this.game.scaleWindow);
+				
 				miniSnakeArray.push(miniS);
 			}	
 		}

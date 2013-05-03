@@ -92,6 +92,15 @@ function World()
 		PopulateEnvironment(grid.getGrid(1, 2));
 		PopulateEnvironment(grid.getGrid(2, 0));
 		PopulateEnvironment(grid.getGrid(2, 2));
+		
+		console.log("Spawning eggs ...");
+		SpawnEggs(grid.getGrid(0, 0));
+		SpawnEggs(grid.getGrid(0, 2));
+		SpawnEggs(grid.getGrid(1, 0));
+		SpawnEggs(grid.getGrid(1, 1));
+		SpawnEggs(grid.getGrid(1, 2));
+		SpawnEggs(grid.getGrid(2, 0));
+		SpawnEggs(grid.getGrid(2, 2));
 	};
 
 	function SurroundWorld() {
@@ -165,9 +174,19 @@ function World()
 				obj = new objects[type];
 			grid.addGameObject(obj);
 			
-			FindNewPosition(obj, type, grid)
+			FindNewPosition(obj, type, grid);
 		}
 	};
+	
+	function SpawnEggs(grid) {
+		var eggs = 5;
+		for (var i = 0; i < eggs; i++) {
+			var obj = new Egg();
+			grid.addGameObject(obj);
+			
+			FindNewPosition(obj, 4, grid);
+		}
+	}
 
 	function FindNewPosition(obj, type, g) {
 		var gridsObj = g.getGameObjects();
@@ -208,7 +227,7 @@ function World()
 		}
 		
 		// Create an environment object for MiniSnakes
-		if(found && typeof type == 'number') {
+		if(found && typeof type == 'number' && type != 4) {
 			var position = new MiniSnakeAddon.Point(x, y);
 			var msObj = new MiniSnakeAddon.EnvironmentObject(type, position);
 			miniSnakeController.addObject(msObj);
@@ -296,7 +315,6 @@ function World()
 				if(miniSnakes.length > 0) {
 					var miniSnakeData = this.getMiniSnakes();
 					user.sendMiniSnakes(miniSnakeData);
-					this.removeMiniSnakes();
 				}
 				
 				if(user.request)
@@ -338,12 +356,12 @@ function World()
 							{
 								if(collision.eggs > 0)
 									{console.log('Spawning ' + collision.eggs + ' minisnake(s)');}
-								//for(var i = 0; i < collision.eggs; i++)
-								//{
+								for(var i = 0; i < collision.eggs; i++)
+								{
 									 var miniSnake = this.createMiniSnake(collision.team);
 									 miniSnakes.push(miniSnake);
 									 miniSnakeController.addMiniSnake(miniSnake);
-								//}
+								}
 								collision = true;
 								colObj = gObj;
 								break;
@@ -384,6 +402,8 @@ function World()
 					}
 				}
 			}
+			
+			this.removeMiniSnakes();
 		}
 		dt ++;
 
@@ -516,7 +536,7 @@ function World()
 		var yh = hatcheryPosition.y - height / 2;
 		
 		var x = (Math.random() * width) + xh;
-		var y = (Math.random() * height) + xh - height;
+		var y = (Math.random() * height) + yh;
 		
 		var position = new MiniSnakeAddon.Point(x, y);
 		
@@ -571,9 +591,9 @@ function World()
 			
 			if(state == 1 || state == -1) {
 				var id = miniSnake.getID();
-				//miniSnakeController.removeMiniSnake(id);
-				miniSnakes.splice(miniSnakes.indexOf(miniSnake), 1);
 				miniSnakeController.removeMiniSnake(id);
+				miniSnakes.splice(miniSnakes.indexOf(miniSnake), 1);
+				//miniSnakeController.removeMiniSnake(id);
 			}
 		}
 	}

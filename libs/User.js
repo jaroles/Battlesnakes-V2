@@ -287,7 +287,7 @@ function User(socket, playerevent, snakeID)
 	}
 	
 	this.sendMiniSnakes = function(snakes) {
-		console.log('broadcastMiniSnakes');
+		//console.log('sendMiniSnakes');
 		/*
 		var to = (grids) ? grids : this.surroundingGridRooms();
 		this.broadcast(to, {

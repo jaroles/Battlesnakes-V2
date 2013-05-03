@@ -78,7 +78,8 @@ void MiniSnake::update()
 		velocity_->add(this->objective());
 		velocity_->add(this->aggression(*enemies));
 
-		velocity_->add(this->wander());
+		// Adds randomness to MiniSnake's movement
+		//velocity_->add(this->wander());
 
 		velocity_->add(this->obstacleAvoidance(*environment));
 
@@ -95,11 +96,11 @@ void MiniSnake::update()
 			velocity_ = new Vector(angle, kMaxVelocity);
 		}
 
-		std::cout << "MiniSnake " << id_ << std::endl;
+		/*std::cout << "MiniSnake " << id_ << std::endl;
 		std::cout << "   State   : " << state_ << std::endl;
 		std::cout << "   Velocity: " << velocity_->magnitude() << std::endl;
 		std::cout << "   Position: (" << position_->get()[0] <<
-			"," << position_->get()[1] << ")" << std::endl;
+			"," << position_->get()[1] << ")" << std::endl;*/
 
 		// DEBUG
 		/*std::vector<const MiniSnake*>::const_iterator enemy;
@@ -347,7 +348,7 @@ Vector MiniSnake::objective() const
 	hatcheryPosition.translate(*position_);
 
 	float d = Point::distance(*position_, hatcheryPosition);
-	float m = (kZoneRadius * (d + 1)) / (2 * d);
+	float m = (kZoneRadius * (d + 1)) / (4 * d);
 
 	// DEBUG
 	/*Vector objectiveVector(hatcheryPosition, m);
@@ -375,6 +376,11 @@ Vector MiniSnake::aggression(const std::vector<const MiniSnake*>& enemies) const
 
 		for(it = enemies.begin(); it < enemies.end(); it++)
 		{
+			// DEBUG aggression
+			std::cout << "aggression: MiniSnake " << (*it)->getID() << 
+				" on team " << (*it)->getTeam() <<
+				" is an enemy to " << id_ << 
+				" on team " << team_ << std::endl;
 			Point enemyPosition = (*it)->getPosition();
 			aggressionPoint.add(enemyPosition);
 		}
@@ -383,7 +389,7 @@ Vector MiniSnake::aggression(const std::vector<const MiniSnake*>& enemies) const
 
 		// aggressionVector = Vector(aggressionPoint)
 		// causes a segmentation fault. To be looked into.
-		float m = 2 * (kZoneRadius - Point::distance(*position_, aggressionPoint));
+		float m = 4 * (kZoneRadius - Point::distance(*position_, aggressionPoint));
 		aggressionPoint.translate(*position_);
 		aggressionVector.add(Vector(aggressionPoint, m));
 
@@ -881,9 +887,9 @@ v8::Handle<v8::Value> MiniSnake::nodeNew(const v8::Arguments& args)
 	snake->Wrap(args.This());
 
 	// DEBUG nodeNew
-	std::cout << "MiniSnake " << id << " created successfully" << std::endl;
+	/*std::cout << "nodeNew: MiniSnake " << id << " created successfully" << std::endl;
 	std::cout << "   Position: (" << position->get()[0] << "," << position->get()[1] << ")" << std::endl;
-	std::cout << "   Grid size: " << world->getSize() << std::endl;
+	std::cout << "   Grid size: " << world->getSize() << std::endl;*/
 
 	return args.This();
 }
