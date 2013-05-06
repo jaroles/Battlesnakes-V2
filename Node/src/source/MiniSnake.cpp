@@ -348,7 +348,14 @@ Vector MiniSnake::objective() const
 	hatcheryPosition.translate(*position_);
 
 	float d = Point::distance(*position_, hatcheryPosition);
-	float m = (kZoneRadius * (d + 1)) / (4 * d);
+	// default 1/2d magnitude
+	//float m = (kZoneRadius * (d + 1)) / (2 * d);
+	float m = (kZoneRadius * (d + 1)) / d;
+
+	std::cout << "MiniSnake objective: ";
+	std::cout << "magnitude: ";
+	std::cout << "hatchery: " << hatcheryPosition.get()[0] <<
+		"," << hatcheryPosition.get()[1] << m << std::endl;
 
 	// DEBUG
 	/*Vector objectiveVector(hatcheryPosition, m);
@@ -377,10 +384,10 @@ Vector MiniSnake::aggression(const std::vector<const MiniSnake*>& enemies) const
 		for(it = enemies.begin(); it < enemies.end(); it++)
 		{
 			// DEBUG aggression
-			std::cout << "aggression: MiniSnake " << (*it)->getID() << 
+			/*std::cout << "aggression: MiniSnake " << (*it)->getID() << 
 				" on team " << (*it)->getTeam() <<
 				" is an enemy to " << id_ << 
-				" on team " << team_ << std::endl;
+				" on team " << team_ << std::endl;*/
 			Point enemyPosition = (*it)->getPosition();
 			aggressionPoint.add(enemyPosition);
 		}
@@ -389,7 +396,8 @@ Vector MiniSnake::aggression(const std::vector<const MiniSnake*>& enemies) const
 
 		// aggressionVector = Vector(aggressionPoint)
 		// causes a segmentation fault. To be looked into.
-		float m = 4 * (kZoneRadius - Point::distance(*position_, aggressionPoint));
+		// default 2 times magnitude
+		float m = 2 * (kZoneRadius - Point::distance(*position_, aggressionPoint));
 		aggressionPoint.translate(*position_);
 		aggressionVector.add(Vector(aggressionPoint, m));
 

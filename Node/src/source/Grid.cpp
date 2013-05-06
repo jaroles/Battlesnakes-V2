@@ -152,6 +152,14 @@ void Grid::addObject(GameObject& object)
 	}
 	else
 	{
+		if(object.getType().compare("minisnake") == 0)
+		{
+			std::cout << "Grid::addObject: ";
+			std::cout << "MiniSnake added to grid(" << 
+				gridSection->getRow() << "," << gridSection->getColumn() << ")" 
+				<< std::endl;
+		}
+
 		gridSection->addGameObject(object);
 	}
 }
@@ -294,6 +302,8 @@ const std::vector<const MiniSnake*>* Grid::getMiniSnakeInfo(const std::vector<Ga
 				// If the minisnake is on the team being asked for...
 				if(snake->getTeam() == team)
 				{
+					// DEBUG Grid::getMiniSnakeInfo
+
 					//const MiniSnake* object = dynamic_cast<const MiniSnake*>(*it);
 
 					// Add the minisnake to the minisnake vector array
