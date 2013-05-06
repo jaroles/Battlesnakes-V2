@@ -400,17 +400,16 @@ var WebSocketService = function(webSocket,game)
 					// console.log("this.game.snakes[s].bSegments.length: " + this.game.snakes[s].bSegments.length);
 					// console.log("segments.length: " + segments.length);
 					checkOtherSegments[i] = segments.length;
-					checkOtherSegments[i] = segments.length;
 					// console.log("checking other segments length: " + checkOtherSegments[s]);
 					// console.log("temp: " + temp[s]);
 					if(checkOtherSegments[i] != temp[i])
 					{
-						if(checkOtherSegments[i] < temp[i])
-						{
-							this.game.snakes[i].body.removeSegments();
-							this.game.snakes[i].body.add(new paper.Point(this.game.snakes[i].x,this.game.snakes[i].y));
-							this.game.snakes[i].numSegments = 2;
-						}
+						// if(checkOtherSegments[i] < temp[i])
+						// {
+							// this.game.snakes[i].body.removeSegments();
+							// this.game.snakes[i].body.add(new paper.Point(this.game.snakes[i].x,this.game.snakes[i].y));
+							// this.game.snakes[i].numSegments = 2;
+						// }
 						// this.game.snakes[i].body.remove();
 						// this.game.snakes[i].body = new paper.Path();
 						// this.game.snakes[i].id = id;
@@ -426,7 +425,11 @@ var WebSocketService = function(webSocket,game)
 						// this.game.snakes[i].y = drawPos.y;
 						// if(checkOtherSegments[i] != 1)
 						// {
+						this.game.snakes[i].body.removeSegments();
+							this.game.snakes[i].body.add(new paper.Point(this.game.snakes[i].x,this.game.snakes[i].y));
+							this.game.snakes[i].numSegments = segments.length;
 							this.game.snakes[i].init();	
+							console.log("Performed init()");
 						// }
 					}
 					temp[i] = checkOtherSegments[i];
