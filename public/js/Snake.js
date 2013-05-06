@@ -116,7 +116,8 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 	this.init = function()
 	{
 		
-		//console.log(this.bSegments.length,this.bSegments);
+		// console.log(this.bSegments.length,this.bSegments);
+		// console.log("this.bSegments.length: " + this.bSegments.length);
 		var relative = (new Point(this.x,this.y)).subtract(new Point(worldPos));
 
 		this.mySpline = new CubicBezierSpline(this.bSegments).relocate(this.x,this.y);
@@ -127,6 +128,7 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 		})(this);		
 		
 		var l = this.mySpline.bezierSegments.length;
+		// console.log("this.mySpline.bezierSegments.length: " + this.mySpline.bezierSegments.length);
 		this.mySpline.breakUp();
 		var lastSeg = undefined;
 		for (var i = l - 1; i >= 0; --i) {
@@ -145,21 +147,23 @@ function Snake(name,team,color,velocity,angle,currentPowerUp,numSegments,segment
 			lastSeg = seg;
 		}
 		this.mySpline.rejoin();
-
+		// console.log("this.mySpline: " + this.mySpline);
 		if (l) {
 			this.body.moveTo(this.mySpline.bezierSegments[0].from);
 		}
 		
+		// console.log("l : " + l);
 		for (var i = 0; i < l; ++i) {
 			var seg = this.mySpline.bezierSegments[i];
+			// console.log("this.mySpline.bezierSegments[i]: " + seg);
 			var from = seg.from;
 			var c1 = seg.control1,
 				c2 = seg.control2,
 				to = seg.to;
-			//console.log(from, c1 , c2, to);
+			// console.log("from, c1 , c2, to: " + from, c1 , c2, to);
 			this.body.cubicCurveTo(c1, c2, to);
 		}
-		
+		// console.log("this.body: " + this.body);
 		var segments = this.body.segments;
 		var dx = this.x - segments[0].point.x;
 		var dy = this.y - segments[0].point.y;

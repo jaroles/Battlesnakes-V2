@@ -24,8 +24,8 @@ var WebSocketService = function(webSocket,game)
 	var tree = 3;
 	var rock = 4;
 	var bush =  5;
-	
-	
+	var checkOtherSegments = new Array();
+	var temp = new Array();
 	/**
 	* Handles the intro packet
 	* @param data The data contained within the intro packet
@@ -317,11 +317,11 @@ var WebSocketService = function(webSocket,game)
 			id = tmpS.id;
 			if (this.game.userSnake.id != id)
 			{
-				s = 0;
-				while (s<this.game.snakes.length && this.game.snakes[s].id != id) {s++;}
+				// s = 0;
+				// while (s<this.game.snakes.length && this.game.snakes[s].id != id) {s++;}
 				
-				if (s <this.game.snakes.length)
-				{
+				// if (s <this.game.snakes.length)
+				// {
 					//console.log(s);
 					team = tmpS.team;
 					color = team == 0 ? 'ff0000':'0000ff';
@@ -346,81 +346,115 @@ var WebSocketService = function(webSocket,game)
 					
 					//segments = tmpS.segments;
 					
-					for(var i = 0; i < tmpS.segments.length; i++)
+					for(var j = 0; j < tmpS.segments.length; j++)
 					{
 						var tempSegment = 
 						{
 							from: 
 							{
-								x: tmpS.segments[i].from.x / 1000,
-								y: tmpS.segments[i].from.y / 1000,
+								x: tmpS.segments[j].from.x / 1000,
+								y: tmpS.segments[j].from.y / 1000,
 							},
 							control1: 
 							{
-								x: tmpS.segments[i].control1.x / 1000,
-								y: tmpS.segments[i].control1.y / 1000,
+								x: tmpS.segments[j].control1.x / 1000,
+								y: tmpS.segments[j].control1.y / 1000,
 							},
 							control2: 
 							{
-								x: tmpS.segments[i].control2.x / 1000,
-								y: tmpS.segments[i].control2.y / 1000,
+								x: tmpS.segments[j].control2.x / 1000,
+								y: tmpS.segments[j].control2.y / 1000,
 							},
 							to: 
 							{
-								x: tmpS.segments[i].to.x / 1000,
-								y: tmpS.segments[i].to.y / 1000,
+								x: tmpS.segments[j].to.x / 1000,
+								y: tmpS.segments[j].to.y / 1000,
 							}
 						}
 						
 						//console.log(tempSegment);
 						
-						segments[i] = tempSegment;
+						segments[j] = tempSegment;
 					}
-					
-					//console.log(segments);
-					
-					var oldAng = this.game.snakes[s].angle;
+					// for (var k = 0;k < this.game.snakes.length;k++)
+					// {
+						// this.game.snakes.pop();
+					// }
+					// this.game.snakes.push(new Snake(id,team,color,velocity,angle,currentPowerUp,segments.length,segments,id,worldPos,this.game.scaleWindow,drawPos,false));
+					var oldAng = this.game.snakes[i].angle;
 					angle /= (180/Math.PI);
-					//this.game.snakes[s].body.remove();
-					//this.game.snakes[s].body = new paper.Path();
-					this.game.snakes[s].id = id;
-					this.game.snakes[s].team = team;
-					this.game.snakes[s].color = color;
-					this.game.snakes[s].velocity = velocity;
-					this.game.snakes[s].angle = angle;
-					this.game.snakes[s].currentPowerUp = currentPowerUp;
-					this.game.snakes[s].numSegments = segments.length;
-					this.game.snakes[s].bSegments = segments;
-					this.game.snakes[s].worldPos = worldPos;
-					this.game.snakes[s].x = drawPos.x;
-					this.game.snakes[s].y = drawPos.y;
-					
-					
+					// this.game.snakes[i].body.remove();
+					// this.game.snakes[i].body = new paper.Path();
+					this.game.snakes[i].id = id;
+					this.game.snakes[i].team = team;
+					this.game.snakes[i].color = color;
+					this.game.snakes[i].velocity = velocity;
+					this.game.snakes[i].angle = angle;
+					this.game.snakes[i].currentPowerUp = currentPowerUp;
+					this.game.snakes[i].numSegments = (segments.length) + 2;
+					this.game.snakes[i].bSegments = segments;
+					this.game.snakes[i].worldPos = worldPos;
+					this.game.snakes[i].x = drawPos.x;
+					this.game.snakes[i].y = drawPos.y;
+					// console.log("this.game.snakes[i].numSegments: " + this.game.snakes[i].numSegments);
+					// console.log("this.game.snakes[s].bSegments.length: " + this.game.snakes[s].bSegments.length);
+					// console.log("segments.length: " + segments.length);
+					checkOtherSegments[i] = segments.length;
+					checkOtherSegments[i] = segments.length;
+					// console.log("checking other segments length: " + checkOtherSegments[s]);
+					// console.log("temp: " + temp[s]);
+					if(checkOtherSegments[i] != temp[i])
+					{
+						if(checkOtherSegments[i] < temp[i])
+						{
+							this.game.snakes[i].body.removeSegments();
+							this.game.snakes[i].body.add(new paper.Point(this.game.snakes[i].x,this.game.snakes[i].y));
+							this.game.snakes[i].numSegments = 2;
+						}
+						// this.game.snakes[i].body.remove();
+						// this.game.snakes[i].body = new paper.Path();
+						// this.game.snakes[i].id = id;
+						// this.game.snakes[i].team = team;
+						// this.game.snakes[i].color = color;
+						// this.game.snakes[i].velocity = velocity;
+						// this.game.snakes[i].angle = angle;
+						// this.game.snakes[i].currentPowerUp = currentPowerUp;
+						// this.game.snakes[i].numSegments = segments.length;
+						// this.game.snakes[i].bSegments = segments;
+						// this.game.snakes[i].worldPos = worldPos;
+						// this.game.snakes[i].x = drawPos.x;
+						// this.game.snakes[i].y = drawPos.y;
+						// if(checkOtherSegments[i] != 1)
+						// {
+							this.game.snakes[i].init();	
+						// }
+					}
+					temp[i] = checkOtherSegments[i];
 					//this.game.snakes[s].init();
 					// this.game.snakes[s].rotate((180/Math.PI)*(angle-oldAng));
 					//console.log(angle);
-				}
-				else 
-				{
-					team = tmpS.team;
-					color = team == 0 ? 'ff0000':'0000ff';
-					angle = tmpS.velocity.angle;
-					velocity = tmpS.velocity.magnitude;
-					worldPos = tmpS.position;
+				// }
+				// else 
+				// {
+					// team = tmpS.team;
+					// color = team == 0 ? 'ff0000':'0000ff';
+					// angle = tmpS.velocity.angle;
+					// velocity = tmpS.velocity.magnitude;
+					// worldPos = tmpS.position;
 					
-					drawx = worldPos.x-US.worldPos.x;
-					drawy = worldPos.y-US.worldPos.y;
+					// drawx = worldPos.x-US.worldPos.x;
+					// drawy = worldPos.y-US.worldPos.y;
 					
-					drawx *= scaleSize;
-					drawy *= scaleSize;
+					// drawx *= scaleSize;
+					// drawy *= scaleSize;
 					
-					drawx += US.x;
-					drawy += US.y;
+					// drawx += US.x;
+					// drawy += US.y;
 					
-					drawPos = {x: drawx,y: drawy};
-					segments = tmpS.segments;			
-					this.game.snakes.push(new Snake(id,team,color,velocity,angle,currentPowerUp,segments.length,segments,id,worldPos,this.game.scaleWindow,drawPos,false));
-				}
+					// drawPos = {x: drawx,y: drawy};
+					// segments = tmpS.segments;			
+					// this.game.snakes.push(new Snake(id,team,color,velocity,angle,currentPowerUp,segments.length,segments,id,worldPos,this.game.scaleWindow,drawPos,false));
+				// }
 			}
 		}
 		
@@ -491,7 +525,7 @@ var WebSocketService = function(webSocket,game)
 	
 	this.miniSnakesHandler = function(data)
 	{
-		//console.log(data);
+		// console.log(data);
 		/* WARNING: We don't have minisnakes set up exactly yet. This is psuedocode for when we do
 		 * You should be able to just switch variable names around though...or pretty close
 		 */
