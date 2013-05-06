@@ -81,18 +81,39 @@ void GridController::update()
 		if (xg != xgn || yg != ygn) // MiniSnake's old GridSection position != MiniSnake's new GridSection position
 		{
 			std::vector<GameObject*>* gameObjP = (*oldSectionP).getGameObjects();
-			std::vector<GameObject*>::iterator goIt;
+			//std::vector<GameObject*>::iterator goIt;
 
 			// Looping through the vector of GameObjects to find the current MiniSnake & move its pointer
 			// and then delete its old pointer
-			for (goIt = (*gameObjP).begin(); goIt < (*gameObjP).end(); goIt++)
+
+			std::vector<GameObject*>::iterator goIt = gameObjP->begin();
+			bool move = false;
+
+			while(goIt < gameObjP->end() && !move)
+			{
+				if(*goIt == snakeP)
+				{
+					move = true;
+					(*newSectionP).addGameObject(**goIt); // add MiniSnake's pointer to new GridSection
+					goIt = (*gameObjP).erase(goIt); // delete pointer to old GridSection
+				}
+				if(goIt < gameObjP->end())
+				{
+					goIt++;
+				}
+			}
+			
+
+			/*for (goIt = (*gameObjP).begin(); goIt < (*gameObjP).end(); goIt++)
 			{
 				if (*goIt == snakeP)
 				{
+					std::cout << "   goIt before erase" << std::endl;
 					(*newSectionP).addGameObject(**goIt); // add MiniSnake's pointer to new GridSection
-					(*gameObjP).erase(goIt); // delete pointer to old GridSection
+					goIt = (*gameObjP).erase(goIt); // delete pointer to old GridSection
+					std::cout << "   goIt after erase" << std::endl;
 				}
-			}
+			}*/
 		}
 	}
 }
@@ -136,7 +157,8 @@ void GridController::spawnMiniSnake(int id, int team)
 
 void GridController::addMiniSnake(MiniSnake& snake)
 {
-	minisnakes_->push_back(&snake);
+	world_->addObject(snake); // Add the MiniSnake to the world
+	minisnakes_->push_back(&snake); // Add the MiniSnake to the controller
 }
 
 void GridController::addObject(GameObject& object)

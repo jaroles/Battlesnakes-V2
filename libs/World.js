@@ -16,6 +16,7 @@ var Debug = require('./Debug');
 var MiniSnakeAddon = require('./node/x64/Debug/MiniSnakeAddon');
 var d = new Debug();
 var dt = 0;
+var dtMS = 0;
 
 function World()
 {
@@ -178,6 +179,7 @@ function World()
 		}
 	};
 	
+	// Spawns a certain amount of eggs in a grid
 	function SpawnEggs(grid) {
 		var eggs = 5;
 		for (var i = 0; i < eggs; i++) {
@@ -298,6 +300,7 @@ function World()
 			
 			if(miniSnakes.length > 0) {
 				miniSnakeController.update(); // Update MiniSnakes
+				var miniSnakeData = this.getMiniSnakes();
 			}
 
 			for (var u = 0, U = users.length; u < U; ++u) 
@@ -313,7 +316,6 @@ function World()
 					OoB = false;
 				
 				if(miniSnakes.length > 0) {
-					var miniSnakeData = this.getMiniSnakes();
 					user.sendMiniSnakes(miniSnakeData);
 				}
 				
@@ -405,8 +407,8 @@ function World()
 			
 			this.removeMiniSnakes();
 		}
-		dt ++;
-
+		
+		dt++;
 	};
 
 	function updateSnakeGrid(snake, vector) {
